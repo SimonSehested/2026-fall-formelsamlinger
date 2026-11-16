@@ -107,7 +107,7 @@ Three subintervals: (1) ON ($0 < t \le D T_s$): $i_L$ ramps $0 \to \Delta I_L$; 
 \textbf{Buck} &
 $K_{\mathrm{crit}} = 1 - D$ &
 $M = \dfrac{2}{1 + \sqrt{1 + 4K/D^2}}$ &
-$\delta = \dfrac{(V_{in} - V_o)D}{V_o} = \dfrac{K}{M}$ &
+$\delta = \dfrac{(V_{in} - V_o)D}{V_o} = \dfrac{(1-M)D}{M} = \dfrac{KM}{D}$ &
 $\Delta I_L = \dfrac{V_{in}-V_o}{L} D T_s$. \newline
 $M < D$ (gain drops below CCM). $I_{in} = \tfrac{1}{2} \Delta I_L D$, $I_o = \tfrac{1}{2} \Delta I_L (D+\delta)$. \\
 
@@ -141,7 +141,7 @@ Combined inductor current is discontinuous through switch and diode. \\
 \vspace{-4pt}
 \begin{itemize}\setlength{\itemsep}{1pt}\setlength{\parskip}{0pt}
   \item \textbf{DCM RMS Currents:} $I_{sw,\mathrm{rms}} = \Delta I_L \sqrt{\tfrac{D}{3}}$, \quad $I_{D,\mathrm{rms}} = \Delta I_L \sqrt{\tfrac{\delta}{3}}$.
-  \item \textbf{DCM Output Voltage Ripple:} $\Delta V_o = \dfrac{\delta T_s (\Delta I_L - I_o)^2}{2 C \Delta I_L}$.
+  \item \textbf{DCM Output Voltage Ripple:} $\Delta V_o = \dfrac{(D + \delta) T_s (\Delta I_L - I_o)^2}{2 C \Delta I_L}$.
   \item \textbf{Blocking Voltages in DCM:} Identical to CCM ($V_{in}$ for Buck; $V_o$ for Boost; $V_{in}+|V_o|$ for Buck-Boost/\'{C}uk).
 \end{itemize}
 
@@ -273,7 +273,7 @@ To operate strictly in CCM for \textbf{all} $D \in (0,1)$: $\max_D \{D(1-D)^2\} 
   \item \textbf{Characteristic Impedance at Boundary ($\Phi = 1$):} $Z_0 = \dfrac{V_{in}}{I_o}$ (Buck ZCS or ZVS).
   \item \textbf{Resonant Frequency $f_0$:}
   Full-Wave ZCS Buck ($M \approx \frac{f_s}{f_0} \implies f_0 \approx \frac{f_s}{M} = f_s \frac{V_{in}}{V_o}$);
-  Half-Wave ZVS Buck ($M = 1 - \frac{f_s}{f_0} \implies f_0 = \frac{f_s}{1-M} = f_s \frac{V_{in}}{V_{in}-V_o}$).
+  ZVS Buck at boundary $\Phi \approx 1$ / Full-Wave ($M \approx 1 - \frac{f_s}{f_0} \implies f_0 \approx \frac{f_s}{1-M} = f_s \frac{V_{in}}{V_{in}-V_o}$).
   \item \textbf{Tank Inductance and Capacitance:} $\omega_0 = 2\pi f_0 \implies L_r = \dfrac{Z_0}{2\pi f_0}, \quad C_{r,\mathrm{calc}} = \dfrac{1}{2\pi f_0 Z_0}$.
   \item \textbf{Parasitic Absorption:} For \textbf{ZVS}, $C_{r,\mathrm{ext}} = C_{r,\mathrm{calc}} - C_j$. For \textbf{ZCS}, $C_j$ is not absorbed ($P_{loss} = \frac{1}{2} C_j V_{in}^2 f_s$).
   \item \textbf{Worst-Case Peak Ratings at $\Phi = 1$:} ZCS Buck ($\hat{V}_{sw} = V_{in}, \; \hat{I}_{sw} = 2 I_o$); ZVS Buck ($\hat{I}_{sw} = I_o, \; \hat{V}_{sw} = 2 V_{in}$).
