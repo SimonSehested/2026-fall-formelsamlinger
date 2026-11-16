@@ -64,7 +64,7 @@ During on-state, primary current carries magnetizing current $i_p = i_m$; during
 \paragraph{4. Device Blocking Voltage Stresses:}
 \begin{align}
 \text{Transistor switch off-state voltage:} \quad & \hat{V}_{sw} = V_{\mathrm{in}} + \frac{V_o}{N} = \frac{V_{\mathrm{in}}}{1-D} \\
-\text{Secondary diode reverse voltage:} \quad & \hat{V}_D = N V_{\mathrm{in}} + V_o = \frac{V_o}{1-D}
+\text{Secondary diode reverse voltage:} \quad & \hat{V}_D = N V_{\mathrm{in}} + V_o = \frac{V_o}{D} = \frac{N V_{\mathrm{in}}}{1-D}
 \end{align}
 \textit{Warning:} Transformer primary leakage inductance $L_{lk}$ creates an uncoupled inductive spike at switch turn-off ($L_{lk} di/dt$). An RCD clamp or TVS snubber across the primary winding is mandatory in practice to clamp this spike below the switch rating!
 
@@ -115,15 +115,30 @@ Equating input power to load power $P_o = V_o^2 / R$ (assuming 100\% efficiency)
 I_{\mathrm{in}} = \frac{P_o}{V_{\mathrm{in}}} = \frac{V_o^2}{R V_{\mathrm{in}}} \quad \left(\text{\textbf{Never}} \text{ use the CCM formula } I_{\mathrm{in}} = \frac{N D}{1-D} I_o \text{ in DCM!}\right)
 \end{equation}
 
-\paragraph{4. CCM/DCM Boundary Condition:}
-At the boundary, the secondary current reaches zero exactly at the end of the period ($D + \delta = 1 \Rightarrow \delta = 1 - D$):
+\subsubsection{Example Q1 (Week 5 Slide 25: Flyback CCM Derivation)}
+\textbf{Question:} Derive the condition for continuous mode operation of flyback converter ($T_x = 1:N$).
+
+\textbf{Derivation \& Boundary Condition:}
+At the boundary between CCM and DCM, the secondary current reaches zero exactly at the end of the switching period ($D + \delta = 1 \implies \delta = 1 - D$):
 \[
-\frac{N V_{\mathrm{in}} D}{V_o} = 1 - D \quad\implies\quad \frac{V_o}{V_{\mathrm{in}}} = \frac{N D}{1 - D} = \frac{D}{\sqrt{K_{\mathrm{crit}}}} \quad\implies\quad \sqrt{K_{\mathrm{crit}}} = \frac{1-D}{N}
+\delta = \frac{N V_{\mathrm{in}} D}{V_o} = 1 - D \quad\implies\quad \frac{V_o}{V_{\mathrm{in}}} = \frac{N D}{1 - D}
+\]
+From the DCM energy balance, the conversion ratio is:
+\[
+\frac{V_o}{V_{\mathrm{in}}} = \frac{D}{\sqrt{K}}, \qquad \text{where } K = \frac{2 L_m}{R T_s}
+\]
+Equating the CCM and DCM conversion ratios at the boundary ($K = K_{\mathrm{crit}}$):
+\[
+\frac{N D}{1 - D} = \frac{D}{\sqrt{K_{\mathrm{crit}}}} \quad\implies\quad \sqrt{K_{\mathrm{crit}}} = \frac{1-D}{N}
 \]
 \begin{equation}
 K_{\mathrm{crit}} = \left(\frac{1 - D}{N}\right)^2
 \end{equation}
 \begin{itemize}
+  \item \textbf{Condition for CCM Operation:}
+  \begin{equation}
+  K \ge K_{\mathrm{crit}} \quad\iff\quad \frac{2 L_m}{R T_s} \ge \left(\frac{1-D}{N}\right)^2 \quad\iff\quad L_m \ge \frac{R T_s}{2}\left(\frac{1-D}{N}\right)^2
+  \end{equation}
   \item If $K > K_{\mathrm{crit}}$: Converter operates in \textbf{CCM}.
   \item If $K < K_{\mathrm{crit}}$: Converter operates in \textbf{DCM}.
   \item \textbf{To force DCM:} Decrease $K$ (i.e., choose a \emph{smaller} $L_m$, a \emph{higher} load resistance $R$, or a lower switching frequency $f_s$).
@@ -380,15 +395,15 @@ P = \frac{n V_1 V_2}{2\pi f_s L_k} \phi \left(1 - \frac{|\phi|}{\pi}\right) = \f
 \end{equation}
 Expressed in terms of normalized duty shift $D_\phi = \phi / \pi \in [-0.5, 0.5]$:
 \begin{equation}
-P = \frac{n V_1 V_2}{f_s L_k} D_\phi (1 - 2|D_\phi|)
+P = \frac{n V_1 V_2}{2 f_s L_k} D_\phi (1 - |D_\phi|)
 \end{equation}
 When the transformer turns ratio is $1:1$ ($n=1$) or voltages are referred to the same side:
 \begin{equation}
-P = \frac{V_1 V_2}{2\pi f_s L_k} \phi \left(1 - \frac{|\phi|}{\pi}\right) = \frac{V_1 V_2}{\omega L_k} \phi \left(1 - \frac{|\phi|}{\pi}\right)
+P = \frac{V_1 V_2}{2\pi f_s L_k} \phi \left(1 - \frac{|\phi|}{\pi}\right) = \frac{V_1 V_2}{\omega L_k} \phi \left(1 - \frac{|\phi|}{\pi}\right) = \frac{V_1 V_2}{2 f_s L_k} D_\phi (1 - |D_\phi|)
 \end{equation}
 
 \subsubsection{Maximum Transmitted Power ($P_{\max}$)}
-Setting $\dfrac{dP}{d\phi} = 0 \implies 1 - \dfrac{2\phi}{\pi} = 0 \implies \phi = \dfrac{\pi}{2} = 90^\circ$ ($D_\phi = 0.25$):
+Setting $\dfrac{dP}{d\phi} = 0 \implies 1 - \dfrac{2\phi}{\pi} = 0 \implies \phi = \dfrac{\pi}{2} = 90^\circ$ ($D_\phi = 0.50$):
 \begin{equation}
 P_{\max} = P\left(\frac{\pi}{2}\right) = \frac{\pi V_1 V_2}{4 \omega L_k} = \frac{V_1 V_2}{8 f_s L_k} \quad \left(\text{or with turns ratio } n:\; P_{\max} = \frac{n V_1 V_2}{8 f_s L_k}\right)
 \end{equation}
@@ -408,11 +423,17 @@ Defining voltage conversion ratio $d = \dfrac{n V_2}{V_1}$:
 \begin{itemize}
   \item \textbf{Primary Bridge ($H_1$) ZVS Condition:} Requires $i_L(0) \le 0$:
   \begin{equation}
-  D_\phi \ge \frac{1 - d}{2} \quad \left(\text{If } d \le 1,\; H_1 \text{ achieves ZVS for all } \phi > 0;\; \text{if } d > 1,\; \phi \ge \pi \frac{d-1}{2d}\right)
+  \begin{cases}
+  \text{For } d \le 1: & H_1 \text{ achieves ZVS for all } \phi > 0 \quad (D_\phi > 0) \\[4pt]
+  \text{For } d > 1: & D_\phi \ge \dfrac{d - 1}{2d} \quad\iff\quad \phi \ge \pi \left(\dfrac{d - 1}{2d}\right)
+  \end{cases}
   \end{equation}
   \item \textbf{Secondary Bridge ($H_2$) ZVS Condition:} Requires $i_L(D_\phi T_s/2) \ge 0$:
   \begin{equation}
-  D_\phi \ge \frac{d - 1}{2d} \quad \left(\text{If } d \ge 1,\; H_2 \text{ achieves ZVS for all } \phi > 0;\; \text{if } d < 1,\; \phi \ge \pi \frac{1-d}{2}\right)
+  \begin{cases}
+  \text{For } d \ge 1: & H_2 \text{ achieves ZVS for all } \phi > 0 \quad (D_\phi > 0) \\[4pt]
+  \text{For } d < 1: & D_\phi \ge \dfrac{1 - d}{2} \quad\iff\quad \phi \ge \pi \left(\dfrac{1 - d}{2}\right)
+  \end{cases}
   \end{equation}
   \item \textbf{Full Soft-Switching Region:} When $d = 1$ ($n V_2 = V_1$, matched voltage condition), both bridges achieve ZVS across the \emph{entire} operating range! When $d \neq 1$, ZVS is lost at light power levels (small $\phi$).
 \end{itemize}
@@ -630,5 +651,5 @@ Defining voltage conversion ratio $d = \dfrac{n V_2}{V_1}$:
   \item \textbf{Trap 4 (Forward Switch Stress):} Forgetting the reset voltage reflected from $N_3$. The switch sees $V_{\mathrm{in}}(1 + N_1/N_3)$, NOT just $V_{\mathrm{in}}$!
   \item \textbf{Trap 5 (Commutation Factor 1 vs 2):} Single-ended forward has commutation overlap ONCE per cycle ($\Delta V_o = f_s L_k I_o$). Full-bridge and push-pull center-tapped secondary commutate TWICE per cycle ($\Delta V_o = 2 f_s L_k I_o$).
   \item \textbf{Trap 6 (DAB Phase Units):} In DAB formulas, $\phi$ must be in \textbf{radians} ($[-\pi/2, \pi/2]$). If given in degrees, convert immediately via $\phi = \phi^\circ \times \pi / 180^\circ$!
-  \item \textbf{Trap 7 (DAB Maximum Power Angle):} Maximum power transmission under SPS control occurs at $\phi = \pi/2 = 90^\circ$ ($D_\phi = 0.25$), where $P_{\max} = \dfrac{V_1 V_2}{8 f_s L_k} = \dfrac{\pi V_1 V_2}{4 \omega L_k}$.
+  \item \textbf{Trap 7 (DAB Maximum Power Angle):} Maximum power transmission under SPS control occurs at $\phi = \pi/2 = 90^\circ$ ($D_\phi = 0.50$), where $P_{\max} = \dfrac{V_1 V_2}{8 f_s L_k} = \dfrac{\pi V_1 V_2}{4 \omega L_k}$.
 \end{itemize}

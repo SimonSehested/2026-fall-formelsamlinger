@@ -36,13 +36,22 @@ $D$ & Switch duty ratio ($t_{\mathrm{on}}/T_s$) & dimensionless \\
 $D'$ & Complementary duty ratio ($1 - D$) & dimensionless \\
 $t_{\mathrm{on}},\, t_{\mathrm{off}}$ & Switch conduction on-time and off-time & \si{\second} (s) \\
 $L_m$ & Transformer primary magnetizing inductance & \si{\henry} (H) \\
-$L_k$ & Transformer leakage inductance (primary or secondary referred) & \si{\henry} (H) \\
+$L_k$ & Transformer leakage inductance (secondary referred) & \si{\henry} (H) \\
+$L_{lk}$ & Transformer primary leakage inductance & \si{\henry} (H) \\
 $N_1, N_2, N_3$ & Transformer primary, secondary, and tertiary (reset) winding turns & dimensionless \\
 $n$ & Transformer turns ratio ($N_2/N_1$) & dimensionless \\
+$\Phi, \Delta\Phi$ & Transformer core magnetic flux, flux variation & \si{\weber} (Wb) \\
+$D_R$ & Forward converter core reset duty cycle & dimensionless \\
+$D_{\mathrm{eff}}$ & Effective duty cycle ($D - \Delta D$) & dimensionless \\
 $t_{ov}$ & Commutation / overlapping time of secondary diodes & \si{\second} (s) \\
 $\Delta V_o$ & Average output voltage drop due to leakage inductance / commutation & \si{\volt} (V) \\
+$K$ & Conduction parameter ($K = \frac{2 L_m}{R T_s}$ or $\frac{2 L}{R T_s}$) & dimensionless \\
+$\delta$ & DCM diode conduction duty fraction & dimensionless \\
 $\phi$ & Phase shift angle in PSFB or DAB converters & \si{\radian} (rad) / $^\circ$ \\
+$D_\phi$ & DAB phase-shift ratio ($\phi/\pi \in [-0.5, 0.5]$) & dimensionless \\
+$d$ & DAB voltage conversion ratio ($n V_2 / V_1$) & dimensionless \\
 $P_{\mathrm{DAB}}$ & Transmitted active power in Dual-Active-Bridge converter & \si{\watt} (W) \\
+$C_{oss}$ & MOSFET output parasitic capacitance & \si{\farad} (F) \\
 $R$ & Load resistance ($V_o/I_o$) & \si{\ohm} ($\Omega$) \\
 $L,\, C$ & Generic filter inductor and capacitor & \si{\henry} (H), \si{\farad} (F) \\
 $\eta$ & Power conversion efficiency ($P_o/P_{in}$) & dimensionless \\
