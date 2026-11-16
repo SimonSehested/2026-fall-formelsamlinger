@@ -1,0 +1,170 @@
+\section{Symboloversigt \& Notation (Test 2)}
+
+\subsection{Keywords for Quick Lookup}
+\textbf{Ctrl+F keywords:} symbol, notation, unit, meaning, Symboloversigt, glossary, rectifier, thyristor, firing angle, conduction angle, distortion factor, displacement power factor, DPF, DF, THD, ripple factor, form factor, PFC, inverter, SPWM, modulation index, carrier, common mode, leakage current, state-space averaging, perturbation, small-signal, transfer function, RHP zero, leakage inductance, commutation, overlapping time, DAB, PSFB.
+
+\subsection{Physical Constants and Stored Energy}
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Symbol} & \textbf{Meaning / Course Terminology} & \textbf{SI Unit} \\
+\midrule
+$\mu_0$ & Vacuum permeability ($4\pi\times 10^{-7}\text{ H/m}$) & \si{\henry\per\meter} \\
+$E_L$ & Inductor stored magnetic energy ($\tfrac{1}{2} L I^2$) & \si{\joule} (J) \\
+$E_C$ & Capacitor stored electric energy ($\tfrac{1}{2} C V^2$) & \si{\joule} (J) \\
+$P$ & Average power transferred at switching frequency ($E f_s$) & \si{\watt} (W) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Circuit and General Quantities}
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Symbol} & \textbf{Meaning / Course Terminology} & \textbf{SI Unit} \\
+\midrule
+$V_{in}$ & DC input voltage / source supply voltage ($V_s$, $V_g$) & \si{\volt} (V) \\
+$V_o$ & DC output voltage (average load voltage) & \si{\volt} (V) \\
+$I_{in}$ & Average DC input current & \si{\ampere} (A) \\
+$I_o$ & Average DC output / load current ($V_o/R$) & \si{\ampere} (A) \\
+$P$ & Active / real average power & \si{\watt} (W) \\
+$Q$ & Reactive power ($V I \sin\phi$) & \si{\text{var}} \\
+$S$ & Apparent power ($V_{rms} I_{rms} = \sqrt{P^2 + Q^2}$) & \si{\volt\ampere} (VA) \\
+$T_s$ & Switching period ($1/f_s$) & \si{\second} (s) \\
+$f_s$ & Switching frequency & \si{\hertz} (Hz) \\
+$D$ & Switch duty ratio ($t_{\mathrm{on}}/T_s$) & dimensionless \\
+$D'$ & Complementary duty ratio ($1 - D$) & dimensionless \\
+$t_{\mathrm{on}},\, t_{\mathrm{off}}$ & Switch conduction on-time and off-time & \si{\second} (s) \\
+$L_m$ & Transformer primary magnetizing inductance & \si{\henry} (H) \\
+$L_k$ & Transformer leakage inductance (primary or secondary referred) & \si{\henry} (H) \\
+$N_1, N_2, N_3$ & Transformer primary, secondary, and tertiary (reset) winding turns & dimensionless \\
+$n$ & Transformer turns ratio ($N_2/N_1$) & dimensionless \\
+$t_{ov}$ & Commutation / overlapping time of secondary diodes & \si{\second} (s) \\
+$\Delta V_o$ & Average output voltage drop due to leakage inductance / commutation & \si{\volt} (V) \\
+$\phi$ & Phase shift angle in PSFB or DAB converters & \si{\radian} (rad) / $^\circ$ \\
+$P_{\mathrm{DAB}}$ & Transmitted active power in Dual-Active-Bridge converter & \si{\watt} (W) \\
+$R$ & Load resistance ($V_o/I_o$) & \si{\ohm} ($\Omega$) \\
+$L,\, C$ & Generic filter inductor and capacitor & \si{\henry} (H), \si{\farad} (F) \\
+$\eta$ & Power conversion efficiency ($P_o/P_{in}$) & dimensionless \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{AC-DC Rectifiers and Power Quality (Week 8)}
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Symbol} & \textbf{Meaning / Course Terminology} & \textbf{SI Unit} \\
+\midrule
+$V_m$ & Peak (amplitude) of AC supply phase or line voltage & \si{\volt} (V) \\
+$V_{dc}$ & Average DC output voltage across load & \si{\volt} (V) \\
+$V_{rms}$ & Root-mean-square AC supply or rectified DC output voltage & \si{\volt} (V) \\
+$I_s$ & Total RMS AC supply current & \si{\ampere} (A) \\
+$I_{s1}$ & Fundamental frequency RMS component of supply current & \si{\ampere} (A) \\
+$I_{sn}$ & $n$-th harmonic RMS component of supply current & \si{\ampere} (A) \\
+$\alpha$ & Firing (delay) angle of thyristor / controlled rectifier & \si{\radian} (rad) / $^\circ$ \\
+$\theta$ & Conduction angle of rectifier diode or thyristor & \si{\radian} (rad) / $^\circ$ \\
+$\phi_1$ & Phase displacement angle of fundamental supply current & \si{\radian} (rad) / $^\circ$ \\
+$DPF$ & Displacement Power Factor ($\cos\phi_1$) & dimensionless \\
+$DF$ & Distortion Factor ($I_{s1}/I_s = 1/\sqrt{1 + THD^2}$) & dimensionless \\
+$THD$ & Total Harmonic Distortion of AC line current & dimensionless \\
+$PF$ & Total Power Factor ($P/S = DPF \times DF$) & dimensionless \\
+$FF$ & Form Factor of rectified waveform ($V_{rms}/V_{dc}$) & dimensionless \\
+$RF$ & Ripple Factor of rectified waveform ($\sqrt{FF^2 - 1}$) & dimensionless \\
+$L_{pfc}$ & Active Boost Power Factor Correction inductor & \si{\henry} (H) \\
+$C_o$ & Boost PFC DC-bus output bulk filter capacitor & \si{\farad} (F) \\
+$\Delta V_{o,2\omega}$ & Peak-to-peak second-harmonic (100 Hz / 120 Hz) output ripple & \si{\volt} (V) \\
+$t_\alpha$ & Firing delay time interval ($\alpha/\omega$) & \si{\second} (s) \\
+$\omega$ & AC supply angular frequency ($2\pi f_{line}$) & \si{\radian\per\second} (rad/s) \\
+$f_{line}$ & AC line fundamental frequency (50 Hz or 60 Hz) & \si{\hertz} (Hz) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{DC-AC Inverters and SPWM (Week 9)}
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Symbol} & \textbf{Meaning / Course Terminology} & \textbf{SI Unit} \\
+\midrule
+$m_a$ & Amplitude modulation ratio ($\hat{V}_{control}/\hat{V}_{tri}$) & dimensionless \\
+$m_f$ & Frequency modulation ratio ($f_s / f_1$) & dimensionless \\
+$f_1$ & Fundamental frequency of desired AC output voltage & \si{\hertz} (Hz) \\
+$v_{tri}$ & Triangular carrier wave instantaneous voltage & \si{\volt} (V) \\
+$\hat{V}_{tri}$ & Peak amplitude of triangular carrier wave & \si{\volt} (V) \\
+$v_{control}$ & Sinusoidal modulating / control reference instantaneous voltage & \si{\volt} (V) \\
+$\hat{V}_{control}$ & Peak amplitude of sinusoidal control voltage & \si{\volt} (V) \\
+$V_{an1}$ & Peak fundamental phase-to-neutral output voltage & \si{\volt} (V) \\
+$V_{LL1}$ & Peak fundamental line-to-line output voltage ($\sqrt{3}V_{an1}$) & \si{\volt} (V) \\
+$V_{LL1,rms}$ & RMS fundamental line-to-line voltage ($\frac{\sqrt{3}}{2\sqrt{2}} m_a V_{DC} \approx 0.612 m_a V_{DC}$) & \si{\volt} (V) \\
+$V_{DC}$ & DC link / DC bus input supply voltage & \si{\volt} (V) \\
+$v_{no}$ & Potential difference between load neutral $n$ and DC bus midpoint $o$ & \si{\volt} (V) \\
+$v_{CM}$ & Common-mode voltage ($[v_{aN} + v_{bN} + v_{cN}]/3$) & \si{\volt} (V) \\
+$i_{leak}$ & High-frequency common-mode ground leakage current & \si{\ampere} (A) \\
+$C_{parasitic}$ & Parasitic capacitance between circuit / PV frame and earth ground & \si{\farad} (F) \\
+$L_f$ & Inverter AC output low-pass filter inductor & \si{\henry} (H) \\
+$C_f$ & Inverter AC output low-pass filter capacitor & \si{\farad} (F) \\
+$f_c$ & Inverter output LC low-pass filter cutoff frequency & \si{\hertz} (Hz) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Dynamic Modeling and Small-Signal Analysis (Week 10)}
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Symbol} & \textbf{Meaning / Course Terminology} & \textbf{SI Unit} \\
+\midrule
+$x$ & Instantaneous state vector ($[i_L(t), v_C(t)]^T$) & various \\
+$u$ & Instantaneous input vector ($v_g(t)$ or $v_{in}(t)$) & various \\
+$d$ & Instantaneous duty cycle signal ($d(t) = D + \hat{d}(t)$) & dimensionless \\
+$X$ & DC steady-state quiescent operating point state vector ($-A^{-1}BU$) & various \\
+$U$ & DC steady-state input vector ($V_g$ or $V_{in}$) & \si{\volt} (V) \\
+$D$ & DC steady-state nominal duty ratio & dimensionless \\
+$\hat{x}$ & Small-signal AC perturbation vector of state variables & various \\
+$\hat{u}$ & Small-signal AC perturbation of input voltage ($\hat{v}_g$) & \si{\volt} (V) \\
+$\hat{d}$ & Small-signal AC perturbation of duty ratio & dimensionless \\
+$A_1, B_1$ & State and input matrices during switch ON interval & \si{\per\second} / various \\
+$A_2, B_2$ & State and input matrices during switch OFF interval & \si{\per\second} / various \\
+$A$ & Average state matrix ($D A_1 + (1-D) A_2$) & \si{\per\second} \\
+$B$ & Average input matrix ($D B_1 + (1-D) B_2$) & various \\
+$F$ & Duty-ratio perturbation vector ($(A_1 - A_2)X + (B_1 - B_2)U$) & various \\
+$s$ & Laplace complex frequency variable ($\sigma + j\omega$) & \si{\radian\per\second} (rad/s) \\
+$I$ & Identity matrix of matching dimension & dimensionless \\
+$G_{vd}(s)$ & Control-to-output transfer function ($\hat{v}_o(s)/\hat{d}(s)$) & \si{\volt} (V) \\
+$G_{vg}(s)$ & Line-to-output (audio-susceptibility) transfer function ($\hat{v}_o(s)/\hat{v}_g(s)$) & dimensionless \\
+$G_{id}(s)$ & Control-to-inductor-current transfer function ($\hat{i}_L(s)/\hat{d}(s)$) & \si{\ampere} (A) \\
+$Z_{out}(s)$ & Small-signal open-loop output impedance ($-\hat{v}_o(s)/\hat{i}_o(s)$) & \si{\ohm} ($\Omega$) \\
+$\omega_{z,RHP}$ & Right-Half-Plane (RHP) zero angular frequency ($(1-D)^2 R / L$) & \si{\radian\per\second} (rad/s) \\
+$f_{z,RHP}$ & Right-Half-Plane (RHP) zero frequency ($\omega_{z,RHP}/(2\pi)$) & \si{\hertz} (Hz) \\
+$\omega_0$ & Undamped natural / corner angular frequency of second-order system & \si{\radian\per\second} (rad/s) \\
+$Q$ & Quality factor of second-order LC resonant tank / filter & dimensionless \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Standard Subscripts, Operators, and Mathematical Conventions}
+\begin{center}
+\begin{tabular}{@{}l p{9.0cm} p{5.5cm}@{}}
+\toprule
+\textbf{Notation} & \textbf{Meaning / Usage} & \textbf{Example / Context} \\
+\midrule
+$(\cdot)_{\mathrm{rms}}$ & Root-mean-square value over fundamental or switching period & $V_{\mathrm{rms}},\, I_s$ \\
+$(\cdot)_{\mathrm{dc}},\, \overline{(\cdot)}$ & Average (DC) component over one period & $V_{\mathrm{dc}},\, I_o$ \\
+$\hat{(\cdot)},\, (\cdot)_m$ & Peak amplitude of AC waveform & $\hat{V}_{\mathrm{control}},\, V_m$ \\
+$(\cdot)_1$ & Fundamental frequency component ($50/60\text{ Hz}$ or $f_1$) & $I_{s1},\, V_{an1}$ \\
+$(\cdot)_n,\, (\cdot)_h$ & $n$-th or $h$-th harmonic frequency component & $I_{sn},\, V_{LLn}$ \\
+$(\cdot)_{LL}$ & Line-to-line value in three-phase systems & $V_{LL1},\, V_{LL,\mathrm{rms}}$ \\
+$(\cdot)_{an},\, (\cdot)_{ph}$ & Phase-to-neutral (per-phase) value in three-phase systems & $V_{an1},\, I_{\mathrm{ph}}$ \\
+$\Delta(\cdot)$ & Peak-to-peak ripple amplitude or parameter deviation & $\Delta i_L,\, \Delta V_o$ \\
+$X, U, D$ & Upper-case letters: DC steady-state quiescent operating points & $X = -A^{-1}BU$ \\
+$\hat{x}, \hat{u}, \hat{d}$ & Hat symbols: small-signal AC perturbations & $x(t) = X + \hat{x}(t)$ \\
+$x, u, d$ & Lower-case symbols: total instantaneous quantities & $d(t) = D + \hat{d}(t)$ \\
+CCM / DCM & Continuous / Discontinuous Inductor Conduction Mode & $i_L(t) > 0$ vs $i_L(t) = 0$ interval \\
+SPWM & Sinusoidal Pulse-Width Modulation & Comparison of $v_{\mathrm{control}}$ with $v_{\mathrm{tri}}$ \\
+RHP & Right-Half-Plane of Laplace $s$-plane ($\mathrm{Re}\{s\} > 0$) & Phase lag; non-minimum phase \\
+PFC & Power Factor Correction & Active Boost ($I_s$ shaped to sine) \\
+DAB / PSFB & Dual-Active-Bridge / Phase-Shifted Full-Bridge & Isolated bidirectional / bridge DC-DC \\
+\bottomrule
+\end{tabular}
+\end{center}
