@@ -729,7 +729,7 @@ Supply line-to-line RMS voltage $V_{LL,\mathrm{rms}}$, fundamental frequency $f_
   \[
   0.1 f_s = 0.1 \times 10000\,\si{\hertz} = 1000\,\si{\hertz}
   \]
-  Here $f_c \approx 1006.6\,\si{\hertz}$, which perfectly sits between $500\,\si{\hertz}$ and $1000\,\si{\hertz}$ (or adjust $C_f = 15\,\si{\micro\farad}$ to give $f_c \approx 822\,\si{\hertz}$). Constraint satisfied!
+  Here $f_c \approx 1006.6\,\si{\hertz}$, which sits within $0.7\%$ of $1000\,\si{\hertz}$ (or adjust $L_f = 3.0\,\si{\milli\henry}$ with $C_f = 10\,\si{\micro\farad}$ to obtain $f_c \approx 918.9\,\si{\hertz} < 1000\,\si{\hertz}$ while preserving $C_f \le 11.0\,\si{\micro\farad}$ for the $5\%$ reactive power limit). Constraint satisfied!
 \end{enumerate}
 
 ---
