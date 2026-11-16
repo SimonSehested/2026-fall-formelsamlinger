@@ -118,6 +118,11 @@ $C_{parasitic}$ & Parasitic capacitance between circuit / PV frame and earth gro
 $L_f$ & Inverter AC output low-pass filter inductor & \si{\henry} (H) \\
 $C_f$ & Inverter AC output low-pass filter capacitor & \si{\farad} (F) \\
 $f_c$ & Inverter output LC low-pass filter cutoff frequency & \si{\hertz} (Hz) \\
+$C_{\mathrm{bus}}$ & DC-bus decoupling capacitor for $2\omega$ single-phase ripple & \si{\farad} (F) \\
+$\Delta V_{\mathrm{cap},pp}$ & Peak-to-peak $2\omega_1$ (100 Hz / 120 Hz) ripple on DC decoupling capacitor & \si{\volt} (V) \\
+$\alpha$ & Firing delay angle in AC-AC voltage controller & \si{\radian} (rad) / $^\circ$ \\
+$V_{o,\mathrm{rms}}$ & AC-AC controller RMS output voltage ($V_s \sqrt{1 - \frac{\alpha}{\pi} + \frac{\sin 2\alpha}{2\pi}}$) & \si{\volt} (V) \\
+$\phi$ & Load impedance phase angle ($\arctan(\omega L / R)$) in AC-AC controller & \si{\radian} (rad) / $^\circ$ \\
 \bottomrule
 \end{tabular}
 \end{center}

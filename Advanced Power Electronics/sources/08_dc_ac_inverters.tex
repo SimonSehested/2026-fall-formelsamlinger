@@ -1,0 +1,828 @@
+\section{DC-AC Converters (Inverters) \& AC-AC Controllers (Week 9)}
+
+\subsection{Keywords \& Comprehensive Overview}
+\noindent\textbf{Ctrl+F keywords:} dc-ac inverters, VSI, voltage source inverter, CSI, current source inverter, half-bridge, full-bridge, H-bridge, single-phase inverter, three-phase inverter, six-step, 180-degree conduction, pole voltage, line-to-line voltage, phase-to-neutral voltage, neutral-to-midpoint voltage, $v_{no}$, common-mode voltage, $v_{CM}$, parasitic leakage current, $i_{leak}$, $C_{parasitic}$, SPWM, sinusoidal pulse width modulation, modulation index, $m_a$, frequency modulation ratio, $m_f$, carrier frequency, $f_s$, fundamental frequency, $f_1$, bipolar SPWM, unipolar SPWM, overmodulation, square-wave limit, harmonics, sidebands, triplen harmonics cancellation, output LC filter design, cutoff frequency, $f_c$, frequency placement rule, DC-bus capacitor decoupling, 100 Hz ripple, double-frequency ripple, AC-AC voltage controller, thyristor AC controller, triac, delay firing angle, $\alpha$, RMS output voltage, dead time, shoot-through.
+
+\vspace{0.5em}
+\noindent DC-AC converters (inverters) synthesize alternating voltage and current from a direct voltage source. In switched-mode voltage source inverters (VSIs), power semiconductors (MOSFETs or IGBTs) are operated at high switching frequencies using Sinusoidal Pulse-Width Modulation (SPWM) to produce a pulse train whose fundamental component replicates a desired sinusoidal reference in amplitude and frequency. An output low-pass filter ($LC$) attenuates high-frequency switching harmonics to deliver clean sinusoidal AC to loads or the utility grid. In single-phase systems, power pulsation at twice the line frequency ($2 f_1$) requires bulk DC-bus energy decoupling. High $dv/dt$ switching across parasitic capacitances generates high-frequency common-mode leakage currents, necessitating careful grounding and topology design. Complementary AC-AC voltage controllers use phase-controlled thyristors or triacs to regulate RMS voltage supplied to AC loads.
+
+\subsubsection{Master Summary Table: Inverter Topologies \& Modulation Regimes}
+\begin{center}
+\footnotesize
+\renewcommand{\arraystretch}{1.25}
+\begin{tabularx}{\textwidth}{@{} >{\raggedright\arraybackslash}p{2.6cm} >{\raggedright\arraybackslash}p{2.5cm} >{\raggedright\arraybackslash}p{2.2cm} >{\raggedright\arraybackslash}p{2.0cm} >{\centering\arraybackslash}p{1.4cm} >{\centering\arraybackslash}p{1.4cm} >{\raggedright\arraybackslash}X @{}}
+\toprule
+\textbf{Topology / Mode} & \textbf{Fund. Peak $\hat{V}_{1}$} & \textbf{Fund. RMS $V_{1,\mathrm{rms}}$} & \textbf{Total RMS $V_{\mathrm{rms}}$} & \textbf{Switch Stress} & $f_{\mathrm{ripple}}$ & \textbf{Key Characteristics} \\
+\midrule
+\textbf{1-$\Phi$ Half-Bridge} \newline (Square-wave) &
+$\dfrac{2}{\pi} V_{DC} \approx 0.637 V_{DC}$ &
+$\dfrac{\sqrt{2}}{\pi} V_{DC} \approx 0.450 V_{DC}$ &
+$\dfrac{V_{DC}}{2} = 0.500 V_{DC}$ &
+$V_{DC}$ &
+$f_1$ &
+Split-capacitor DC midpoint $o$; $\mathrm{THD}_v = 48.34\%$; 2 switches. \\
+\midrule
+\textbf{1-$\Phi$ Full-Bridge} \newline (Square-wave) &
+$\dfrac{4}{\pi} V_{DC} \approx 1.273 V_{DC}$ &
+$\dfrac{2\sqrt{2}}{\pi} V_{DC} \approx 0.900 V_{DC}$ &
+$V_{DC}$ &
+$V_{DC}$ &
+$2 f_1$ &
+H-bridge (4 switches); output $\pm V_{DC}$; no DC midpoint needed. \\
+\midrule
+\textbf{1-$\Phi$ Full-Bridge} \newline (Bipolar SPWM) &
+$m_a V_{DC}$ \newline ($0 \le m_a \le 1$) &
+$\dfrac{m_a}{\sqrt{2}} V_{DC} \approx 0.707 m_a V_{DC}$ &
+$V_{DC}$ &
+$V_{DC}$ &
+$f_s$ &
+2-level ($\pm V_{DC}$); single reference; ripple centered at $f_s \pm 2f_1$. \\
+\midrule
+\textbf{1-$\Phi$ Full-Bridge} \newline (Unipolar SPWM) &
+$m_a V_{DC}$ \newline ($0 \le m_a \le 1$) &
+$\dfrac{m_a}{\sqrt{2}} V_{DC} \approx 0.707 m_a V_{DC}$ &
+$\sqrt{m_a} V_{DC}$ (approx) &
+$V_{DC}$ &
+$2 f_s$ &
+3-level ($+V_{DC}, 0, -V_{DC}$); ripple doubles to $2 f_s$; smaller filter. \\
+\midrule
+\textbf{3-$\Phi$ Six-Step VSI} \newline (180$^\circ$ conduction) &
+$\hat{V}_{LL1} = \dfrac{2\sqrt{3}}{\pi} V_{DC}$ \newline $\approx 1.103 V_{DC}$ &
+$V_{LL1,\mathrm{rms}} = \dfrac{\sqrt{6}}{\pi} V_{DC}$ \newline $\approx 0.780 V_{DC}$ &
+$\sqrt{\dfrac{2}{3}} V_{DC} \approx 0.816 V_{DC}$ &
+$V_{DC}$ &
+$6 f_1$ &
+Six-step mode; triplens cancel in $V_{LL}$; $\hat{V}_{an1} = \frac{2}{\pi} V_{DC}$; $\mathrm{THD}_v = 31.08\%$. \\
+\midrule
+\textbf{3-$\Phi$ SPWM VSI} \newline (Linear: $m_a \le 1$) &
+$\hat{V}_{LL1} = \dfrac{\sqrt{3}}{2} m_a V_{DC}$ \newline $\approx 0.866 m_a V_{DC}$ &
+$V_{LL1,\mathrm{rms}} = \dfrac{\sqrt{3}}{2\sqrt{2}} m_a V_{DC}$ \newline $\approx 0.612 m_a V_{DC}$ &
+$\sqrt{\dfrac{3}{8}} m_a V_{DC}$ (approx) &
+$V_{DC}$ &
+$m_f f_1 = f_s$ &
+Per-phase $\hat{V}_{an1} = \frac{m_a V_{DC}}{2}$; required $V_{DC} = \frac{V_{LL1,\mathrm{rms}}}{0.612 m_a}$. \\
+\midrule
+\textbf{3-$\Phi$ Third-Harmonic} \newline / Space Vector (SVM) &
+$\hat{V}_{LL1} = m_a V_{DC}$ \newline (at $m_a = 1$) &
+$V_{LL1,\mathrm{rms}} = \dfrac{m_a}{\sqrt{2}} V_{DC}$ \newline $\approx 0.707 m_a V_{DC}$ &
+-- &
+$V_{DC}$ &
+$f_s$ &
+Extends linear modulation range by $\frac{2}{\sqrt{3}} \approx 15.5\%$ over pure SPWM. \\
+\midrule
+\textbf{1-$\Phi$ AC-AC Regulator} \newline (Anti-parallel SCRs) &
+-- &
+$V_s \sqrt{1 - \frac{\alpha}{\pi} + \frac{\sin 2\alpha}{2\pi}}$ &
+$V_{o,\mathrm{rms}}$ &
+$\sqrt{2} V_s$ &
+$2 f_{\mathrm{line}}$ &
+Phase-controlled firing angle $\alpha \in [0, \pi]$; $PF = V_{o,\mathrm{rms}}/V_s$. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+---
+
+\subsection{Single-Phase Inverter Topologies}
+
+\subsubsection{Single-Phase Half-Bridge Voltage Source Inverter (VSI)}
+The single-phase half-bridge VSI employs two controllable semiconductor switches ($Q_1, Q_2$) with anti-parallel freewheeling diodes, connected across a DC bus $V_{DC}$. The DC bus is split into two equal halves by a capacitive center-tap ($C_1 = C_2$) providing a neutral reference midpoint $o$:
+\begin{equation}
+v_{C1} = v_{C2} = \frac{V_{DC}}{2} = V_g
+\end{equation}
+
+\paragraph{1. Switching Operation \& Pole Voltage $v_{ao}$:}
+The output voltage $v_o(t) = v_{ao}(t)$ is taken between leg midpoint $a$ and capacitor center-tap $o$:
+\begin{itemize}
+  \item $Q_1$ ON, $Q_2$ OFF: $v_{ao} = +\frac{V_{DC}}{2} = +V_g$.
+  \item $Q_1$ OFF, $Q_2$ ON: $v_{ao} = -\frac{V_{DC}}{2} = -V_g$.
+\end{itemize}
+To prevent shoot-through (direct short-circuit of the DC bus), $Q_1$ and $Q_2$ must never be commanded ON simultaneously. A small dead time $t_{\mathrm{dead}}$ is enforced during commutations.
+
+\paragraph{2. Local Average Output Voltage:}
+If upper switch $Q_1$ is driven with duty ratio $d$ over a switching period $T_s$, the local average pole voltage is:
+\begin{equation}
+\langle v_{ao} \rangle = d \left(+\frac{V_{DC}}{2}\right) + (1-d) \left(-\frac{V_{DC}}{2}\right) = (2d - 1)\frac{V_{DC}}{2} = (2d - 1)V_g
+\end{equation}
+\begin{itemize}
+  \item $d = 0.5 \implies \langle v_{ao} \rangle = 0$.
+  \item $d = 1.0 \implies \langle v_{ao} \rangle = +V_{DC}/2$.
+  \item $d = 0.0 \implies \langle v_{ao} \rangle = -V_{DC}/2$.
+\end{itemize}
+
+\paragraph{3. Square-Wave (Full-Square) Mode:}
+When switches operate at fundamental frequency $f_1 = \omega_1 / (2\pi)$ with $50\%$ duty cycle ($Q_1$ on for half-period, $Q_2$ on for half-period), the output is a symmetric square wave. Its Fourier series expansion is:
+\begin{equation}
+v_{ao}(t) = \sum_{n=1,3,5,\dots}^\infty \frac{2 V_{DC}}{n\pi} \sin(n\omega_1 t)
+\end{equation}
+\begin{itemize}
+  \item \textbf{Peak Fundamental Output Voltage:}
+  \begin{equation}
+  \hat{V}_{o1} = \frac{2}{\pi} V_{DC} \approx 0.6366 V_{DC}
+  \end{equation}
+  \item \textbf{RMS Fundamental Output Voltage:}
+  \begin{equation}
+  V_{o1,\mathrm{rms}} = \frac{\hat{V}_{o1}}{\sqrt{2}} = \frac{\sqrt{2}}{\pi} V_{DC} \approx 0.4502 V_{DC}
+  \end{equation}
+  \item \textbf{Total RMS Output Voltage:}
+  \begin{equation}
+  V_{o,\mathrm{rms}} = \sqrt{\frac{1}{T}\int_0^T v_{ao}^2(t)\,dt} = \frac{V_{DC}}{2} = 0.500 V_{DC}
+  \end{equation}
+  \item \textbf{Total Harmonic Distortion ($\mathrm{THD}_v$):}
+  \begin{equation}
+  \mathrm{THD}_v = \frac{\sqrt{V_{o,\mathrm{rms}}^2 - V_{o1,\mathrm{rms}}^2}}{V_{o1,\mathrm{rms}}} = \sqrt{\frac{(1/2)^2 - (2/\pi^2)}{(2/\pi^2)}} = \sqrt{\frac{\pi^2}{8} - 1} \approx 48.34\%
+  \end{equation}
+  \item \textbf{Peak Switch Voltage Stress:} $V_{\mathrm{switch}} = V_{DC}$.
+\end{itemize}
+
+\subsubsection{Single-Phase Full-Bridge (H-Bridge) Voltage Source Inverter}
+The full-bridge inverter consists of two bridge legs ($a$ and $b$) comprising four switches ($Q_1, Q_2, Q_3, Q_4$). The load is connected across the two leg midpoints, yielding differential output voltage:
+\begin{equation}
+v_{ab}(t) = v_{ao}(t) - v_{bo}(t)
+\end{equation}
+
+\paragraph{1. Switching States \& Output Voltage Levels:}
+\begin{center}
+\small
+\begin{tabular}{@{}ccccccl@{}}
+\toprule
+\textbf{State} & $Q_1$ & $Q_2$ & $Q_3$ & $Q_4$ & $v_{ab}$ & \textbf{Operational Description} \\
+\midrule
+1 & ON & OFF & OFF & ON & $+V_{DC}$ & Positive power transfer to load \\
+2 & OFF & ON & ON & OFF & $-V_{DC}$ & Negative power transfer to load \\
+3 & ON & OFF & ON & OFF & $0$ & Freewheeling through upper switches ($Q_1, Q_3$) \\
+4 & OFF & ON & OFF & ON & $0$ & Freewheeling through lower switches ($Q_2, Q_4$) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{2. Inductive Load Freewheeling:}
+When switches turn off, the inductive load current $i_L$ cannot change instantaneously. Anti-parallel diodes (or reverse conduction channels in MOSFETs) provide a continuous current path. Current direction dictates whether the active transistor or its anti-parallel diode conducts:
+\begin{itemize}
+  \item If $v_{ab} = +V_{DC}$ is commanded and $i_L > 0$: $Q_1$ and $Q_4$ conduct.
+  \item If $v_{ab} = +V_{DC}$ is commanded but $i_L < 0$: Diodes $D_1$ and $D_4$ conduct, returning energy back to the DC bus.
+\end{itemize}
+
+\paragraph{3. Square-Wave Mode (Full-Bridge):}
+With diagonal pairs operated complementarily at fundamental frequency ($Q_1, Q_4$ for half-period; $Q_2, Q_3$ for half-period), the output switches between $+V_{DC}$ and $-V_{DC}$. The Fourier series expansion is:
+\begin{equation}
+v_{ab}(t) = \sum_{n=1,3,5,\dots}^\infty \frac{4 V_{DC}}{n\pi} \sin(n\omega_1 t)
+\end{equation}
+\begin{itemize}
+  \item \textbf{Peak Fundamental Output Voltage:}
+  \begin{equation}
+  \hat{V}_{o1} = \frac{4}{\pi} V_{DC} \approx 1.2732 V_{DC} \quad (\text{twice the half-bridge})
+  \end{equation}
+  \item \textbf{RMS Fundamental Output Voltage:}
+  \begin{equation}
+  V_{o1,\mathrm{rms}} = \frac{4}{\sqrt{2}\pi} V_{DC} = \frac{2\sqrt{2}}{\pi} V_{DC} \approx 0.9003 V_{DC}
+  \end{equation}
+  \item \textbf{Total RMS Output Voltage:}
+  \begin{equation}
+  V_{o,\mathrm{rms}} = V_{DC}
+  \end{equation}
+  \item \textbf{Total Harmonic Distortion ($\mathrm{THD}_v$):} $\mathrm{THD}_v = \sqrt{\frac{\pi^2}{8} - 1} \approx 48.34\%$.
+  \item \textbf{Peak Switch Voltage Stress:} $V_{\mathrm{switch}} = V_{DC}$.
+\end{itemize}
+
+---
+
+\subsection{Three-Phase Inverter Topologies \& Six-Step Operation}
+
+The standard three-phase Voltage Source Inverter (VSI) comprises three bridge legs ($a, b, c$) with six controllable switches ($S_1$ to $S_6$). The legs are connected across DC bus $V_{DC}$, with midpoint $o$ chosen as virtual reference.
+
+\subsubsection{Six-Step (180$^\circ$ Conduction) Square-Wave Operation}
+In $180^\circ$ conduction mode, each switch is ON for $180^\circ$ ($T_1/2$) and OFF for $180^\circ$. Switching transitions between phases are staggered by $60^\circ$ ($T_1/6$). At any instant, exactly three switches are ON (one upper and two lower, or two upper and one lower):
+\begin{itemize}
+  \item Upper switches: $S_1$ (phase $a$), $S_3$ (phase $b$), $S_5$ (phase $c$).
+  \item Lower switches: $S_4$ (phase $a$), $S_6$ (phase $b$), $S_2$ (phase $c$).
+\end{itemize}
+
+\paragraph{1. Pole Voltages relative to DC Midpoint $o$:}
+Each pole voltage $v_{xo} \in \{+\frac{V_{DC}}{2}, -\frac{V_{DC}}{2}\}$ is a square wave with $50\%$ duty cycle, shifted by $120^\circ$:
+\begin{equation}
+v_{ao}(t) = \sum_{n=1,3,5,\dots}^\infty \frac{2 V_{DC}}{n\pi} \sin(n\omega_1 t)
+\end{equation}
+\begin{equation}
+v_{bo}(t) = \sum_{n=1,3,5,\dots}^\infty \frac{2 V_{DC}}{n\pi} \sin\left(n\left[\omega_1 t - \frac{2\pi}{3}\right]\right)
+\end{equation}
+\begin{equation}
+v_{co}(t) = \sum_{n=1,3,5,\dots}^\infty \frac{2 V_{DC}}{n\pi} \sin\left(n\left[\omega_1 t + \frac{2\pi}{3}\right]\right)
+\end{equation}
+
+\paragraph{2. Line-to-Line Voltages:}
+The line-to-line voltages are differences between pole voltages:
+\begin{equation}
+v_{ab}(t) = v_{ao}(t) - v_{bo}(t), \quad v_{bc}(t) = v_{bo}(t) - v_{co}(t), \quad v_{ca}(t) = v_{co}(t) - v_{ao}(t)
+\end{equation}
+The resulting line-to-line waveform is a quasi-square wave with $120^\circ$ positive pulses ($+V_{DC}$), $60^\circ$ zero intervals, and $120^\circ$ negative pulses ($-V_{DC}$). Its Fourier expansion is:
+\begin{equation}
+v_{ab}(t) = \sum_{n=1,3,5,\dots}^\infty \frac{4 V_{DC}}{n\pi} \cos\left(\frac{n\pi}{6}\right) \sin\left(n\left[\omega_1 t + \frac{\pi}{6}\right]\right)
+\end{equation}
+Notice that for all triplen harmonics ($n = 3, 9, 15, \dots$), $\cos(n\pi/6) = 0$. Hence, \textbf{all triplen harmonics cancel completely in balanced line-to-line voltages!}
+\begin{itemize}
+  \item \textbf{Peak Fundamental Line-to-Line Voltage:}
+  \begin{equation}
+  \hat{V}_{LL1} = \frac{4 V_{DC}}{\pi} \cos(30^\circ) = \frac{4 V_{DC}}{\pi} \frac{\sqrt{3}}{2} = \frac{2\sqrt{3}}{\pi} V_{DC} \approx 1.1027 V_{DC}
+  \end{equation}
+  \item \textbf{RMS Fundamental Line-to-Line Voltage:}
+  \begin{equation}
+  V_{LL1,\mathrm{rms}} = \frac{\hat{V}_{LL1}}{\sqrt{2}} = \frac{\sqrt{6}}{\pi} V_{DC} \approx 0.7797 V_{DC}
+  \end{equation}
+  \item \textbf{Total RMS Line-to-Line Voltage:}
+  \begin{equation}
+  V_{LL,\mathrm{rms}} = \sqrt{\frac{1}{\pi}\int_0^{2\pi/3} V_{DC}^2\,d\theta} = \sqrt{\frac{2}{3}} V_{DC} \approx 0.8165 V_{DC}
+  \end{equation}
+  \item \textbf{Line-to-Line Total Harmonic Distortion ($\mathrm{THD}_v$):}
+  \begin{equation}
+  \mathrm{THD}_{v,LL} = \frac{\sqrt{V_{LL,\mathrm{rms}}^2 - V_{LL1,\mathrm{rms}}^2}}{V_{LL1,\mathrm{rms}}} = \sqrt{\frac{2/3}{6/\pi^2} - 1} = \sqrt{\frac{\pi^2}{9} - 1} \approx 31.08\%
+  \end{equation}
+\end{itemize}
+
+\paragraph{3. Phase-to-Neutral Voltages ($v_{an}, v_{bn}, v_{cn}$) for Balanced Y Load:}
+For a balanced three-phase star (Y) load with neutral point $n$:
+\begin{equation}
+v_{ao} = v_{an} + v_{no}, \quad v_{bo} = v_{bn} + v_{no}, \quad v_{co} = v_{cn} + v_{no}
+\end{equation}
+Since the load is balanced, the sum of phase-to-neutral voltages is identically zero:
+\begin{equation}
+v_{an} + v_{bn} + v_{cn} = 0
+\end{equation}
+Summing the three pole equations:
+\begin{equation}
+v_{ao} + v_{bo} + v_{co} = (v_{an} + v_{bn} + v_{cn}) + 3 v_{no} = 3 v_{no}
+\end{equation}
+\begin{equation}
+\label{eq:vno_definition}
+\mathbf{v_{no} = \frac{1}{3}\left(v_{ao} + v_{bo} + v_{co}\right)}
+\end{equation}
+Substituting Eq.~\ref{eq:vno_definition} back gives the instantaneous phase-to-neutral voltages:
+\begin{align}
+v_{an} &= v_{ao} - v_{no} = \frac{2}{3} v_{ao} - \frac{1}{3} v_{bo} - \frac{1}{3} v_{co} \\
+v_{bn} &= v_{bo} - v_{no} = \frac{2}{3} v_{bo} - \frac{1}{3} v_{ao} - \frac{1}{3} v_{co} \\
+v_{cn} &= v_{co} - v_{no} = \frac{2}{3} v_{co} - \frac{1}{3} v_{ao} - \frac{1}{3} v_{bo}
+\end{align}
+In six-step mode, $v_{an}$ is a 6-step staircase wave taking values $\{\pm \frac{1}{3} V_{DC}, \pm \frac{2}{3} V_{DC}\}$:
+\begin{itemize}
+  \item \textbf{Peak Fundamental Phase Voltage:}
+  \begin{equation}
+  \hat{V}_{an1} = \frac{\hat{V}_{LL1}}{\sqrt{3}} = \frac{2}{\pi} V_{DC} \approx 0.6366 V_{DC}
+  \end{equation}
+  \item \textbf{RMS Fundamental Phase Voltage:}
+  \begin{equation}
+  V_{an1,\mathrm{rms}} = \frac{\hat{V}_{an1}}{\sqrt{2}} = \frac{\sqrt{2}}{\pi} V_{DC} \approx 0.4502 V_{DC}
+  \end{equation}
+  \item \textbf{Total RMS Phase Voltage:}
+  \begin{equation}
+  V_{an,\mathrm{rms}} = \frac{\sqrt{2}}{3} V_{DC} \approx 0.4714 V_{DC}
+  \end{equation}
+\end{itemize}
+
+---
+
+\subsection{Sinusoidal Pulse Width Modulation (SPWM)}
+
+In SPWM, the switch gating signals are generated by comparing a low-frequency sinusoidal modulating reference signal $v_{\mathrm{control}}$ with a high-frequency triangular carrier wave $v_{\mathrm{tri}}$.
+
+\subsubsection{Key Modulation Parameters}
+\begin{itemize}
+  \item \textbf{Triangular Carrier Wave $v_{\mathrm{tri}}(t)$:}
+  Symmetrical triangular waveform with peak amplitude $\hat{V}_{\mathrm{tri}}$ and switching frequency $f_s$ ($f_C$).
+  \item \textbf{Modulating / Control Reference Signal $v_{\mathrm{control}}(t)$:}
+  Sinusoidal waveform with peak amplitude $\hat{V}_{\mathrm{control}}$ and desired fundamental frequency $f_1$ ($f_M$).
+  \item \textbf{Amplitude Modulation Ratio $m_a$ (or modulation index $m$):}
+  \begin{equation}
+  m_a = \frac{\hat{V}_{\mathrm{control}}}{\hat{V}_{\mathrm{tri}}}
+  \end{equation}
+  Controls the amplitude of the fundamental output voltage.
+  \item \textbf{Frequency Modulation Ratio $m_f$:}
+  \begin{equation}
+  m_f = \frac{f_s}{f_1} = \frac{f_C}{f_M}
+  \end{equation}
+  Sets the spectral location of switching harmonics away from fundamental $f_1$.
+\end{itemize}
+
+\paragraph{Frequency Ratio Selection Rules (Lecture Slide 21):}
+\begin{enumerate}
+  \item \textbf{Minimum Frequency Ratio:} $m_f \ge 20$ to ensure low harmonic distortion without excessive filter requirements.
+  \item \textbf{Odd Integer $m_f$:} Enforces odd half-wave symmetry ($f(t + T/2) = -f(t)$), completely eliminating all even harmonics from the spectrum.
+  \item \textbf{Multiple of 3 (Triplen) for Three-Phase Inverters:} $m_f$ should be an odd multiple of 3 ($m_f = 21, 27, 33, \dots$). This ensures carrier-frequency harmonics in all three phases are identical in phase, completely cancelling in line-to-line voltages.
+\end{enumerate}
+
+\subsubsection{Single-Phase Bipolar SPWM}
+In bipolar SPWM, diagonal switch pairs in the H-bridge are switched simultaneously:
+\begin{itemize}
+  \item Pair 1 ($Q_1, Q_4$): ON when $v_{\mathrm{control}} > v_{\mathrm{tri}} \implies v_{ab} = +V_{DC}$.
+  \item Pair 2 ($Q_2, Q_3$): ON when $v_{\mathrm{control}} < v_{\mathrm{tri}} \implies v_{ab} = -V_{DC}$.
+\end{itemize}
+The output voltage pulses directly between $+V_{DC}$ and $-V_{DC}$ (two-level waveform).
+\begin{itemize}
+  \item \textbf{Duty Ratio of Leg $a$:} $d_a(t) = \frac{1 + \frac{v_{\mathrm{control}}(t)}{\hat{V}_{\mathrm{tri}}}}{2} = \frac{1 + m_a \sin(\omega_1 t)}{2}$.
+  \item \textbf{Local Average Output Voltage:}
+  \begin{equation}
+  \langle v_{ab}(t) \rangle = (2 d_a - 1) V_{DC} = m_a V_{DC} \sin(\omega_1 t)
+  \end{equation}
+  \item \textbf{Fundamental Peak Output Voltage ($0 \le m_a \le 1$):}
+  \begin{equation}
+  \hat{V}_{o1} = m_a V_{DC}
+  \end{equation}
+  \item \textbf{Fundamental RMS Output Voltage:}
+  \begin{equation}
+  V_{o1,\mathrm{rms}} = \frac{m_a V_{DC}}{\sqrt{2}} \approx 0.7071 m_a V_{DC}
+  \end{equation}
+  \item \textbf{Harmonic Spectrum:} Harmonics appear as sidebands around the carrier frequency: $f_s \pm 2 f_1, f_s \pm 4 f_1$, and around $2 f_s \pm f_1, 2 f_s \pm 3 f_1$. Dominant ripple frequency is $f_{\mathrm{ripple}} = f_s$.
+\end{itemize}
+
+\subsubsection{Single-Phase Unipolar SPWM}
+In unipolar SPWM, the two bridge legs are modulated independently using two opposite modulating reference signals compared against the same triangular carrier:
+\begin{itemize}
+  \item Leg $a$ reference: $v_{\mathrm{control},a} = +v_{\mathrm{control}}(t) = +m_a \hat{V}_{\mathrm{tri}} \sin(\omega_1 t)$.
+  \item Leg $b$ reference: $v_{\mathrm{control},b} = -v_{\mathrm{control}}(t) = -m_a \hat{V}_{\mathrm{tri}} \sin(\omega_1 t)$.
+\end{itemize}
+When $v_{\mathrm{control},a} > v_{\mathrm{tri}}$, $Q_1$ is ON ($v_{ao} = +V_{DC}/2$). When $v_{\mathrm{control},b} > v_{\mathrm{tri}}$, $Q_3$ is ON ($v_{bo} = +V_{DC}/2$).
+\begin{itemize}
+  \item \textbf{Three-Level Output:} The differential voltage $v_{ab} = v_{ao} - v_{bo}$ switches between $\{+V_{DC}, 0\}$ during the positive half-cycle, and $\{0, -V_{DC}\}$ during the negative half-cycle.
+  \item \textbf{Fundamental Peak \& RMS Output Voltage ($0 \le m_a \le 1$):}
+  \begin{equation}
+  \hat{V}_{o1} = m_a V_{DC}, \qquad V_{o1,\mathrm{rms}} = \frac{m_a V_{DC}}{\sqrt{2}}
+  \end{equation}
+  \item \textbf{Frequency Doubling Effect:} The carrier fundamental component at $f_s$ cancels in the differential output! The first switching harmonics appear as sidebands around \textbf{twice the carrier frequency} ($2 f_s \pm f_1, 2 f_s \pm 3 f_1$).
+  \item \textbf{Filter Advantage:} Because the effective ripple frequency is $2 f_s$ and voltage steps are halved to $V_{DC}$ (rather than $2 V_{DC}$ in bipolar), the required output filter inductor size is reduced by a factor of 4!
+\end{itemize}
+
+\subsubsection{Bipolar vs Unipolar SPWM Comparison Table}
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Property} & \textbf{Bipolar SPWM} & \textbf{Unipolar SPWM} \\
+\midrule
+Output voltage levels & 2 levels ($+V_{DC}, -V_{DC}$) & 3 levels ($+V_{DC}, 0, -V_{DC}$) \\
+Reference signals & Single sine reference & Two opposite sine references ($+r, -r$) \\
+Output voltage step & $2 V_{DC}$ & $V_{DC}$ \\
+Dominant ripple frequency & $f_s$ & $2 f_s$ (doubled) \\
+Carrier harmonic at $f_s$ & Present & Completely cancelled \\
+Filter inductor size & Larger ($L \propto 1/f_s$) & Smaller ($L \propto 1/(2f_s)$) \\
+Acoustic noise \& EMI & Higher & Lower \\
+Implementation complexity & Simpler & Requires dual PWM channels \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsubsection{Three-Phase Sinusoidal PWM (SPWM)}
+In three-phase SPWM, three balanced reference signals shifted by $120^\circ$ are compared against a common triangular carrier:
+\begin{align}
+v_{\mathrm{control},a}(t) &= \hat{V}_{\mathrm{control}} \sin(\omega_1 t) \\
+v_{\mathrm{control},b}(t) &= \hat{V}_{\mathrm{control}} \sin\left(\omega_1 t - \frac{2\pi}{3}\right) \\
+v_{\mathrm{control},c}(t) &= \hat{V}_{\mathrm{control}} \sin\left(\omega_1 t + \frac{2\pi}{3}\right)
+\end{align}
+
+\paragraph{1. Linear Modulation Region ($0 \le m_a \le 1$):}
+Each bridge leg produces a pole voltage whose fundamental peak is:
+\begin{equation}
+\hat{V}_{ao1} = \hat{V}_{an1} = m_a \frac{V_{DC}}{2}
+\end{equation}
+The line-to-line fundamental peak is $\sqrt{3}$ times the phase fundamental peak:
+\begin{equation}
+\hat{V}_{LL1} = \sqrt{3} \hat{V}_{an1} = \frac{\sqrt{3}}{2} m_a V_{DC} \approx 0.8660 m_a V_{DC}
+\end{equation}
+The fundamental line-to-line RMS voltage is:
+\begin{equation}
+\label{eq:vll1_rms_spwm}
+\mathbf{V_{LL1,\mathrm{rms}} = \frac{\hat{V}_{LL1}}{\sqrt{2}} = \frac{\sqrt{3}}{2\sqrt{2}} m_a V_{DC} \approx 0.61237 m_a V_{DC}}
+\end{equation}
+\begin{itemize}
+  \item At maximum linear modulation ($m_a = 1.0$):
+  \begin{equation}
+  V_{LL1,\mathrm{rms},\max} = 0.61237 V_{DC}
+  \end{equation}
+  \item \textbf{Required DC-Bus Link Voltage Sizing Formula:}
+  \begin{equation}
+  \label{eq:vdc_required}
+  \mathbf{V_{DC} = \frac{V_{LL1,\mathrm{rms}}}{\frac{\sqrt{3}}{2\sqrt{2}} m_a} \approx \frac{V_{LL1,\mathrm{rms}}}{0.61237 m_a} \ge 1.633 V_{LL1,\mathrm{rms}} \quad (\text{at } m_a = 1)}
+  \end{equation}
+\end{itemize}
+
+\paragraph{2. Overmodulation Region ($m_a > 1$) \& Transition to Square Wave ($m_a \to \infty$):}
+When $m_a > 1$, the requested modulating wave intersects the carrier above its peak ($+\hat{V}_{\mathrm{tri}}$) and below its trough ($-\hat{V}_{\mathrm{tri}}$):
+\begin{itemize}
+  \item \textbf{Duty Cycle Saturation (Clamping):} The calculated duty ratio exceeds 1 or falls below 0. The gate logic clamps the duty cycle to $1$ during positive peaks and $0$ during negative troughs.
+  \item \textbf{Loss of Linearity:} The relationship between $m_a$ and fundamental output voltage becomes non-linear, with the gain $\hat{V}_{LL1} / m_a$ tapering off.
+  \item \textbf{Generation of Low-Order Harmonics:} Clamping introduces significant 5th, 7th, 11th, and 13th harmonics, degrading total harmonic distortion.
+  \item \textbf{Square-Wave Limit ($m_a \to \infty$):} As $m_a$ increases further, switching pulses merge into a six-step square wave. The line-to-line fundamental reaches:
+  \begin{equation}
+  V_{LL1,\mathrm{rms},\mathrm{square}} = \frac{\sqrt{6}}{\pi} V_{DC} \approx 0.7797 V_{DC}
+  \end{equation}
+  This represents a $\approx 27.3\%$ increase in fundamental voltage over the linear limit ($0.7797 / 0.6124 = 4/\pi \approx 1.273$).
+\end{itemize}
+
+\paragraph{3. Third-Harmonic Injection \& Space Vector Modulation (SVM):}
+By injecting a triplen harmonic into the modulating references:
+\begin{equation}
+v_{\mathrm{control},a}^*(t) = \hat{V}_{\mathrm{control}} \sin(\omega_1 t) + \frac{1}{6}\hat{V}_{\mathrm{control}} \sin(3\omega_1 t)
+\end{equation}
+the peak amplitude of $v_{\mathrm{control},a}^*$ is reduced by a factor of $\frac{\sqrt{3}}{2} \approx 0.866$ without clipping. Because triplen harmonics cancel in line-to-line voltages, the fundamental line-to-line output can reach:
+\begin{equation}
+V_{LL1,\mathrm{rms},\max} = \frac{V_{DC}}{\sqrt{2}} \approx 0.7071 V_{DC}
+\end{equation}
+This achieves a \textbf{$15.47\%$ increase in DC-bus voltage utilization} ($\frac{2}{\sqrt{3}} \approx 1.155$) compared to pure SPWM.
+
+---
+
+\subsection{Harmonics, Common-Mode Voltage \& Parasitic Leakage}
+
+\subsubsection{SPWM Harmonic Spectrum}
+Harmonics in SPWM appear as sideband groups centered at multiples of the frequency modulation ratio $m_f$:
+\begin{equation}
+h = j \cdot m_f \pm k
+\end{equation}
+where $j = 1, 2, 3, \dots$ is the carrier multiple, and $k = 1, 2, 3, \dots$ is the fundamental sideband index.
+\begin{itemize}
+  \item In three-phase inverters, if $m_f$ is an odd multiple of 3, the carrier harmonics ($j \cdot m_f$) and all triplen sidebands ($k = 3, 6, 9, \dots$) are identical in magnitude and phase across phases $a, b, c$.
+  \item Therefore, they are purely common-mode and cancel out completely in line-to-line voltages:
+  \begin{equation}
+  v_{ab,h} = v_{an,h} - v_{bn,h} = 0 \quad (\text{for all triplen } h)
+  \end{equation}
+\end{itemize}
+
+\subsubsection{Common-Mode Voltage ($v_{CM}$)}
+The common-mode voltage is the instantaneous average potential of the three inverter output phases with respect to the DC bus midpoint $o$:
+\begin{equation}
+\label{eq:vcm_def}
+\mathbf{v_{CM} = \frac{v_{ao} + v_{bo} + v_{co}}{3}}
+\end{equation}
+In a two-level three-phase VSI, each switch node connects to either $+V_{DC}/2$ or $-V_{DC}/2$:
+\begin{itemize}
+  \item Active switching states (e.g., two switches high, one switch low):
+  \begin{equation}
+  v_{CM} = \frac{+V_{DC}/2 + V_{DC}/2 - V_{DC}/2}{3} = +\frac{V_{DC}}{6} \quad \text{or} \quad -\frac{V_{DC}}{6}
+  \end{equation}
+  \item Zero switching states ($[1,1,1]$ all high, or $[0,0,0]$ all low):
+  \begin{equation}
+  v_{CM} = +\frac{V_{DC}}{2} \quad \text{or} \quad -\frac{V_{DC}}{2}
+  \end{equation}
+\end{itemize}
+Because $v_{CM}$ jumps between $\pm V_{DC}/6$ and $\pm V_{DC}/2$ at each switching transition, it contains large, sharp high-frequency voltage steps ($dv_{CM}/dt$).
+
+\subsubsection{Parasitic Displacement Leakage Current (Slide 54)}
+In systems with parasitic capacitance to ground (such as photovoltaic arrays where large surface area panels have parasitic capacitance $C_{\mathrm{parasitic}}$ to the earthed mounting frame, or AC motor windings to grounded stator chassis):
+\begin{equation}
+\label{eq:ileak_formula}
+\mathbf{i_{\mathrm{leak}} \approx C_{\mathrm{parasitic}} \frac{dv_{CM}}{dt}}
+\end{equation}
+\begin{itemize}
+  \item \textbf{Safety Hazard:} Ground leakage current can flow through human contact if the chassis grounding is defective. Standards (e.g., DIN VDE 0126-1-1) mandate inverter disconnection if leakage exceeds $300\,\si{\milli\ampere}$.
+  \item \textbf{EMC \& Bearing Currents:} High $dv_{CM}/dt$ drives common-mode currents through motor bearings, causing EDM (electrical discharge machining) fluting and premature bearing failure.
+  \item \textbf{Mitigation:} Galvanic isolation via transformers, optimized modulation schemes that avoid zero states, specialized transformerless topologies (H5, H6, HERIC, Neutral-Point-Clamped), and common-mode output chokes.
+\end{itemize}
+
+---
+
+\subsection{Output LC Filter Design}
+
+To convert the switched pulse-train into a clean sinusoidal voltage, a second-order low-pass filter ($L_f - C_f$) is connected per phase between the inverter bridge and the load.
+
+\subsubsection{Filter Transfer Function \& Cutoff Frequency}
+Neglecting inductor winding resistance, the second-order low-pass transfer function is:
+\begin{equation}
+H(s) = \frac{V_o(s)}{V_{in}(s)} = \frac{1}{1 + s^2 L_f C_f} = \frac{\omega_c^2}{s^2 + \omega_c^2}
+\end{equation}
+The resonant undamped corner / cutoff frequency is:
+\begin{equation}
+\label{eq:fc_filter}
+\mathbf{f_c = \frac{1}{2\pi \sqrt{L_f C_f}} \quad [\si{\hertz}], \qquad \omega_c = \frac{1}{\sqrt{L_f C_f}} \quad [\si{\radian\per\second}]}
+\end{equation}
+
+\subsubsection{Frequency Placement Golden Rule}
+To balance low attenuation at fundamental frequency with high attenuation of switching ripple, the cutoff frequency $f_c$ must satisfy:
+\begin{equation}
+\label{eq:filter_placement_rule}
+\mathbf{10 f_1 < f_c < \frac{1}{10} f_s \quad \iff \quad 10 \le \frac{f_c}{f_1} \quad \text{and} \quad \frac{f_s}{f_c} \ge 10}
+\end{equation}
+\begin{itemize}
+  \item \textbf{Lower Bound ($f_c > 10 f_1$):} Ensures negligible voltage drop ($< 1\%$) and minimal phase lag at fundamental grid/load frequency $f_1$ ($50\,\si{\hertz}$ or $60\,\si{\hertz}$). It also prevents resonance with low-frequency load dynamics.
+  \item \textbf{Upper Bound ($f_c < 0.1 f_s$):} Because a second-order filter rolls off at $-40\,\si{\decibel}/\text{decade}$, placing $f_c$ at least one decade below $f_s$ provides at least $40\,\si{\decibel}$ attenuation (factor of $100\times$) at the switching frequency, easily meeting IEEE 519 / IEC 61000 $\mathrm{THD}_v < 5\%$ requirements.
+\end{itemize}
+
+\subsubsection{Inductor and Capacitor Component Sizing Procedure}
+\begin{enumerate}
+  \item \textbf{Inductor Current Ripple Budget:}
+  The maximum peak-to-peak inductor current ripple $\Delta I_L$ is typically constrained to $10\% - 25\%$ of peak rated fundamental current:
+  \begin{equation}
+  \Delta I_{L,\max} = r \cdot \hat{I}_{1,\mathrm{rated}} = r \cdot \frac{\sqrt{2} P_{\mathrm{rated}}}{\sqrt{3} V_{LL,\mathrm{rms}}} \quad (r \in [0.10, 0.25])
+  \end{equation}
+  For a single-phase unipolar inverter:
+  \begin{equation}
+  L_f \ge \frac{V_{DC}}{8 f_s \Delta I_L}
+  \end{equation}
+  For a three-phase SPWM inverter:
+  \begin{equation}
+  L_f \ge \frac{V_{DC}}{6 f_s \Delta I_L}
+  \end{equation}
+  \item \textbf{Capacitor Reactive Power Limit:}
+  To avoid drawing excessive reactive current at fundamental frequency, the reactive power $Q_C$ drawn by filter capacitors is limited to $5\%$ of inverter rated apparent power ($Q_C \le 0.05 S_{\mathrm{rated}}$):
+  \begin{equation}
+  Q_C = 3 \omega_1 C_f V_{ph,\mathrm{rms}}^2 = \omega_1 C_f V_{LL,\mathrm{rms}}^2 \le 0.05 S_{\mathrm{rated}} \implies C_f \le \frac{0.05 S_{\mathrm{rated}}}{2\pi f_1 V_{LL,\mathrm{rms}}^2}
+  \end{equation}
+  \item \textbf{Check Cutoff Frequency:}
+  Verify that the chosen pair $(L_f, C_f)$ satisfies $10 f_1 < f_c < 0.1 f_s$ using Eq.~\ref{eq:fc_filter}.
+\end{enumerate}
+
+---
+
+\subsection{Single-Phase DC-Bus Energy Decoupling (\texorpdfstring{$2\omega$}{2-omega} Ripple)}
+
+In single-phase grid-tied inverters and microinverters (Slides 50--52), the AC output power fluctuates at twice the line frequency ($2\omega_1$), whereas DC source power (e.g., PV array) is constant:
+\begin{align}
+v_{ac}(t) &= \sqrt{2} V_{ac,\mathrm{rms}} \sin(\omega_1 t) \\
+i_{ac}(t) &= \sqrt{2} I_{ac,\mathrm{rms}} \sin(\omega_1 t) \\
+p_{ac}(t) &= v_{ac}(t) i_{ac}(t) = 2 V_{ac,\mathrm{rms}} I_{ac,\mathrm{rms}} \sin^2(\omega_1 t) = P_{dc} \left[1 - \cos(2\omega_1 t)\right]
+\end{align}
+where $P_{dc} = V_{ac,\mathrm{rms}} I_{ac,\mathrm{rms}}$ is the average active power.
+
+\subsubsection{Capacitor Power Balancing Equation}
+The power mismatch between constant DC input power and oscillating AC output power must be absorbed/supplied by the DC bus capacitor $C_{\mathrm{bus}}$:
+\begin{equation}
+p_{\mathrm{cap}}(t) = P_{dc} - p_{ac}(t) = P_{dc} \cos(2\omega_1 t) = v_{\mathrm{cap}}(t) i_{\mathrm{cap}}(t) = v_{\mathrm{cap}}(t) C_{\mathrm{bus}} \frac{dv_{\mathrm{cap}}}{dt} = \frac{1}{2} C_{\mathrm{bus}} \frac{d(v_{\mathrm{cap}}^2)}{dt}
+\end{equation}
+Integrating over time:
+\begin{equation}
+v_{\mathrm{cap}}^2(t) = V_{\mathrm{bus,avg}}^2 + \frac{P_{dc}}{\omega_1 C_{\mathrm{bus}}} \sin(2\omega_1 t)
+\end{equation}
+Assuming small ripple $\Delta V_{\mathrm{cap}} \ll V_{\mathrm{bus,avg}}$, using $\sqrt{1 + x} \approx 1 + \frac{x}{2}$:
+\begin{equation}
+v_{\mathrm{cap}}(t) \approx V_{\mathrm{bus,avg}} + \frac{P_{dc}}{2\omega_1 C_{\mathrm{bus}} V_{\mathrm{bus,avg}}} \sin(2\omega_1 t)
+\end{equation}
+The peak-to-peak second-harmonic voltage ripple on the DC bus is:
+\begin{equation}
+\label{eq:microinverter_ripple}
+\mathbf{\Delta V_{\mathrm{cap},pp} = \frac{P_{dc}}{\omega_1 C_{\mathrm{bus}} V_{\mathrm{bus,avg}}} = \frac{P_{dc}}{2\pi f_1 C_{\mathrm{bus}} V_{\mathrm{bus,avg}}}}
+\end{equation}
+\textbf{Required DC-bus decoupling capacitance:}
+\begin{equation}
+\label{eq:cbus_sizing}
+\mathbf{C_{\mathrm{bus}} \ge \frac{P_{dc}}{2\pi f_1 V_{\mathrm{bus,avg}} \Delta V_{\mathrm{cap},pp}} = \frac{P_{dc}}{4\pi f_1 V_{\mathrm{bus,avg}} \Delta V_{\mathrm{cap,pk}}}}
+\end{equation}
+
+---
+
+\subsection{AC-AC Voltage Controllers (AC Regulators)}
+
+AC-AC voltage controllers regulate the RMS AC voltage supplied to a load without changing the supply frequency. A pair of anti-parallel thyristors (SCRs) or a bidirectional triac is connected in series between supply $v_s(t) = \sqrt{2} V_s \sin(\omega t)$ and load.
+
+\subsubsection{Single-Phase AC Voltage Controller with Resistive Load ($R$)}
+Thyristor $T_1$ is triggered at delay angle $\alpha$ in the positive half-cycle ($\alpha \le \omega t \le \pi$), and thyristor $T_2$ is triggered at $\pi + \alpha$ in the negative half-cycle ($\pi + \alpha \le \omega t \le 2\pi$).
+
+\paragraph{1. Output RMS Voltage:}
+The RMS output voltage is obtained by integrating over a half-cycle:
+\begin{align}
+V_{o,\mathrm{rms}} &= \sqrt{\frac{1}{\pi} \int_\alpha^\pi \left[\sqrt{2} V_s \sin\theta\right]^2\,d\theta} = \sqrt{\frac{2 V_s^2}{\pi} \int_\alpha^\pi \frac{1 - \cos 2\theta}{2}\,d\theta} \nonumber \\
+&= V_s \sqrt{\frac{1}{\pi} \left[ \theta - \frac{\sin 2\theta}{2} \right]_\alpha^\pi} = V_s \sqrt{\frac{1}{\pi} \left[ (\pi - \alpha) - \left(0 - \frac{\sin 2\alpha}{2}\right) \right]} \nonumber \\
+\label{eq:ac_ac_vrms}
+\mathbf{V_{o,\mathrm{rms}}} &\mathbf{= V_s \sqrt{1 - \frac{\alpha}{\pi} + \frac{\sin 2\alpha}{2\pi}}}
+\end{align}
+\begin{itemize}
+  \item At $\alpha = 0^\circ$ ($0$ rad): $V_{o,\mathrm{rms}} = V_s \sqrt{1 - 0 + 0} = V_s$ (Full AC conduction).
+  \item At $\alpha = 90^\circ$ ($\pi/2$ rad): $V_{o,\mathrm{rms}} = V_s \sqrt{1 - \frac{1}{2} + 0} = \frac{V_s}{\sqrt{2}} \approx 0.7071 V_s$.
+  \item At $\alpha = 180^\circ$ ($\pi$ rad): $V_{o,\mathrm{rms}} = 0$ (Completely blocked).
+\end{itemize}
+
+\paragraph{2. Power Delivered to Resistive Load:}
+\begin{equation}
+\label{eq:ac_ac_power}
+\mathbf{P = \frac{V_{o,\mathrm{rms}}^2}{R} = \frac{V_s^2}{R} \left(1 - \frac{\alpha}{\pi} + \frac{\sin 2\alpha}{2\pi}\right)}
+\end{equation}
+
+\paragraph{3. Input Power Factor ($PF$):}
+Since the load is purely resistive, the average input power equals average load power $P$, and total input RMS current equals load RMS current $I_{in,\mathrm{rms}} = I_{o,\mathrm{rms}} = V_{o,\mathrm{rms}} / R$:
+\begin{equation}
+\label{eq:ac_ac_pf}
+\mathbf{PF = \frac{P}{S} = \frac{V_{o,\mathrm{rms}}^2 / R}{V_s (V_{o,\mathrm{rms}} / R)} = \frac{V_{o,\mathrm{rms}}}{V_s} = \sqrt{1 - \frac{\alpha}{\pi} + \frac{\sin 2\alpha}{2\pi}}}
+\end{equation}
+Because the current is chopped, line harmonics are present and $PF < 1$ whenever $\alpha > 0$, even though the load is purely resistive!
+
+\subsubsection{AC Voltage Controller with Inductive Load ($R-L$)}
+When the load has inductance $L$, current continues to flow past $\pi$ until stored magnetic energy depletes at extinction angle $\beta$:
+\begin{itemize}
+  \item Load impedance angle: $\phi = \arctan\left(\frac{\omega L}{R}\right)$.
+  \item \textbf{Control Boundary Condition ($\alpha \ge \phi$):}
+  \begin{itemize}
+    \item If $\alpha > \phi$: Discontinuous current pulses occur; phase control regulates the RMS output voltage.
+    \item If $\alpha \le \phi$: Current is continuous and never ceases before the next gate pulse. The thyristors remain in continuous conduction, and the full sinusoidal voltage $V_{o,\mathrm{rms}} = V_s$ is applied to the load. \textbf{Control is completely lost!}
+  \end{itemize}
+\end{itemize}
+
+---
+
+\subsection{Step-by-Step Exam Recipes}
+
+\subsubsection{Exam Recipe 1: Dr. Junwei Liu's Test Problem (Lecture Slide 36)}
+\paragraph{Problem Statement (Verbatim):}
+A three-phase inverter with SPWM is designed to provide a three-phase power supply with $380\,\si{\volt}_{\mathrm{rms}}$ line-to-line voltage and $50\,\si{\hertz}$ frequency. A low-pass filter has been used in the inverter output port to eliminate the switching (carrier) frequency components.
+\begin{itemize}
+  \item \textbf{Q1:} What switching (carrier) frequency should be selected?
+  \item \textbf{Q2:} What DC input voltage should be designed? (Hint: line-to-line voltage is 1.732 times of phase voltage).
+  \item \textbf{Q3:} The DC input voltage is $800\,\si{\volt}$. The carrier triangular signal's minimum and maximum values are designed as $-1$ and $+1$ respectively. What is the modulation signal's peak value?
+\end{itemize}
+
+\paragraph{Step-by-Step Solution Procedure:}
+\begin{enumerate}
+  \item \textbf{Solution to Q1 (Carrier Frequency Selection):}
+  \begin{itemize}
+    \item Apply the Frequency Ratio Rule (Slide 21): To obtain a reasonably good sinusoidal waveform, the frequency ratio must satisfy:
+    \[
+    m_f = \frac{f_s}{f_1} = \frac{f_C}{f_M} \ge 20
+    \]
+    With fundamental output frequency $f_1 = 50\,\si{\hertz}$:
+    \[
+    f_s \ge 20 \times 50\,\si{\hertz} = 1000\,\si{\hertz} = 1.0\,\si{\kilo\hertz}
+    \]
+    \item \textbf{Symmetry \& Harmonic Cancellation Condition:} For a balanced three-phase system, $m_f$ should be an \textbf{odd multiple of 3} to cancel triplen harmonics and eliminate even harmonics in the line-to-line voltage:
+    \[
+    m_f \in \{21, 27, 33, 39, \dots\}
+    \]
+    For example:
+    \[
+    m_f = 21 \implies f_s = 21 \times 50\,\si{\hertz} = 1050\,\si{\hertz} = 1.05\,\si{\kilo\hertz}
+    \]
+    \[
+    m_f = 33 \implies f_s = 33 \times 50\,\si{\hertz} = 1650\,\si{\hertz} = 1.65\,\si{\kilo\hertz}
+    \]
+    In modern commercial IGBT/MOSFET motor drives (Slide 55), typical carrier frequencies are selected between $2\,\si{\kilo\hertz}$ and $10\,\si{\kilo\hertz}$ (e.g., $f_s = 2.5\,\si{\kilo\hertz}, 5.0\,\si{\kilo\hertz}$, or $10\,\si{\kilo\hertz}$).
+    \item \textbf{Exam Answer:} State $f_s \ge 1\,\si{\kilo\hertz}$ ($m_f \ge 20$), with $m_f$ chosen as an odd multiple of 3 (e.g., $f_s = 1.05\,\si{\kilo\hertz}$ or $f_s \ge 2\,\si{\kilo\hertz}-10\,\si{\kilo\hertz}$).
+  \end{itemize}
+
+  \item \textbf{Solution to Q2 (DC Input Voltage Design):}
+  \begin{itemize}
+    \item In linear modulation ($0 \le m_a \le 1$), the peak fundamental phase-to-neutral voltage is:
+    \[
+    \hat{V}_{an1} = m_a \frac{V_{DC}}{2}
+    \]
+    \item The line-to-line peak fundamental voltage is:
+    \[
+    \hat{V}_{LL1} = \sqrt{3} \hat{V}_{an1} = \frac{\sqrt{3}}{2} m_a V_{DC} \approx 0.8660 m_a V_{DC}
+    \]
+    \item The line-to-line RMS fundamental voltage is:
+    \[
+    V_{LL1,\mathrm{rms}} = \frac{\hat{V}_{LL1}}{\sqrt{2}} = \frac{\sqrt{3}}{2\sqrt{2}} m_a V_{DC} = \frac{\sqrt{6}}{4} m_a V_{DC} \approx 0.61237 m_a V_{DC}
+    \]
+    \item To avoid overmodulation and maintain linear distortion-free operation, the modulation index must satisfy $m_a \le 1.0$. The \textbf{minimum required DC input voltage} occurs at $m_a = 1.0$:
+    \[
+    V_{DC,\min} = \frac{V_{LL1,\mathrm{rms}}}{\frac{\sqrt{3}}{2\sqrt{2}} \times 1.0} = \frac{380}{0.61237} = 380 \times \frac{2\sqrt{2}}{\sqrt{3}} = 380 \times 1.63299 \approx \mathbf{620.54\,\si{\volt}}
+    \]
+    \item \textbf{Exam Answer:} Design $V_{DC} \ge 620.5\,\si{\volt}$ (practically chosen around $650\,\si{\volt} - 800\,\si{\volt}$ to provide operating margin for voltage drops and control headroom).
+  \end{itemize}
+
+  \item \textbf{Solution to Q3 (Modulation Peak Value at $V_{DC} = 800\,\si{\volt}$):}
+  \begin{itemize}
+    \item Given $V_{DC} = 800\,\si{\volt}$ and required $V_{LL1,\mathrm{rms}} = 380\,\si{\volt}$:
+    \[
+    V_{LL1,\mathrm{rms}} = 0.61237 m_a V_{DC} \implies m_a = \frac{V_{LL1,\mathrm{rms}}}{0.61237 V_{DC}} = \frac{380}{0.61237 \times 800} = \frac{380}{489.90} \approx \mathbf{0.77567}
+    \]
+    \item The carrier wave spans from $-1$ to $+1$, so its peak amplitude is:
+    \[
+    \hat{V}_{\mathrm{tri}} = 1.0\,\si{\volt}
+    \]
+    \item The amplitude modulation ratio is defined as:
+    \[
+    m_a = \frac{\hat{V}_{\mathrm{control}}}{\hat{V}_{\mathrm{tri}}} \implies \hat{V}_{\mathrm{control}} = m_a \cdot \hat{V}_{\mathrm{tri}} = 0.77567 \times 1.0\,\si{\volt} = \mathbf{0.776\,\si{\volt}}
+    \]
+    \item \textbf{Exam Answer:} The modulation signal's peak amplitude is $\hat{V}_{\mathrm{control}} \approx 0.776\,\si{\volt}$ (or $0.7757$).
+  \end{itemize}
+\end{enumerate}
+
+---
+
+\subsubsection{Exam Recipe 2: Output LC Filter Sizing Algorithm}
+\paragraph{Given Specifications:}
+Supply line-to-line RMS voltage $V_{LL,\mathrm{rms}}$, fundamental frequency $f_1$ ($50\,\si{\hertz}$), inverter switching frequency $f_s$ ($10\,\si{\kilo\hertz}$), rated three-phase power $P_{\mathrm{rated}}$ ($10\,\si{\kilo\watt}$), DC bus voltage $V_{DC}$ ($650\,\si{\volt}$), current ripple ratio limit $r = 20\%$, and maximum capacitor reactive power limit $x_C = 5\%$.
+
+\paragraph{Step-by-Step Procedure:}
+\begin{enumerate}
+  \item \textbf{Calculate Rated Phase Voltage and Fundamental Current:}
+  \[
+  V_{ph,\mathrm{rms}} = \frac{V_{LL,\mathrm{rms}}}{\sqrt{3}} = \frac{380}{\sqrt{3}} = 219.4\,\si{\volt}
+  \]
+  \[
+  I_{\mathrm{rated,rms}} = \frac{P_{\mathrm{rated}}}{\sqrt{3} V_{LL,\mathrm{rms}}} = \frac{10000}{\sqrt{3} \times 380} = 15.19\,\si{\ampere}, \qquad \hat{I}_{\mathrm{rated}} = \sqrt{2} \times 15.19 = 21.49\,\si{\ampere}
+  \]
+  \item \textbf{Size Filter Inductor $L_f$ based on Ripple Budget:}
+  Allowable peak-to-peak ripple current: $\Delta I_L = 0.20 \times 21.49 = 4.30\,\si{\ampere}$.
+  \[
+  L_f \ge \frac{V_{DC}}{6 f_s \Delta I_L} = \frac{650}{6 \times 10000 \times 4.30} = \frac{650}{2.58 \times 10^5} = 2.52 \times 10^{-3}\,\si{\henry} = 2.52\,\si{\milli\henry}
+  \]
+  \item \textbf{Size Filter Capacitor $C_f$ based on Reactive Power Limit:}
+  Max reactive power per phase: $Q_{C,ph} = \frac{0.05 \times 10000}{3} = 166.7\,\si{\text{var}}$.
+  \[
+  C_f \le \frac{Q_{C,ph}}{\omega_1 V_{ph,\mathrm{rms}}^2} = \frac{166.7}{2\pi (50) \times (219.4)^2} = \frac{166.7}{314.16 \times 48136} = 1.10 \times 10^{-5}\,\si{\farad} = 11.0\,\si{\micro\farad}
+  \]
+  \item \textbf{Calculate and Verify Cutoff Frequency $f_c$:}
+  Using $L_f = 2.5\,\si{\milli\henry}$ and selecting $C_f = 10\,\si{\micro\farad}$:
+  \[
+  f_c = \frac{1}{2\pi \sqrt{L_f C_f}} = \frac{1}{2\pi \sqrt{2.5 \times 10^{-3} \times 10 \times 10^{-6}}} = \frac{1}{2\pi \sqrt{2.5 \times 10^{-8}}} = \frac{1}{2\pi \times 1.581 \times 10^{-4}} \approx 1006.6\,\si{\hertz} \approx 1.0\,\si{\kilo\hertz}
+  \]
+  \item \textbf{Verify Golden Placement Rule (Eq.~\ref{eq:filter_placement_rule}):}
+  \[
+  10 f_1 = 10 \times 50\,\si{\hertz} = 500\,\si{\hertz}
+  \]
+  \[
+  0.1 f_s = 0.1 \times 10000\,\si{\hertz} = 1000\,\si{\hertz}
+  \]
+  Here $f_c \approx 1006.6\,\si{\hertz}$, which perfectly sits between $500\,\si{\hertz}$ and $1000\,\si{\hertz}$ (or adjust $C_f = 15\,\si{\micro\farad}$ to give $f_c \approx 822\,\si{\hertz}$). Constraint satisfied!
+\end{enumerate}
+
+---
+
+\subsubsection{Exam Recipe 3: Sizing DC-Bus Decoupling Capacitor for Single-Phase / Microinverter}
+\paragraph{Problem Statement:}
+A $300\,\si{\watt}$ single-phase grid-tied microinverter supplies a $230\,\si{\volt}_{\mathrm{rms}}, 50\,\si{\hertz}$ utility grid. The nominal DC bus voltage is $V_{\mathrm{bus,avg}} = 40\,\si{\volt}$. The peak-to-peak $100\,\si{\hertz}$ voltage ripple must not exceed $5\%$ of $V_{\mathrm{bus,avg}}$ ($\Delta V_{\mathrm{cap},pp} \le 2.0\,\si{\volt}$). Calculate the minimum required DC bus decoupling capacitance $C_{\mathrm{bus}}$.
+
+\paragraph{Solution Procedure:}
+\begin{enumerate}
+  \item \textbf{Identify Given Parameters:}
+  $P_{dc} = 300\,\si{\watt}$, $f_1 = 50\,\si{\hertz} \implies \omega_1 = 2\pi(50) = 314.16\,\si{\radian\per\second}$, $V_{\mathrm{bus,avg}} = 40\,\si{\volt}$, $\Delta V_{\mathrm{cap},pp} = 2.0\,\si{\volt}$.
+  \item \textbf{Apply Decoupling Capacitance Formula (Eq.~\ref{eq:cbus_sizing}):}
+  \[
+  C_{\mathrm{bus}} \ge \frac{P_{dc}}{2\pi f_1 V_{\mathrm{bus,avg}} \Delta V_{\mathrm{cap},pp}} = \frac{300}{2\pi \times 50 \times 40 \times 2.0} = \frac{300}{25132.7} \approx 1.194 \times 10^{-2}\,\si{\farad} = \mathbf{11937\,\si{\micro\farad}} \approx 12\,\si{\milli\farad}
+  \]
+  \item \textbf{Engineering Remark:}
+  Notice the large capacitance required at low DC bus voltages ($40\,\si{\volt}$). This explains why single-phase microinverters historically required electrolytic capacitors or advanced active power decoupling circuits to enable long-lifetime film capacitors!
+\end{enumerate}
+
+---
+
+\subsubsection{Exam Recipe 4: AC-AC Voltage Controller Sizing \& Operating Point Analysis}
+\paragraph{Problem Statement:}
+A single-phase AC voltage controller supplies a heating resistance $R = 10\,\si{\ohm}$ from a $V_s = 230\,\si{\volt}_{\mathrm{rms}}, 50\,\si{\hertz}$ source.
+\begin{itemize}
+  \item \textbf{(a)} If the thyristor delay angle is $\alpha = 60^\circ$ ($\pi/3\,\si{\radian}$), determine the RMS output voltage $V_{o,\mathrm{rms}}$, power delivered to the load $P$, and input power factor $PF$.
+  \item \textbf{(b)} Determine the firing angle $\alpha$ required to deliver half of maximum power ($P = 0.5 P_{\max}$).
+\end{itemize}
+
+\paragraph{Solution Procedure:}
+\begin{enumerate}
+  \item \textbf{Part (a): Calculate Output Quantities for $\alpha = 60^\circ$ ($\pi/3\,\si{\radian}$):}
+  \begin{itemize}
+    \item Convert angle to radians: $\alpha = \frac{\pi}{3} \approx 1.0472\,\si{\radian}$.
+    \item Evaluate trigonometric term: $\sin(2\alpha) = \sin(120^\circ) = \frac{\sqrt{3}}{2} \approx 0.8660$.
+    \item Evaluate the radical factor:
+    \[
+    F(\alpha) = \sqrt{1 - \frac{\alpha}{\pi} + \frac{\sin 2\alpha}{2\pi}} = \sqrt{1 - \frac{1}{3} + \frac{0.8660}{2\pi}} = \sqrt{\frac{2}{3} + 0.1378} = \sqrt{0.8045} \approx 0.8969
+    \]
+    \item Calculate RMS output voltage (Eq.~\ref{eq:ac_ac_vrms}):
+    \[
+    V_{o,\mathrm{rms}} = V_s \cdot F(\alpha) = 230 \times 0.8969 = \mathbf{206.3\,\si{\volt}}
+    \]
+    \item Calculate load power (Eq.~\ref{eq:ac_ac_power}):
+    \[
+    P = \frac{V_{o,\mathrm{rms}}^2}{R} = \frac{(206.3)^2}{10} = \frac{42557}{10} = \mathbf{4256\,\si{\watt}} \quad (4.256\,\si{\kilo\watt})
+    \]
+    (Compared to full power $P_{\max} = \frac{230^2}{10} = 5290\,\si{\watt}$).
+    \item Calculate input power factor (Eq.~\ref{eq:ac_ac_pf}):
+    \[
+    PF = \frac{V_{o,\mathrm{rms}}}{V_s} = 0.8969 = \mathbf{0.897}
+    \]
+  \end{itemize}
+
+  \item \textbf{Part (b): Determine Firing Angle for Half Power ($P = 0.5 P_{\max}$):}
+  \begin{itemize}
+    \item $P = 0.5 P_{\max} \implies \frac{V_{o,\mathrm{rms}}^2}{R} = 0.5 \frac{V_s^2}{R} \implies V_{o,\mathrm{rms}} = \frac{V_s}{\sqrt{2}}$.
+    \item From Eq.~\ref{eq:ac_ac_vrms}:
+    \[
+    1 - \frac{\alpha}{\pi} + \frac{\sin 2\alpha}{2\pi} = 0.5 \implies \frac{\alpha}{\pi} - \frac{\sin 2\alpha}{2\pi} = 0.5
+    \]
+    \item For $\alpha = 90^\circ = \pi/2\,\si{\radian}$:
+    \[
+    \frac{\pi/2}{\pi} - \frac{\sin(180^\circ)}{2\pi} = 0.5 - 0 = 0.5 \quad \text{(Exact solution!)}
+    \]
+    \item \textbf{Exam Answer:} The required firing angle is exactly $\mathbf{\alpha = 90^\circ}$ ($\pi/2\,\si{\radian}$).
+  \end{itemize}
+\end{enumerate}
+
+---
+
+\subsection{Common Exam Pitfalls \& Traps}
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{
+\begin{description}
+  \item[Trap 1: Confusing Line-to-Line Peak vs RMS in Three-Phase SPWM.]
+  The fundamental line-to-line peak is $\hat{V}_{LL1} = \frac{\sqrt{3}}{2} m_a V_{DC} \approx 0.866 m_a V_{DC}$. The fundamental line-to-line RMS is $V_{LL1,\mathrm{rms}} = \frac{\sqrt{3}}{2\sqrt{2}} m_a V_{DC} \approx \mathbf{0.612 m_a V_{DC}}$. When asked to size the required DC bus voltage for a given RMS grid voltage (e.g., $380\,\si{\volt}_{\mathrm{rms}}$), divide by $0.612$, NOT $0.866$! Sizing with $0.866$ yields an undersized DC bus ($439\,\si{\volt}$ instead of $620.5\,\si{\volt}$), driving the inverter deep into uncontrollable overmodulation.
+
+  \item[Trap 2: Forgetting the $\sqrt{3}$ between Phase and Line-to-Line Fundamental.]
+  In three-phase SPWM, per-phase fundamental peak is $\hat{V}_{an1} = m_a \frac{V_{DC}}{2}$, so per-phase RMS is $V_{an1,\mathrm{rms}} = \frac{m_a V_{DC}}{2\sqrt{2}} \approx 0.3536 m_a V_{DC}$. Always check whether an exam question asks for phase voltage ($220\,\si{\volt}$) or line-to-line voltage ($380\,\si{\volt}$) before applying the formula!
+
+  \item[Trap 3: Sizing Single-Phase Inverter Decoupling Capacitors with $f_s$ instead of $2 f_1$.]
+  In single-phase inverters, the pulsating power mismatch occurs at \textbf{twice the line frequency} ($2 f_1 = 100\,\si{\hertz}$ or $120\,\si{\hertz}$), NOT the switching frequency ($f_s = 10\,\si{\kilo\hertz}-100\,\si{\kilo\hertz}$). Sizing the bulk capacitor $C_{\mathrm{bus}}$ using $f_s$ produces an error of two to three orders of magnitude ($100\times-1000\times$ undersized)!
+
+  \item[Trap 4: Bipolar vs Unipolar Switching Ripple Frequency.]
+  In unipolar SPWM, the effective output ripple frequency is $2 f_s$ (twice the carrier frequency) because the carrier fundamental at $f_s$ cancels out. In bipolar SPWM, the ripple frequency is $f_s$. Forgetting this doubling causes candidates to oversize the output filter inductor by a factor of 2 to 4.
+
+  \item[Trap 5: Filter Cutoff Frequency Violation ($f_c \le 10 f_1$ or $f_c \ge 0.1 f_s$).]
+  If $f_c$ is selected too close to fundamental frequency ($f_c \le 10 f_1$), the filter introduces substantial fundamental attenuation and phase lag, while risking resonance with load transients. If $f_c \ge 0.1 f_s$, switching harmonics are insufficiently attenuated, failing grid harmonic compliance ($\mathrm{THD}_v > 5\%$). Always enforce $10 f_1 < f_c < 0.1 f_s$.
+
+  \item[Trap 6: AC-AC Controller Loss of Control with Inductive Loads ($\alpha \le \phi$).]
+  For an $R-L$ load with impedance angle $\phi = \arctan(\omega L / R)$, thyristors will NOT turn off if $\alpha \le \phi$. Gating pulses fire while the anti-parallel device is still conducting, locking the controller into permanent continuous conduction. Firing angle $\alpha$ must always satisfy $\alpha > \phi$ for phase control to function.
+\end{description}
+}}
+\end{center}
