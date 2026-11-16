@@ -1,0 +1,634 @@
+\section{Isolated DC/DC Converters (Weeks 5 \& 7)}
+
+\subsection{Keywords \& Overview}
+\noindent\textbf{Ctrl+F keywords:} isolated DC-DC, flyback, forward, tertiary reset winding, magnetizing inductance, leakage inductance, two-transistor forward, commutation overlap, overlapping time, loss of duty cycle, phase-shifted full bridge, PSFB, ZVS, leading leg, lagging leg, dual active bridge, DAB, single phase shift, SPS, bidirectional power, power transmission, $N_1:N_2:N_3$.
+
+\vspace{0.5em}
+\noindent Galvanic isolation via a high-frequency transformer provides safety, high conversion ratios without extreme duty cycles, multiple outputs, and common-mode noise rejection.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{} >{\raggedright\arraybackslash}p{2.8cm} >{\raggedright\arraybackslash}p{2.8cm} >{\raggedright\arraybackslash}p{2.6cm} >{\raggedright\arraybackslash}X @{}}
+\toprule
+\textbf{Non-Isolated Base} & \textbf{Isolated Counterpart} & \textbf{CCM Voltage Gain $M$} & \textbf{Primary Application / Core Mechanism} \\
+\midrule
+Buck ($D$) & Forward converter & $\dfrac{N_2}{N_1} D$ & Medium power (100--500\,W); true transformer action; core reset mandatory. \\
+Buck-Boost ($\frac{D}{1-D}$) & Flyback converter & $\dfrac{N D}{1-D}$ & Low power ($<150$\,W); coupled inductor stores energy during $t_{\mathrm{on}}$. \\
+Full-Bridge PWM & Phase-Shifted FB & $\dfrac{N_2}{N_1} D_{\mathrm{eff}} = \dfrac{N\theta}{\pi}$ & High power (0.5--5\,kW); constant 50\% duty; phase shift $\theta$ regulates output; ZVS. \\
+--- & Dual-Active-Bridge (DAB) & Bidirectional $P(\phi)$ & High power bidirectional; active bridges on both sides; phase shift $\phi$ controls power. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+---
+
+\subsection{Flyback Converter (Week 5)}
+
+\subsubsection{Circuit Topology and Storage Principle}
+The flyback converter replaces the inductor of a buck-boost converter with a mutually coupled two-winding inductor (flyback transformer $T_x$, turns ratio $1:N = N_1:N_2$).
+\begin{itemize}
+  \item \textbf{Energy storage mechanism:} The transformer does \emph{not} transfer energy instantaneously. It acts as an inductor with a gapped magnetic core.
+  \item \textbf{On-state ($t \in [0, D T_s]$):} Transistor $T$ is turned ON. The secondary diode $D$ is reverse-biased with voltage $\hat{V}_D = N V_{\mathrm{in}} + V_o$. Primary magnetizing inductance $L_m$ stores magnetic energy from $V_{\mathrm{in}}$. Output capacitor $C$ alone supplies the entire load current $I_o$.
+  \item \textbf{Off-state ($t \in [D T_s, T_s]$):} Transistor $T$ turns OFF. The magnetic field collapses; winding polarities reverse (flyback action). Secondary diode $D$ is forward-biased, transferring the stored magnetic energy into output capacitor $C$ and load $R$.
+\end{itemize}
+
+\subsubsection{Continuous Conduction Mode (CCM)}
+In CCM, the magnetizing current $i_m(t)$ never drops to zero.
+
+\paragraph{1. Volt-Second Balance on Magnetizing Inductance $L_m$:}
+\[
+\langle v_{L_m} \rangle = V_{\mathrm{in}} (D T_s) + \left(-\frac{V_o}{N}\right) (1-D) T_s = 0
+\]
+\begin{equation}
+\frac{V_o}{V_{\mathrm{in}}} = \frac{N D}{1 - D} \quad \left(\text{where } N = \frac{N_2}{N_1}\right)
+\end{equation}
+
+\paragraph{2. Inductor Current Ripples and Slopes:}
+\begin{equation}
+\Delta I_p = \frac{V_{\mathrm{in}} D T_s}{L_m} = \frac{V_o (1-D) T_s}{N L_m}, \qquad \Delta I_s = \frac{\Delta I_p}{N} = \frac{V_o (1-D) T_s}{N^2 L_m}
+\end{equation}
+
+\paragraph{3. Average and Peak Currents:}
+Assuming ideal lossless operation ($P_{\mathrm{in}} = P_o \Rightarrow V_{\mathrm{in}} I_{\mathrm{in}} = V_o I_o$):
+\begin{equation}
+I_{\mathrm{in}} = \frac{N D}{1-D} I_o = \frac{V_{\mathrm{in}}}{R} \left(\frac{N D}{1-D}\right)^2, \qquad I_o = \frac{V_o}{R}
+\end{equation}
+During on-state, primary current carries magnetizing current $i_p = i_m$; during off-state, secondary current carries $i_s = i_m / N$.
+\begin{align}
+\text{Primary on-state average:} \quad & I_x = \frac{I_{\mathrm{in}}}{D} = N I_o + I_{\mathrm{in}} \\
+\text{Secondary off-state average:} \quad & I_y = \frac{I_o}{1-D} = I_o + \frac{I_{\mathrm{in}}}{N} \\
+\text{Peak primary current:} \quad & \hat{\imath}_p = \frac{I_{\mathrm{in}}}{D} + \frac{\Delta I_p}{2} \\
+\text{Peak secondary current:} \quad & \hat{\imath}_s = \frac{I_o}{1-D} + \frac{\Delta I_s}{2} = \frac{\hat{\imath}_p}{N}
+\end{align}
+
+\paragraph{4. Device Blocking Voltage Stresses:}
+\begin{align}
+\text{Transistor switch off-state voltage:} \quad & \hat{V}_{sw} = V_{\mathrm{in}} + \frac{V_o}{N} = \frac{V_{\mathrm{in}}}{1-D} \\
+\text{Secondary diode reverse voltage:} \quad & \hat{V}_D = N V_{\mathrm{in}} + V_o = \frac{V_o}{1-D}
+\end{align}
+\textit{Warning:} Transformer primary leakage inductance $L_{lk}$ creates an uncoupled inductive spike at switch turn-off ($L_{lk} di/dt$). An RCD clamp or TVS snubber across the primary winding is mandatory in practice to clamp this spike below the switch rating!
+
+\paragraph{5. Output Voltage Ripple:}
+The output capacitor supplies the total load current $I_o$ during the on-time $D T_s$:
+\begin{equation}
+\Delta V_o = \frac{I_o D T_s}{C} = \frac{D V_o T_s}{R C} \quad\implies\quad \frac{\Delta V_o}{V_o} = \frac{D T_s}{R C} = \frac{D}{R C f_s}
+\end{equation}
+
+---
+
+\subsubsection{Discontinuous Conduction Mode (DCM)}
+In DCM, all stored magnetic energy is completely transferred to the secondary before the switching period ends, leaving an idle dead-time interval where $i_m = 0$.
+
+\paragraph{1. Three Operating Intervals:}
+\begin{enumerate}
+  \item $t \in [0, D T_s]$: Switch $T$ ON. Primary current ramps linearly from $0$ to peak:
+  \[
+  \hat{\imath}_p = \Delta I_p = \frac{V_{\mathrm{in}} D T_s}{L_m}
+  \]
+  \item $t \in [D T_s, (D+\delta) T_s]$: Switch $T$ OFF. Secondary current starts from $\hat{\imath}_s = \hat{\imath}_p / N$ and discharges to zero with falling slope $-V_o / (N^2 L_m)$:
+  \[
+  \delta T_s = \frac{\hat{\imath}_s N^2 L_m}{V_o} = \frac{(\hat{\imath}_p / N) N^2 L_m}{V_o} = \frac{N V_{\mathrm{in}} D T_s}{V_o} \quad\implies\quad \delta = \frac{N V_{\mathrm{in}} D}{V_o}
+  \]
+  \item $t \in [(D+\delta) T_s, T_s]$: Switch and diode both OFF. $i_m = 0$, $v_{sw} = V_{\mathrm{in}}$, $v_D = V_o$. Conduction requires $D + \delta < 1$.
+\end{enumerate}
+
+\paragraph{2. DCM Power Balance and Voltage Gain:}
+The energy transferred per switching cycle is entirely stored in $L_m$ during the on-time:
+\[
+E_{\mathrm{in}} = \frac{1}{2} L_m \hat{\imath}_p^2 = \frac{1}{2} L_m \left(\frac{V_{\mathrm{in}} D T_s}{L_m}\right)^2 = \frac{V_{\mathrm{in}}^2 D^2 T_s^2}{2 L_m}
+\]
+Average input power:
+\[
+P_{\mathrm{in}} = \frac{E_{\mathrm{in}}}{T_s} = \frac{V_{\mathrm{in}}^2 D^2 T_s}{2 L_m}
+\]
+Equating input power to load power $P_o = V_o^2 / R$ (assuming 100\% efficiency):
+\[
+\frac{V_o^2}{R} = \frac{V_{\mathrm{in}}^2 D^2 T_s}{2 L_m} \quad\implies\quad \left(\frac{V_o}{V_{\mathrm{in}}}\right)^2 = \frac{D^2 R T_s}{2 L_m} = \frac{D^2}{K}
+\]
+\begin{equation}
+\frac{V_o}{V_{\mathrm{in}}} = \frac{D}{\sqrt{K}}, \qquad \text{where } K = \frac{2 L_m}{R T_s} = \frac{2 L_m f_s}{R}
+\end{equation}
+\noindent\textbf{Critical Exam Fact:} The turns ratio $N$ cancels out completely in the DCM voltage conversion ratio $M = D/\sqrt{K}$ when $K$ is defined using the primary magnetizing inductance $L_m$ and load resistance $R$!
+
+\paragraph{3. Average Input Current in DCM:}
+\begin{equation}
+I_{\mathrm{in}} = \frac{P_o}{V_{\mathrm{in}}} = \frac{V_o^2}{R V_{\mathrm{in}}} \quad \left(\text{\textbf{Never}} \text{ use the CCM formula } I_{\mathrm{in}} = \frac{N D}{1-D} I_o \text{ in DCM!}\right)
+\end{equation}
+
+\paragraph{4. CCM/DCM Boundary Condition:}
+At the boundary, the secondary current reaches zero exactly at the end of the period ($D + \delta = 1 \Rightarrow \delta = 1 - D$):
+\[
+\frac{N V_{\mathrm{in}} D}{V_o} = 1 - D \quad\implies\quad \frac{V_o}{V_{\mathrm{in}}} = \frac{N D}{1 - D} = \frac{D}{\sqrt{K_{\mathrm{crit}}}} \quad\implies\quad \sqrt{K_{\mathrm{crit}}} = \frac{1-D}{N}
+\]
+\begin{equation}
+K_{\mathrm{crit}} = \left(\frac{1 - D}{N}\right)^2
+\end{equation}
+\begin{itemize}
+  \item If $K > K_{\mathrm{crit}}$: Converter operates in \textbf{CCM}.
+  \item If $K < K_{\mathrm{crit}}$: Converter operates in \textbf{DCM}.
+  \item \textbf{To force DCM:} Decrease $K$ (i.e., choose a \emph{smaller} $L_m$, a \emph{higher} load resistance $R$, or a lower switching frequency $f_s$).
+\end{itemize}
+
+---
+
+\subsection{Forward Converter (Week 5 \& Week 7)}
+
+\subsubsection{Operating Concept and Core Reset Requirement}
+The forward converter is an isolated buck-derived converter.
+\begin{itemize}
+  \item Unlike the flyback, the transformer operates in true transformer mode: energy is transferred to the secondary $LC$ filter \emph{instantaneously} while the switch is ON.
+  \item Because primary voltage and current are unipolar ($v_{N1} \ge 0$), magnetic flux in the core only increases during $t_{\mathrm{on}}$.
+  \item \textbf{Mandatory requirement:} A core demagnetization (reset) mechanism must force the net volt-seconds across the transformer to zero every cycle ($\int_0^{T_s} v_L\, dt = 0$). Without reset, magnetizing current accumulates each cycle, driving the core into deep saturation and destroying the switch!
+\end{itemize}
+
+\subsubsection{Three-Winding Forward Converter (Tertiary Reset Winding $N_3$)}
+The transformer has three windings: Primary $N_1$, Secondary $N_2$, and Tertiary Demagnetizing Winding $N_3$ with diode $D_3$ returned to $V_{\mathrm{in}}$.
+
+\paragraph{1. Flux Reset and Maximum Duty Ratio $D_{\max}$:}
+During switch on-time ($t_{\mathrm{on}} = D T_s$):
+\[
+\Delta \Phi_{\mathrm{on}} = \frac{V_{\mathrm{in}} D T_s}{N_1}
+\]
+During switch off-time, magnetizing current forces diode $D_3$ to conduct. The tertiary winding connects across the DC supply in reverse polarity: $v_{N3} = -V_{\mathrm{in}}$.
+Demagnetization duration $t_{\mathrm{reset}} = D_R T_s$:
+\[
+\Delta \Phi_{\mathrm{reset}} = \frac{V_{\mathrm{in}} D_R T_s}{N_3}
+\]
+For complete core demagnetization, $\Delta \Phi_{\mathrm{on}} = \Delta \Phi_{\mathrm{reset}}$:
+\begin{equation}
+\frac{V_{\mathrm{in}} D T_s}{N_1} = \frac{V_{\mathrm{in}} D_R T_s}{N_3} \quad\implies\quad D_R = \frac{N_3}{N_1} D
+\end{equation}
+The core must completely reset before the next switching cycle begins ($D + D_R \le 1$):
+\[
+D + \frac{N_3}{N_1} D \le 1 \quad\implies\quad D\left(1 + \frac{N_3}{N_1}\right) \le 1
+\]
+\begin{equation}
+D_{\max} = \frac{1}{1 + N_3/N_1} = \frac{N_1}{N_1 + N_3}
+\end{equation}
+\begin{itemize}
+  \item When $N_1 = N_3$: $D_{\max} = \dfrac{1}{1 + 1} = 0.50$ (50\% maximum duty cycle).
+  \item If $N_3 < N_1$: Core resets faster ($D_R < D$), allowing a larger duty ratio $D_{\max} > 0.5$, but switch voltage stress increases!
+\end{itemize}
+
+\paragraph{2. Component Voltage Ratings:}
+\begin{align}
+\text{Primary Switch Blocking Voltage:} \quad & \hat{V}_{sw} = V_{\mathrm{in}} + \frac{N_1}{N_3} V_{\mathrm{in}} = V_{\mathrm{in}}\left(1 + \frac{N_1}{N_3}\right) \quad (\text{For } N_1 = N_3:\; \hat{V}_{sw} = 2 V_{\mathrm{in}}) \\
+\text{Forward Diode $D_2$ Peak Inverse Voltage:} \quad & \hat{V}_{D2} = \frac{N_2}{N_1} V_{\mathrm{in}} + \frac{N_2}{N_3} V_{\mathrm{in}} = \frac{N_2}{N_1} V_{\mathrm{in}}\left(1 + \frac{N_1}{N_3}\right) \\
+\text{Freewheeling Diode $D_1$ PIV:} \quad & \hat{V}_{D1} = \frac{N_2}{N_1} V_{\mathrm{in}}
+\end{align}
+
+\paragraph{3. Output Voltage and Filter Inductor Volt-Second Balance (CCM):}
+Across the output filter inductor $L$, volt-second balance yields:
+\[
+\left(\frac{N_2}{N_1} V_{\mathrm{in}} - V_o\right) D T_s = V_o (1-D) T_s
+\]
+\begin{equation}
+V_o = \left(\frac{N_2}{N_1}\right) D V_{\mathrm{in}} \quad (\text{Valid strictly for } D \le D_{\max})
+\end{equation}
+Output filter inductor ripple current:
+\begin{equation}
+\Delta I_L = \frac{V_o (1-D) T_s}{L} = \frac{(N_2/N_1) V_{\mathrm{in}} (1-D) D T_s}{L}
+\end{equation}
+CCM condition on the output inductor:
+\begin{equation}
+I_o \ge \frac{\Delta I_L}{2} \quad\implies\quad K \ge 1 - D, \quad \text{where } K = \frac{2 L}{R T_s} = \frac{2 L f_s}{R}
+\end{equation}
+
+\paragraph{4. Forward DCM Voltage Gain:}
+When $I_o < \Delta I_L / 2$, the output inductor current becomes discontinuous:
+\begin{equation}
+\frac{V_o}{V_{\mathrm{in}}} = \frac{N_2/N_1}{1 + \sqrt{1 + 4K / D^2}}, \qquad K = \frac{2 L}{R T_s}
+\end{equation}
+
+---
+
+\subsubsection{Two-Transistor Forward Converter}
+To eliminate the tertiary winding and drastically reduce switch voltage stress, the two-transistor forward topology uses two switches ($T_1, T_2$) and two clamp diodes ($D_A, D_B$).
+\begin{itemize}
+  \item \textbf{Operation:} Both transistors $T_1$ and $T_2$ are switched ON and OFF simultaneously by identical gate signals.
+  \item \textbf{On-state ($D T_s$):} Both $T_1$ and $T_2$ conduct. The full input voltage $V_{\mathrm{in}}$ is applied across primary winding $N_1$ ($v_{N1} = +V_{\mathrm{in}}$). Diodes $D_A$ and $D_B$ are reverse-biased.
+  \item \textbf{Demagnetization ($D_R T_s$):} Both $T_1$ and $T_2$ turn OFF. The magnetizing current and leakage energy force diodes $D_A$ and $D_B$ into conduction, clamping $v_{N1} = -V_{\mathrm{in}}$.
+  \item \textbf{Reset voltage \& duty ratio limit:} Because the reset voltage equals the forward voltage ($|-V_{\mathrm{in}}| = V_{\mathrm{in}}$), the reset duration equals the on-time ($D_R = D$). Therefore:
+  \begin{equation}
+  D + D_R = 2D \le 1 \quad\implies\quad D < 0.50
+  \end{equation}
+  \item \textbf{Switch Blocking Voltage Clamped to $V_{\mathrm{in}}$:}
+  \begin{equation}
+  \hat{V}_{sw1} = \hat{V}_{sw2} = V_{\mathrm{in}}
+  \end{equation}
+  Each transistor sees only $V_{\mathrm{in}}$ (half the $2 V_{\mathrm{in}}$ stress of single-ended forward)!
+  \item \textbf{Major Advantages:}
+  \begin{enumerate}
+    \item Extremely safe for high-voltage DC buses (e.g. 400\,V PFC rails) using standard 500/600\,V MOSFETs.
+    \item Leakage energy is regenerated directly back into $V_{\mathrm{in}}$ without dissipative snubbers.
+    \item No cross-conduction (shoot-through) risk because switches are in series separated by the transformer winding.
+  \end{enumerate}
+\end{itemize}
+
+---
+
+\subsection{Commutation Overlapping Time \& Output Voltage Drop (Week 7)}
+
+\subsubsection{Physical Cause: Transformer Leakage Inductance $L_k$}
+In practical high-frequency transformers, imperfect magnetic coupling introduces leakage inductance $L_k$. Referred to the secondary winding, $L_k$ appears in series with the ideal transformer secondary.
+\begin{itemize}
+  \item While switch $T$ is off, the continuous load current $I_o$ freewheels through secondary diode $D_1$ ($i_{D1} = I_o, i_{D2} = 0$).
+  \item When switch $T$ turns ON, ideal secondary voltage $V_s = (N_2/N_1) V_{\mathrm{in}}$ appears instantly.
+  \item However, current through leakage inductance $L_k$ cannot change instantaneously!
+  \item Diode $D_1$ cannot turn off until its forward current is completely forced to zero.
+  \item While $D_1$ conducts, it clamps the voltage at the input of the $LC$ filter to zero ($v_{D1} \approx 0$).
+  \item \textbf{Overlapping state:} Both $D_1$ and $D_2$ conduct simultaneously during the interval $t_{\mathrm{ov}}$.
+\end{itemize}
+
+\subsubsection{Current Ramp Dynamics during Overlap}
+With $v_{D1} = 0$, the full secondary voltage $V_s$ falls directly across $L_k$:
+\[
+v_{L_k} = L_k \frac{di_{D2}}{dt} = V_s = \left(\frac{N_2}{N_1}\right) V_{\mathrm{in}}
+\]
+\begin{equation}
+\frac{di_{D2}}{dt} = \frac{V_s}{L_k} = \frac{(N_2/N_1) V_{\mathrm{in}}}{L_k}
+\end{equation}
+From KCL at the filter inductor node:
+\[
+i_{D1}(t) + i_{D2}(t) = I_o \quad\implies\quad i_{D1}(t) = I_o - i_{D2}(t)
+\]
+Diode current $i_{D2}$ ramps up linearly from $0$ to $I_o$, while $i_{D1}$ ramps down linearly from $I_o$ to $0$.
+
+\subsubsection{Commutation Overlapping Time Formula ($t_{\mathrm{ov}}$)}
+The overlap interval ends when $i_{D2}$ reaches the full load current $I_o$:
+\begin{equation}
+t_{\mathrm{ov}} = \frac{I_o}{\frac{di_{D2}}{dt}} = \frac{I_o L_k}{V_s} = \frac{I_o L_k}{(N_2/N_1) V_{\mathrm{in}}}
+\end{equation}
+
+\subsubsection{Output Voltage Drop ($\Delta V_o$)}
+During $t_{\mathrm{ov}}$, the voltage supplied to the $LC$ filter is zero instead of $V_s$. The volt-seconds lost per switching period is:
+\[
+\Delta \Lambda = V_s \cdot t_{\mathrm{ov}} = V_s \left(\frac{I_o L_k}{V_s}\right) = L_k I_o
+\]
+Therefore, the average output voltage drop for a \textbf{single-ended forward converter} is:
+\begin{equation}
+\Delta V_o = \frac{\Delta \Lambda}{T_s} = f_s V_s t_{\mathrm{ov}} = f_s L_k I_o = \left(\frac{N_2}{N_1} V_{\mathrm{in}}\right) \frac{t_{\mathrm{ov}}}{T_s}
+\end{equation}
+If the leakage inductance is referred to the primary side ($L_{k,1} = L_k / (N_2/N_1)^2$):
+\begin{equation}
+\Delta V_o = f_s \left(\frac{N_2}{N_1}\right)^2 L_{k,1} I_o
+\end{equation}
+\begin{itemize}
+  \item \textbf{Single-ended Forward:} Commutation occurs once per cycle $\implies \Delta V_o = f_s L_k I_o$.
+  \item \textbf{Full-bridge / Center-tapped Rectifier:} Commutation occurs twice per cycle $\implies \Delta V_o = 2 f_s L_k I_o = 2 f_s (N_2/N_1)^2 L_{k,1} I_o$.
+\end{itemize}
+
+\subsubsection{Effective Output DC Voltage}
+\begin{equation}
+V_o = \left(\frac{N_2}{N_1}\right) D V_{\mathrm{in}} - \Delta V_o = \left(\frac{N_2}{N_1}\right) V_{\mathrm{in}} \left(D - \frac{t_{\mathrm{ov}}}{T_s}\right) = \left(\frac{N_2}{N_1}\right) D_{\mathrm{eff}} V_{\mathrm{in}}
+\end{equation}
+\begin{equation}
+\text{Loss of Duty Ratio:} \quad \Delta D = \frac{t_{\mathrm{ov}}}{T_s} = f_s t_{\mathrm{ov}} = \frac{f_s L_k I_o}{(N_2/N_1) V_{\mathrm{in}}} \quad\implies\quad D_{\mathrm{eff}} = D - \Delta D
+\end{equation}
+\noindent\textbf{Key Takeaway:} Commutation overlap causes the converter to behave as if it has an internal equivalent output resistance $R_{\mathrm{eq}} = f_s L_k$. The output voltage sags proportionally with load current $I_o$ and switching frequency $f_s$.
+
+---
+
+\subsection{Phase-Shifted Full-Bridge (PSFB) Converter (Weeks 5 \& 7)}
+
+\subsubsection{Circuit Topology and Phase-Shift Regulation}
+The Phase-Shifted Full-Bridge converter uses four primary switches in two bridge legs:
+\begin{itemize}
+  \item \textbf{Leg A (Leading Leg):} $T_{1A}$ (high) and $T_{2A}$ (low).
+  \item \textbf{Leg B (Lagging Leg):} $T_{1B}$ (high) and $T_{2B}$ (low).
+  \item All four switches operate at a constant duty ratio of $\approx 50\%$ with a small dead-time.
+  \item Output voltage is controlled by the phase shift angle $\theta$ (or $\phi$) between the gating pulses of Leg A and Leg B ($0 \le \theta \le \pi$).
+  \item Transformer turns ratio is $1:N = N_1:N_2$. Secondary uses a full-bridge or center-tapped rectifier with an $LC$ low-pass filter.
+\end{itemize}
+
+\subsubsection{Ideal Voltage Conversion Ratio}
+The primary voltage $v_{AB}$ is a three-level square wave ($\pm V_{\mathrm{in}}, 0$). The pulse width of $v_{AB}$ is $\theta / \pi \cdot (T_s/2)$, giving an ideal duty ratio:
+\begin{equation}
+D = \frac{\theta}{\pi}, \qquad 0 \le \theta \le \pi
+\end{equation}
+\begin{equation}
+V_o = N D V_{\mathrm{in}} = \frac{N \theta}{\pi} V_{\mathrm{in}}
+\end{equation}
+
+\subsubsection{Duty Cycle Loss ($\Delta D$) due to Primary Leakage Inductance $L_{lk}$}
+During the transition of $v_{AB}$ from $0$ to $\pm V_{\mathrm{in}}$, the primary current $i_p$ cannot reverse polarity instantaneously. It must ramp from $-I_o / N$ to $+I_o / N$ across the primary leakage inductance $L_{lk}$:
+\[
+\Delta t = \frac{\Delta I_p}{di_p/dt} = \frac{2 (I_o / N)}{V_{\mathrm{in}} / L_{lk}} = \frac{2 L_{lk} I_o}{N V_{\mathrm{in}}}
+\]
+Since this polarity reversal occurs twice per switching cycle:
+\begin{equation}
+\Delta D = \frac{2 \Delta t}{T_s} = 2 f_s \Delta t = \frac{4 f_s L_{lk} I_o}{N V_{\mathrm{in}}} = \frac{4 f_s L_{lk} I_o}{n V_{\mathrm{in}}} \quad \left(\text{where } n = N = \frac{N_2}{N_1}\right)
+\end{equation}
+\begin{equation}
+D_{\mathrm{eff}} = D - \Delta D = \frac{\theta}{\pi} - \frac{4 f_s L_{lk} I_o}{n V_{\mathrm{in}}} \quad\implies\quad V_o = n D_{\mathrm{eff}} V_{\mathrm{in}} = \frac{n \theta}{\pi} V_{\mathrm{in}} - 4 f_s L_{lk} I_o
+\end{equation}
+
+\subsubsection{Zero-Voltage Switching (ZVS) Mechanism}
+ZVS is achieved by utilizing the energy stored in the leakage inductance $L_{lk}$ (and magnetizing inductance) to charge/discharge the switch output capacitances $C_{oss}$ during dead-time prior to gate turn-on:
+\begin{equation}
+\frac{1}{2} L_{lk} I_{\mathrm{peak}}^2 > \frac{4}{3} C_{oss} V_{\mathrm{in}}^2 \quad \left(\text{or } \frac{1}{2} L_{lk} I_{\mathrm{peak}}^2 \ge C_{oss,\mathrm{eq}} V_{\mathrm{in}}^2\right)
+\end{equation}
+\begin{itemize}
+  \item \textbf{Leading Leg (Leg A):} Transitions when reflected load current $+I_o/N$ is flowing. Abundant energy is available; ZVS is easily achieved down to light loads.
+  \item \textbf{Lagging Leg (Leg B):} Transitions during the freewheeling interval when primary current is decaying. Only leakage energy is available; ZVS is easily lost at light load currents ($I_o < I_{o,\mathrm{crit}}$).
+\end{itemize}
+
+\subsubsection{Rectifier Frequency and Output Filter Ripple}
+\begin{itemize}
+  \item The rectified voltage $v_{\mathrm{rec}}$ frequency is \textbf{double} the switching frequency ($f_{\mathrm{rec}} = 2 f_s$).
+  \item Output inductor ripple current:
+  \begin{equation}
+  \Delta i_L = \frac{N V_{\mathrm{in}} - V_o}{L} D \frac{T_s}{2} = \frac{N V_{\mathrm{in}} (1-D) D T_s}{2 L} = \frac{N V_{\mathrm{in}} (1-D) D}{2 L f_s}
+  \end{equation}
+  \item Maximum ripple occurs at $D = 0.50$ ($\theta = \pi/2 = 90^\circ$):
+  \begin{equation}
+  \Delta i_{L,\max} = \frac{N V_{\mathrm{in}} T_s}{8 L} = \frac{N V_{\mathrm{in}}}{8 L f_s}
+  \end{equation}
+  \item CCM operating requirement: $I_o \ge \dfrac{\Delta i_L}{2}$.
+\end{itemize}
+
+---
+
+\subsection{Dual-Active-Bridge (DAB) Converter (Week 7)}
+
+\subsubsection{Converter Structure and Bidirectional Operation}
+The Dual-Active-Bridge (DAB) converter consists of:
+\begin{itemize}
+  \item \textbf{Primary full bridge $H_1$:} Powered by DC port $V_1$.
+  \item \textbf{Secondary full bridge $H_2$:} Connected to DC port $V_2$.
+  \item \textbf{High-frequency transformer:} Turns ratio $n = N_2/N_1$, with lumped series leakage inductance $L_k$ (referred to primary).
+  \item \textbf{Inherent bidirectional capability:} Seamless four-quadrant power flow by shifting the phase between bridges.
+\end{itemize}
+
+\subsubsection{Single-Phase-Shift (SPS) Control}
+Under SPS modulation:
+\begin{itemize}
+  \item Both bridge $H_1$ and bridge $H_2$ generate 50\% duty cycle square-wave AC voltages $v_1(t)$ and $v_2'(t) = v_2(t)/n$ across the leakage inductor $L_k$.
+  \item The control parameter is the phase-shift angle $\phi$ between $v_1$ and $v_2'$:
+  \[
+  \phi \in \left[-\frac{\pi}{2}, \frac{\pi}{2}\right] \quad \text{or duty ratio shift } D_\phi = \frac{\phi}{\pi} \in [-0.5, 0.5]
+  \]
+  \item \textbf{Forward Power Flow ($P > 0$):} $\phi > 0$ ($H_1$ leads $H_2$). Power flows from DC Port 1 ($V_1$) to DC Port 2 ($V_2$).
+  \item \textbf{Reverse Power Flow ($P < 0$):} $\phi < 0$ ($H_2$ leads $H_1$). Power flows from DC Port 2 ($V_2$) to DC Port 1 ($V_1$).
+  \item \textbf{Zero Power Flow ($P = 0$):} $\phi = 0$ ($H_1$ and $H_2$ in phase).
+\end{itemize}
+
+\subsubsection{Power Transmission Formula}
+The active power transferred through leakage inductance $L_k$ is derived from the fundamental volt-seconds and inductor current integration:
+\begin{equation}
+P = \frac{n V_1 V_2}{2\pi f_s L_k} \phi \left(1 - \frac{|\phi|}{\pi}\right) = \frac{n V_1 V_2}{\omega L_k} \phi \left(1 - \frac{|\phi|}{\pi}\right) \quad \left(\text{where } \omega = 2\pi f_s\right)
+\end{equation}
+Expressed in terms of normalized duty shift $D_\phi = \phi / \pi \in [-0.5, 0.5]$:
+\begin{equation}
+P = \frac{n V_1 V_2}{f_s L_k} D_\phi (1 - 2|D_\phi|)
+\end{equation}
+When the transformer turns ratio is $1:1$ ($n=1$) or voltages are referred to the same side:
+\begin{equation}
+P = \frac{V_1 V_2}{2\pi f_s L_k} \phi \left(1 - \frac{|\phi|}{\pi}\right) = \frac{V_1 V_2}{\omega L_k} \phi \left(1 - \frac{|\phi|}{\pi}\right)
+\end{equation}
+
+\subsubsection{Maximum Transmitted Power ($P_{\max}$)}
+Setting $\dfrac{dP}{d\phi} = 0 \implies 1 - \dfrac{2\phi}{\pi} = 0 \implies \phi = \dfrac{\pi}{2} = 90^\circ$ ($D_\phi = 0.25$):
+\begin{equation}
+P_{\max} = P\left(\frac{\pi}{2}\right) = \frac{\pi V_1 V_2}{4 \omega L_k} = \frac{V_1 V_2}{8 f_s L_k} \quad \left(\text{or with turns ratio } n:\; P_{\max} = \frac{n V_1 V_2}{8 f_s L_k}\right)
+\end{equation}
+\noindent\textit{Proof of equivalence:} $\dfrac{V_1 V_2}{8 f_s L_k} = \dfrac{V_1 V_2}{8 (\omega / 2\pi) L_k} = \dfrac{2\pi V_1 V_2}{8 \omega L_k} = \dfrac{\pi V_1 V_2}{4 \omega L_k}$.
+
+\subsubsection{Inductor Current Waveform and Peak Value}
+The leakage inductor current $i_L(t)$ is piecewise linear with four intervals per half cycle governed by $L_k \dfrac{di_L}{dt} = v_1(t) - v_2'(t)$:
+\begin{align}
+\text{Instant at } t = 0: \quad & i_L(0) = \frac{(2 D_\phi - 1) V_1 - n V_2}{4 f_s L_k} \\
+\text{Instant at } t = D_\phi T_s / 2: \quad & i_L(D_\phi T_s / 2) = \frac{V_1 + (2 D_\phi - 1) n V_2}{4 f_s L_k} \\
+\text{Peak inductor current:} \quad & \hat{\imath}_L = \frac{V_1 + (2\phi/\pi - 1) n V_2}{4 f_s L_k} = \frac{V_1 + (2 D_\phi - 1) n V_2}{4 f_s L_k}
+\end{align}
+
+\subsubsection{Zero-Voltage Switching (ZVS) Boundaries}
+Soft-switching occurs when the current at the switching instant flows through the antiparallel diode before the switch is turned on.
+Defining voltage conversion ratio $d = \dfrac{n V_2}{V_1}$:
+\begin{itemize}
+  \item \textbf{Primary Bridge ($H_1$) ZVS Condition:} Requires $i_L(0) \le 0$:
+  \begin{equation}
+  D_\phi \ge \frac{1 - d}{2} \quad \left(\text{If } d \le 1,\; H_1 \text{ achieves ZVS for all } \phi > 0;\; \text{if } d > 1,\; \phi \ge \pi \frac{d-1}{2d}\right)
+  \end{equation}
+  \item \textbf{Secondary Bridge ($H_2$) ZVS Condition:} Requires $i_L(D_\phi T_s/2) \ge 0$:
+  \begin{equation}
+  D_\phi \ge \frac{d - 1}{2d} \quad \left(\text{If } d \ge 1,\; H_2 \text{ achieves ZVS for all } \phi > 0;\; \text{if } d < 1,\; \phi \ge \pi \frac{1-d}{2}\right)
+  \end{equation}
+  \item \textbf{Full Soft-Switching Region:} When $d = 1$ ($n V_2 = V_1$, matched voltage condition), both bridges achieve ZVS across the \emph{entire} operating range! When $d \neq 1$, ZVS is lost at light power levels (small $\phi$).
+\end{itemize}
+
+\subsubsection{Overview of Advanced DAB Modulation Strategies}
+\begin{itemize}
+  \item \textbf{Extended-Phase-Shift (EPS):} Adds an inner phase shift in $H_1$ to expand the ZVS region at light loads.
+  \item \textbf{Dual-Phase-Shift (DPS):} Introduces identical inner phase shifts in both $H_1$ and $H_2$ to eliminate reactive back-power.
+  \item \textbf{Triple-Phase-Shift (TPS):} Adjusts inner phase shifts of $H_1$, $H_2$, and outer phase shift $\phi$ independently for global minimum RMS current.
+\end{itemize}
+
+---
+
+\subsection{Step-by-Step Exam Recipes}
+
+\subsubsection{Recipe 1: Sizing Forward Converter Reset Winding and Component Ratings}
+\textbf{Use when:} Given $V_{\mathrm{in}}$, $V_o$, $f_s$, turns ratio $N_1:N_2$, or asked to choose $N_3$, find $D_{\max}$, and determine switch/diode voltage stresses.
+
+\textbf{Steps:}
+\begin{enumerate}
+  \item \textbf{Calculate required nominal duty cycle $D$:}
+  \[
+  D = \frac{V_o}{V_{\mathrm{in}}} \frac{N_1}{N_2}
+  \]
+  \item \textbf{Select reset winding $N_3$ and determine $D_{\max}$:}
+  \[
+  D_R = \frac{N_3}{N_1} D \le 1 - D \quad\implies\quad D_{\max} = \frac{1}{1 + N_3/N_1}
+  \]
+  Verify $D < D_{\max}$. If $N_1 = N_3$, $D_{\max} = 0.50$.
+  \item \textbf{Calculate switch blocking voltage $\hat{V}_{sw}$:}
+  \[
+  \hat{V}_{sw} = V_{\mathrm{in}} \left(1 + \frac{N_1}{N_3}\right)
+  \]
+  \item \textbf{Calculate secondary diode reverse ratings:}
+  \[
+  \hat{V}_{D1} = \frac{N_2}{N_1} V_{\mathrm{in}}, \qquad \hat{V}_{D2} = \frac{N_2}{N_1} V_{\mathrm{in}} \left(1 + \frac{N_1}{N_3}\right)
+  \]
+\end{enumerate}
+
+\subsubsection{Recipe 2: Commutation Overlapping Time and Voltage Drop Calculation}
+\textbf{Use when:} Given leakage inductance $L_k$, load current $I_o$, switching frequency $f_s$, input voltage $V_{\mathrm{in}}$, and turns ratio $N_1:N_2$.
+
+\textbf{Steps:}
+\begin{enumerate}
+  \item \textbf{Identify the secondary open-circuit voltage $V_s$:}
+  \[
+  V_s = \left(\frac{N_2}{N_1}\right) V_{\mathrm{in}}
+  \]
+  \item \textbf{Ensure $L_k$ is secondary-referred:}
+  If $L_k$ is given on primary side $L_{k,1}$, convert: $L_{k,2} = (N_2/N_1)^2 L_{k,1}$.
+  \item \textbf{Calculate overlapping time $t_{\mathrm{ov}}$:}
+  \[
+  t_{\mathrm{ov}} = \frac{I_o L_k}{V_s} = \frac{I_o L_k}{(N_2/N_1) V_{\mathrm{in}}}
+  \]
+  \item \textbf{Calculate duty cycle loss $\Delta D$ and output voltage drop $\Delta V_o$:}
+  \[
+  \Delta D = \frac{t_{\mathrm{ov}}}{T_s} = f_s t_{\mathrm{ov}}
+  \]
+  \begin{itemize}
+    \item Single-ended forward: $\Delta V_o = f_s L_k I_o = V_s \Delta D$.
+    \item Full-bridge / Push-pull rectifier: $\Delta V_o = 2 f_s L_k I_o = 2 V_s \Delta D$.
+  \end{itemize}
+  \item \textbf{Calculate effective output DC voltage:}
+  \[
+  V_o = \left(\frac{N_2}{N_1}\right) D V_{\mathrm{in}} - \Delta V_o
+  \]
+\end{enumerate}
+
+\subsubsection{Recipe 3: Calculating Phase Shift Angle $\phi$ for Power Demand in DAB}
+\textbf{Use when:} Given DAB voltages $V_1, V_2$, turns ratio $n$, leakage inductance $L_k$, switching frequency $f_s$, and required transferred power $P$.
+
+\textbf{Steps:}
+\begin{enumerate}
+  \item \textbf{Compute theoretical maximum power $P_{\max}$:}
+  \[
+  P_{\max} = \frac{n V_1 V_2}{8 f_s L_k}
+  \]
+  Confirm $P \le P_{\max}$. (If $P > P_{\max}$, the power cannot be transferred using SPS!).
+  \item \textbf{Express power in terms of normalized duty ratio shift $x = D_\phi = \phi / \pi \in [0, 0.5]$:}
+  \[
+  P = 4 P_{\max} x (1 - x) \quad\implies\quad x^2 - x + \frac{P}{4 P_{\max}} = 0
+  \]
+  \item \textbf{Solve for $x$ (take the smaller root for stable operation below $\phi = \pi/2$):}
+  \[
+  x = \frac{1 - \sqrt{1 - \dfrac{P}{P_{\max}}}}{2}
+  \]
+  \item \textbf{Calculate phase shift $\phi$ in radians and degrees:}
+  \[
+  \phi = x \pi = \frac{\pi}{2} \left(1 - \sqrt{1 - \frac{P}{P_{\max}}}\right) \text{ rad}, \qquad \phi^\circ = \phi \times \frac{180^\circ}{\pi}
+  \]
+  \item \textbf{Fast check for small power demand ($P \ll P_{\max}$):}
+  $\phi \approx \dfrac{2\pi f_s L_k P}{n V_1 V_2}$ radians.
+\end{enumerate}
+
+\subsubsection{Recipe 4: Flyback CCM vs DCM Identification and Waveform Peaks}
+\textbf{Use when:} Given $f_s, L_m, R, C, V_{\mathrm{in}}, D$, and turns ratio $1:N$.
+
+\textbf{Steps:}
+\begin{enumerate}
+  \item Compute $T_s = 1/f_s$.
+  \item Calculate conduction parameter $K = \dfrac{2 L_m}{R T_s}$ and critical threshold $K_{\mathrm{crit}} = \left(\dfrac{1-D}{N}\right)^2$.
+  \item \textbf{If $K > K_{\mathrm{crit}}$ (CCM):}
+  \begin{itemize}
+    \item $V_o = V_{\mathrm{in}} \dfrac{N D}{1-D}$, \quad $I_o = \dfrac{V_o}{R}$, \quad $I_{\mathrm{in}} = \dfrac{N D}{1-D} I_o$.
+    \item Ripple: $\Delta I_p = \dfrac{V_{\mathrm{in}} D T_s}{L_m}$, \quad $\Delta I_s = \dfrac{\Delta I_p}{N}$.
+    \item Peaks: $\hat{\imath}_p = \dfrac{I_{\mathrm{in}}}{D} + \dfrac{\Delta I_p}{2}$, \quad $\hat{\imath}_s = \dfrac{I_o}{1-D} + \dfrac{\Delta I_s}{2}$.
+    \item Output ripple: $\Delta V_o = \dfrac{D V_o T_s}{R C}$.
+  \end{itemize}
+  \item \textbf{If $K < K_{\mathrm{crit}}$ (DCM):}
+  \begin{itemize}
+    \item $V_o = V_{\mathrm{in}} \dfrac{D}{\sqrt{K}}$.
+    \item $P_o = \dfrac{V_o^2}{R} \implies I_{\mathrm{in}} = \dfrac{P_o}{V_{\mathrm{in}}}$.
+    \item Peak currents: $\hat{\imath}_p = \Delta I_p = \dfrac{V_{\mathrm{in}} D T_s}{L_m}$, \quad $\hat{\imath}_s = \dfrac{\hat{\imath}_p}{N}$.
+    \item Reset duty: $\delta = \dfrac{N V_{\mathrm{in}} D}{V_o}$. Check $D + \delta < 1$.
+  \end{itemize}
+\end{enumerate}
+
+---
+
+\subsection{Lecture Examples Fully Solved}
+
+\subsubsection{Example Q2 (Week 5 Slide 27: Flyback Analysis)}
+\textbf{Parameters:} $f_s = \SI{50}{\kilo\hertz}$ ($T_s = \SI{20}{\micro\second}$), $L_m = \SI{100}{\micro\henry}$, $R = \SI{50}{\ohm}$, $C = \SI{5}{\micro\farad}$, $V_{\mathrm{in}} = \SI{50}{\volt}$, $D = 0.5$, $1:N = 1:2$ ($N = 2$).
+\begin{enumerate}
+  \item \textbf{Mode of operation:}
+  \[
+  K = \frac{2 L_m}{R T_s} = \frac{2 \times 100\times 10^{-6}}{50 \times 20\times 10^{-6}} = 0.20
+  \]
+  \[
+  K_{\mathrm{crit}} = \left(\frac{1-D}{N}\right)^2 = \left(\frac{1-0.5}{2}\right)^2 = 0.25^2 = 0.0625
+  \]
+  Since $K = 0.20 > K_{\mathrm{crit}} = 0.0625$, the converter operates in \textbf{CCM}!
+  \item \textbf{Output voltage $V_o$ and currents:}
+  \[
+  V_o = V_{\mathrm{in}} \frac{N D}{1-D} = 50 \times \frac{2 \times 0.5}{1-0.5} = \SI{100}{\volt}
+  \]
+  \[
+  I_o = \frac{V_o}{R} = \frac{100}{50} = \SI{2}{\ampere}, \qquad I_{\mathrm{in}} = \frac{N D}{1-D} I_o = 2 \times 2 = \SI{4}{\ampere}
+  \]
+  \item \textbf{Output voltage ripple $\Delta V_o$:}
+  \[
+  \Delta V_o = \frac{D V_o T_s}{R C} = \frac{0.5 \times 100 \times 20\times 10^{-6}}{50 \times 5\times 10^{-6}} = \frac{1000}{250} = \SI{4.0}{\volt} \quad \left(\frac{\Delta V_o}{V_o} = 4\%\right)
+  \]
+  \item \textbf{Peak transformer currents $\hat{\imath}_p$ and $\hat{\imath}_s$:}
+  \[
+  \Delta I_p = \frac{V_{\mathrm{in}} D T_s}{L_m} = \frac{50 \times 0.5 \times 20\times 10^{-6}}{100\times 10^{-6}} = \SI{5.0}{\ampere}
+  \]
+  \[
+  \hat{\imath}_p = \frac{I_{\mathrm{in}}}{D} + \frac{\Delta I_p}{2} = \frac{4}{0.5} + 2.5 = 8 + 2.5 = \SI{10.5}{\ampere}
+  \]
+  \[
+  \hat{\imath}_s = \frac{\hat{\imath}_p}{N} = \frac{10.5}{2} = \SI{5.25}{\ampere}
+  \]
+  \item \textbf{Requirement on $L_m$ to enter DCM:}
+  \[
+  K < K_{\mathrm{crit}} \implies \frac{2 L_m}{R T_s} < 0.0625 \implies L_m < \frac{0.0625 \times 50 \times 20\times 10^{-6}}{2} = \SI{31.25}{\micro\henry}
+  \]
+\end{enumerate}
+
+\subsubsection{Example Q3 (Week 7 Slide 30: Forward Converter Analysis)}
+\textbf{Parameters:} $f_s = \SI{50}{\kilo\hertz}$ ($T_s = \SI{20}{\micro\second}$), $L = \SI{500}{\micro\henry}$, $R = \SI{50}{\ohm}$, $V_{\mathrm{in}} = \SI{50}{\volt}$, $D = 0.4$, $N_1:N_2:N_3 = 2:4:1$.
+\begin{enumerate}
+  \item \textbf{Maximum allowed duty cycle $D_{\max}$:}
+  \[
+  \frac{N_3}{N_1} = \frac{1}{2} = 0.5 \quad\implies\quad D_{\max} = \frac{1}{1 + N_3/N_1} = \frac{1}{1 + 0.5} = \frac{2}{3} \approx 0.667
+  \]
+  Since $D = 0.40 \le D_{\max}$, core reset is completely satisfied!
+  \item \textbf{Output voltage $V_o$ and CCM check:}
+  \[
+  V_o = \left(\frac{N_2}{N_1}\right) D V_{\mathrm{in}} = \left(\frac{4}{2}\right) \times 0.4 \times 50 = 2 \times 20 = \SI{40}{\volt}
+  \]
+  \[
+  I_o = \frac{V_o}{R} = \frac{40}{50} = \SI{0.80}{\ampere}
+  \]
+  Output inductor ripple:
+  \[
+  \Delta I_L = \frac{V_o (1-D) T_s}{L} = \frac{40 \times (1-0.4) \times 20\times 10^{-6}}{500\times 10^{-6}} = \SI{0.96}{\ampere}
+  \]
+  CCM threshold: $I_{o,\mathrm{boundary}} = \Delta I_L / 2 = 0.96 / 2 = \SI{0.48}{\ampere}$.
+  Since $I_o = \SI{0.80}{\ampere} > \SI{0.48}{\ampere}$, the converter is operating in \textbf{CCM}!
+  \item \textbf{Requirement on $L$ to maintain CCM:}
+  \[
+  I_o \ge \frac{\Delta I_L}{2} \implies 0.80 \ge \frac{40 \times 0.6 \times 20\times 10^{-6}}{2 L} \implies L \ge \SI{300}{\micro\henry}
+  \]
+\end{enumerate}
+
+\subsubsection{Example Q4 (Week 7 Slide 34: Phase-Shift Converter Ripple Analysis)}
+\textbf{Parameters:} Phase-shift full bridge with turns ratio $1:N$, $V_{\mathrm{in}}$, $f_s$, filter inductor $L$, duty cycle $D = \theta / \pi \in [0, 1]$.
+\begin{enumerate}
+  \item \textbf{CCM requirement on output inductor:}
+  The average inductor current $I_o = V_o / R$ must satisfy $I_o > \Delta i_L / 2$.
+  \item \textbf{Frequency of rectified voltage $v_{\mathrm{rec}}$:}
+  Because the secondary bridge rectifies both positive and negative half-cycles of the high-frequency AC transformer voltage, the rectified output frequency is:
+  \[
+  f_{\mathrm{rec}} = 2 f_s
+  \]
+  \item \textbf{Condition for maximum inductor current ripple $\Delta i_L$:}
+  \[
+  \Delta i_L = \frac{N V_{\mathrm{in}} - V_o}{L} D \frac{T_s}{2} = \frac{N V_{\mathrm{in}}(1-D) D T_s}{2 L}
+  \]
+  Differentiating with respect to $D$: $\dfrac{d}{dD}[D(1-D)] = 1 - 2D = 0 \implies D = 0.50$ ($\theta = \pi/2 = 90^\circ$).
+  \item \textbf{Maximum inductor ripple value:}
+  \[
+  \Delta i_{L,\max} = \frac{N V_{\mathrm{in}} (1 - 0.5)(0.5) T_s}{2 L} = \frac{N V_{\mathrm{in}} T_s}{8 L} = \frac{N V_{\mathrm{in}}}{8 L f_s}
+  \]
+\end{enumerate}
+
+---
+
+\subsection{Fast Sanity Checks \& Common Traps}
+\begin{itemize}
+  \item \textbf{Trap 1 (DCM Flyback Gain):} Do NOT insert $N$ into the DCM gain formula $M = D/\sqrt{K}$. It already cancelled out when using primary $L_m$!
+  \item \textbf{Trap 2 (DCM Average Current):} Do NOT calculate input current using the CCM formula $I_{\mathrm{in}} = \frac{ND}{1-D} I_o$. In DCM, always compute $P_o = V_o^2/R$ and then $I_{\mathrm{in}} = P_o / V_{\mathrm{in}}$.
+  \item \textbf{Trap 3 (Forward $D_{\max}$):} $D_{\max} = 0.50$ is ONLY valid when $N_1 = N_3$. If $N_3 \neq N_1$, calculate $D_{\max} = 1 / (1 + N_3/N_1)$.
+  \item \textbf{Trap 4 (Forward Switch Stress):} Forgetting the reset voltage reflected from $N_3$. The switch sees $V_{\mathrm{in}}(1 + N_1/N_3)$, NOT just $V_{\mathrm{in}}$!
+  \item \textbf{Trap 5 (Commutation Factor 1 vs 2):} Single-ended forward has commutation overlap ONCE per cycle ($\Delta V_o = f_s L_k I_o$). Full-bridge and push-pull center-tapped secondary commutate TWICE per cycle ($\Delta V_o = 2 f_s L_k I_o$).
+  \item \textbf{Trap 6 (DAB Phase Units):} In DAB formulas, $\phi$ must be in \textbf{radians} ($[-\pi/2, \pi/2]$). If given in degrees, convert immediately via $\phi = \phi^\circ \times \pi / 180^\circ$!
+  \item \textbf{Trap 7 (DAB Maximum Power Angle):} Maximum power transmission under SPS control occurs at $\phi = \pi/2 = 90^\circ$ ($D_\phi = 0.25$), where $P_{\max} = \dfrac{V_1 V_2}{8 f_s L_k} = \dfrac{\pi V_1 V_2}{4 \omega L_k}$.
+\end{itemize}
