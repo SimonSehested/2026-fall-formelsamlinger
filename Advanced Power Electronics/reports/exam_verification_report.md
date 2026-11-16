@@ -15,8 +15,8 @@ Verification is performed by mapping lecture tutorial problems, homework problem
 | **Week 5 Q2** | Flyback Numerical Design ($50\text{ kHz}, 100\,\mu\text{H}, 50\,\Omega, D=0.5, N=2$) | T1 | $K = 2 L_m f_s / R$; calculate $V_o, I_{in}, \hat{I}_{sw}, \hat{I}_D, \Delta V_o$ | Section 3.7, Recipe 1, p. 18 | VERIFIED |
 | **Week 5 Notes** | Forward Tertiary Core Reset ($N_1, N_3$) | T2 | $D_{max} = \frac{N_1}{N_1 + N_3}$; $\hat{V}_{sw} = V_{in}(1 + N_1/N_3)$ | Section 3.3, p. 12 | VERIFIED |
 | **Week 7 Lecture** | Two-Transistor Forward Reset & Stresses | T2 | Clamping diodes limit $\hat{V}_{sw} = V_{in}$; requires $D \le 0.5$ | Section 3.3.2, p. 13 | VERIFIED |
-| **Week 7 Lecture** | Transformer Leakage Overlap Drop ($t_{ov}$) | T2 | $t_{ov} = \frac{2 L_l I_o}{V_s}$; $\Delta V_o = \frac{2 f_s L_l I_o}{n^2}$ | Section 3.4, p. 14 | VERIFIED |
-| **Week 7 Lecture** | PSFB Duty Cycle Loss & ZVS Bounds | T3 | $\Delta D = \frac{2 f_s L_{lk} (I_o/n)}{V_{in}}$; $D_{eff} = D - \Delta D$ | Section 3.5, p. 15 | VERIFIED |
+| **Week 7 Lecture** | Transformer Leakage Overlap Drop ($t_{ov}$) | T2 | $t_{ov} = \frac{L_k I_o}{V_s}$; $\Delta V_o = f_s L_k I_o$ (single-ended); $\Delta D = \frac{4 f_s L_{lk} I_o}{n V_{in}}$ | Section 3.4, p. 14 | VERIFIED |
+| **Week 7 Lecture** | PSFB Duty Cycle Loss & ZVS Bounds | T3 | $\Delta D = \frac{4 f_s L_{lk} I_o}{n V_{in}}$; $D_{eff} = D - \Delta D$ | Section 3.5, p. 15 | VERIFIED |
 | **Week 7 Lecture** | DAB Bidirectional Power Flow vs Phase Shift $\phi$ | T4 | $P = \frac{V_1 V_2'}{\omega L_k} \phi (1 - \frac{|\phi|}{\pi})$; peak at $\phi = \pi/2$ | Section 3.6, p. 16 | VERIFIED |
 | **Week 8 Lecture** | 1-Phase Diode & SCR Bridge Rectifier | T5 | $V_{dc} = \frac{2 V_m}{\pi} \cos\alpha$; source inductance drop $\frac{2 \omega L_s I_d}{\pi}$ | Section 4.3, p. 25 | VERIFIED |
 | **Week 8 Lecture** | 3-Phase 6-Pulse Bridge Rectifier | T5 | $V_{dc} = \frac{3\sqrt{2} V_{LL}}{\pi}\cos\alpha \approx 1.35 V_{LL}\cos\alpha$ | Section 4.4, p. 28 | VERIFIED |

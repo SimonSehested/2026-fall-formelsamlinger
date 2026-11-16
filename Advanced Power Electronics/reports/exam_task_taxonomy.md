@@ -43,14 +43,14 @@ This taxonomy catalogs the recurring calculation patterns, problem archetypes, e
   - Peak switch voltage stress: $\hat{V}_{sw} = V_{in} \left(1 + \frac{N_1}{N_3}\right)$.
     - For $N_1 = N_3$: $\hat{V}_{sw} = 2 V_{in}$.
   - Two-Transistor Forward converter: Clamped by clamping diodes directly to $V_{in}$ ($\hat{V}_{sw} = V_{in}$); requires $D_{max} \le 0.5$.
-  - Commutation overlap time: $t_{ov} = \frac{2 L_l I_o}{V_s}$ (where $V_s$ is secondary voltage).
-  - Output voltage drop due to leakage inductance: $\Delta V_o = \frac{2 f_s L_l I_o}{n^2}$ (primary referred $L_l$) or $\Delta V_o = 2 f_s L_{ls} I_o$ (secondary referred).
+  - Commutation overlap time: $t_{ov} = \frac{L_k I_o}{V_s}$ (where $V_s = V_{in}(N_2/N_1)$ is secondary transformer voltage; single-ended forward).
+  - Output voltage drop due to leakage inductance: $\Delta V_o = f_s L_k I_o = V_s \frac{t_{ov}}{T_s}$ (secondary referred $L_k$; note: factor of 2 applies to full-bridge/push-pull).
   - Real conversion ratio with overlap: $V_o = n D V_{in} - \Delta V_o$.
 - **Fast Solution Recipe:**
   1. Identify turns ratio $N_1, N_2, N_3$.
   2. Compute $D_{max} = N_1 / (N_1 + N_3)$ and check if operating $D \le D_{max}$.
   3. Determine switch voltage stress: $\hat{V}_{sw} = V_{in}(1 + N_1/N_3)$.
-  4. If transformer leakage $L_l$ is given, calculate commutation time $t_{ov}$ and deduct $\Delta V_o = 2 f_s L_{ls} I_o$ from ideal secondary average voltage.
+  4. If transformer leakage $L_k$ is given, calculate commutation time $t_{ov} = \frac{L_k I_o}{V_s}$ and deduct $\Delta V_o = f_s L_k I_o$ from ideal secondary average voltage.
 - **Common Exam Traps:**
   - Assuming $D_{max} = 0.5$ without checking whether $N_3 = N_1$.
   - Forgetting that the freewheeling diode $D_2$ and forward diode $D_1$ both conduct simultaneously during the commutation overlap interval $t_{ov}$, shorting the secondary and clamping $v_s = 0$.
@@ -62,9 +62,9 @@ This taxonomy catalogs the recurring calculation patterns, problem archetypes, e
 - **Exam Wording:** Calculate effective duty cycle $D_{eff}$; duty cycle loss $\Delta D$; secondary output voltage $V_o$; condition for ZVS in leading and lagging legs.
 - **Keywords:** Phase-Shifted Full Bridge, phase shift angle $\phi$, duty cycle loss $\Delta D$, primary leakage inductance $L_{lk}$, resonant transition, ZVS.
 - **Governing Formulas:**
-  - Duty cycle loss: $\Delta D = \frac{2 f_s L_{lk} I_o'}{V_{in}} = \frac{2 f_s L_{lk} (I_o / n)}{V_{in}}$, where $n = N_s/N_p$.
+  - Duty cycle loss: $\Delta D = \frac{4 f_s L_{lk} I_o}{n V_{in}}$, where $n = N_s/N_p$.
   - Effective duty cycle: $D_{eff} = D - \Delta D = \frac{\phi}{\pi} - \Delta D$.
-  - Output voltage: $V_o = n V_{in} D_{eff} = n V_{in} \left(\frac{\phi}{\pi} - \frac{2 f_s L_{lk} I_o}{n V_{in}}\right)$.
+  - Output voltage: $V_o = n V_{in} D_{eff} = n V_{in} \left(\frac{\phi}{\pi} - \frac{4 f_s L_{lk} I_o}{n V_{in}}\right)$.
   - Leading leg ZVS energy condition: $\frac{1}{2} (L_{lk} + n^2 L_f) I_{p,pk}^2 \ge \frac{1}{2} (2 C_{oss}) V_{in}^2$ (easily achieved by reflected filter inductor).
   - Lagging leg ZVS energy condition: $\frac{1}{2} L_{lk} I_{p,pk}^2 \ge \frac{1}{2} (2 C_{oss}) V_{in}^2$ (difficult at light load because output filter inductor is disconnected during freewheeling).
 - **Fast Solution Recipe:**
