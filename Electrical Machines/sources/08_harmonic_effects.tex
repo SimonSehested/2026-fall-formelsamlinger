@@ -1,0 +1,170 @@
+\section{Harmonic Effects: Space Harmonics, Cogging, Crawling and Skew}
+
+\subsection{Space Harmonics of 3-Phase MMF: Orders \texorpdfstring{$n = 6k \pm 1$}{n = 6k +/- 1}, Forward and Reverse Rotation}
+In a balanced three-phase stator winding fed by sinusoidal currents, space harmonics of the magnetomotive force (MMF) are produced due to the discrete arrangement of coils in slots:
+\begin{equation}
+\boxed{n = 6k \pm 1 \qquad (k = 1, 2, 3, \dots)}
+\end{equation}
+\textbf{Properties of space harmonic orders:}
+\begin{itemize}
+  \item \textbf{Forward-rotating harmonics ($n = 6k+1$):} Orders $n = 7, 13, 19, 25, \dots$ rotate in the \textbf{same direction} as the fundamental at synchronous speed:
+  \begin{equation}
+  n_{s,n} = +\frac{n_s}{n} \quad [\mathrm{r/min}].
+  \end{equation}
+  \item \textbf{Reverse-rotating harmonics ($n = 6k-1$):} Orders $n = 5, 11, 17, 23, \dots$ rotate in the \textbf{opposite direction} to the fundamental at speed:
+  \begin{equation}
+  n_{s,n} = -\frac{n_s}{n} \quad [\mathrm{r/min}].
+  \end{equation}
+  \item \textbf{Triplen harmonics ($n = 3, 9, 15, \dots$):} In balanced three-phase systems, triplen MMF harmonics are displaced by $n\cdot 120^\circ = 360^\circ$ and sum algebraically to \textbf{zero} in the air gap.
+  \item \textbf{Even harmonics ($n = 2, 4, 6, \dots$):} Cancel identically due to the half-wave anti-symmetry of the winding coils ($F(\theta+\pi) = -F(\theta)$).
+\end{itemize}
+
+\subsection{Cogging: Magnetic Locking at Standstill (\texorpdfstring{$S_1, S_2$}{S1, S2} Tooth Alignment)}
+\textbf{Definition:} Cogging is the failure of an induction or permanent-magnet motor to start from standstill due to magnetic locking forces.
+
+\textbf{Mechanism:}
+\begin{itemize}
+  \item Flux lines seek the path of minimum reluctance (acting like stretched elastic rubber bands).
+  \item When stator slot count $S_1$ and rotor slot count $S_2$ are equal or have an integral ratio ($S_1/S_2 \in \mathbb{Z}$), all teeth align simultaneously at specific rotor positions.
+  \item This creates large periodic detent alignment forces (cogging torque $T_{\mathrm{cog}}$) at zero speed.
+  \item If $T_{\mathrm{cog}} > T_{\mathrm{starting}}$, the rotor locks magnetically and refuses to break away.
+\end{itemize}
+\textbf{Remedies:}
+\begin{itemize}
+  \item Skew rotor bars by one stator slot pitch ($\gamma_{\mathrm{sk}} = 2\pi p / S_1$).
+  \item Select slot numbers such that $(S_1 - S_2)/(2p)$ is non-integral and $S_1/S_2$ is fractional.
+  \item Use closed or semi-closed slots to reduce slot-opening permeance variations.
+\end{itemize}
+
+\subsection{Crawling: Asynchronous Torque Saddles (\texorpdfstring{$n_s/7, -n_s/5$}{ns/7, -ns/5}) and Synchronous Hooks}
+\textbf{Definition:} Crawling is stable motor operation at a sub-synchronous speed (most commonly near $n_s/7$), preventing the motor from accelerating to its rated speed.
+
+Crawling arises from two distinct physical mechanisms:
+
+\textbf{1. Harmonic induction torques (asynchronous torque saddles):}
+\begin{itemize}
+  \item Stator space harmonics induce harmonic currents in the rotor cage, each producing an independent torque-speed characteristic.
+  \item The \textbf{7th harmonic} rotates forward at synchronous speed $+n_s/7$. It produces positive motoring torque for $n_r < n_s/7$, passes through zero at $n_r = n_s/7$, and develops negative (generator/braking) torque for $n_r > n_s/7$.
+  \item The combined fundamental + 7th torque curve develops a sharp dip or \textbf{saddle} around $n_r \approx n_s/7$.
+  \item If the load torque curve intersects the rising portion of this saddle, the motor operating point locks stably at $n_r \approx n_s/7$.
+  \item The \textbf{5th harmonic} rotates in reverse at synchronous speed $-n_s/5$, acting as a continuous brake opposing acceleration during startup.
+\end{itemize}
+
+\textbf{2. Harmonic synchronous torques (synchronous hooks):}
+\begin{itemize}
+  \item Occurs when a stator slot harmonic and a rotor slot harmonic have the \textbf{same number of poles} and rotate at the \textbf{exact same absolute speed} in the air gap.
+  \item Stator slot harmonic order: $n = (S_1/p)\pm 1$ at speed $\pm n_s/n$.
+  \item Rotor slot harmonic order: $n = (S_2/p)\pm 1$ at relative speed $\pm (n_s - n_r)/n$ with respect to the rotor.
+  \item When they lock in step, they act like a miniature synchronous machine at that speed, producing a severe, sharp torque cusp (\textbf{hook}).
+  \item \textbf{Example:} For $2p = 4$, $S_1 = 24$, $S_2 = 28$:
+  Stator has 13th harmonic ($n_s/13$); rotor has 13th harmonic ($n_r - (n_s - n_r)/13$).
+  In step when $n_s/13 = n_r - (n_s - n_r)/13 \implies n_r = n_s/7$.
+  This produces a synchronous hook at $n_s/7$ driven by the \textbf{13th harmonics}, not the 7th!
+\end{itemize}
+
+\subsection{Tooth Harmonics Unattenuated by Winding Distribution: \texorpdfstring{$K_{dn} = K_{d1}$}{Kdn = Kd1}}
+In a slotted $m$-phase stator winding with $q_1$ slots per pole per phase and $60^\circ$ phase spread ($\sigma = \pi/3$), slotting produces tooth harmonics at orders:
+\begin{equation}
+\boxed{n = 6k q_1 \pm 1 = \frac{S_1}{p} \pm 1 \qquad (k = 1, 2, \dots)}
+\end{equation}
+The EMF distribution factor for harmonic order $n$ is:
+\begin{equation}
+K_{dn} = \frac{\sin(n\sigma / 2)}{q_1 \sin(n\sigma / (2q_1))}.
+\end{equation}
+Substituting $n = 6k q_1 \pm 1$ and $\sigma = \pi/3$:
+\begin{equation}
+K_{dn} = \frac{\sin\left(\frac{(6k q_1 \pm 1)\pi}{6}\right)}{q_1 \sin\left(\frac{(6k q_1 \pm 1)\pi}{6q_1}\right)}
+= \frac{\sin\left(k\pi \pm \frac{\pi}{6}\right)}{q_1 \sin\left(\frac{k\pi}{q_1} \pm \frac{\pi}{6q_1}\right)}
+= \frac{\sin(\pi/6)}{q_1 \sin(\pi/(6q_1))} = K_{d1}.
+\end{equation}
+\textbf{Fundamental design conclusion:}
+\begin{equation}
+\boxed{K_{dn} = K_{d1} \quad \text{for all tooth harmonics } n = \frac{S_1}{p}\pm 1}
+\end{equation}
+Distributing coils among slots successfully attenuates low-order space harmonics (such as 5th and 7th), but \textbf{cannot attenuate tooth harmonics}. Skewing is therefore required!
+
+\subsection{Skew Factor \texorpdfstring{$K_{\mathrm{sk}}$}{K(sk)} and Cancellation of Slot Harmonics (\texorpdfstring{$\gamma_{\mathrm{sk}} = 2\pi p / S_1$}{gamma(sk) = 2pi p / S1})}
+Skewing the rotor bars by an electrical angle $\gamma_{\mathrm{sk}}$ spreads conductor segments over an arc, introducing a skew factor:
+\begin{equation}
+\boxed{K_{\mathrm{sk},1} = \frac{\sin(\gamma_{\mathrm{sk}}/2)}{\gamma_{\mathrm{sk}}/2}, \qquad K_{\mathrm{sk},n} = \frac{\sin(n\gamma_{\mathrm{sk}}/2)}{n\gamma_{\mathrm{sk}}/2}}
+\end{equation}
+where all angles inside the sine and denominator must be in \textbf{radians}.
+
+\textbf{Skewing by exactly one stator slot pitch:}
+The mechanical stator slot pitch is $\tau_{s1,\mathrm{mech}} = 2\pi / S_1$. In electrical radians:
+\begin{equation}
+\boxed{\gamma_{\mathrm{sk}} = p\,\tau_{s1,\mathrm{mech}} = \frac{2\pi p}{S_1} \quad [\mathrm{elect.\,rad}]}
+\end{equation}
+Evaluating the skew factor for stator slot harmonics of order $n = \frac{S_1}{p}\pm 1$:
+\begin{equation}
+\frac{n\gamma_{\mathrm{sk}}}{2} = \frac{1}{2}\left(\frac{S_1}{p}\pm 1\right)\left(\frac{2\pi p}{S_1}\right) = \pi \pm \frac{\pi p}{S_1}.
+\end{equation}
+Taking the sine:
+\begin{equation}
+\sin\left(\frac{n\gamma_{\mathrm{sk}}}{2}\right) = \sin\left(\pi \pm \frac{\pi p}{S_1}\right) = \mp\sin\left(\frac{\pi p}{S_1}\right).
+\end{equation}
+Since slot count per pole-pair $S_1/p \gg 1$, the angle $\frac{\pi p}{S_1}$ is small, yielding:
+\begin{equation}
+\boxed{K_{\mathrm{sk},n} \approx 0 \quad \text{for } n = \frac{S_1}{p}\pm 1}
+\end{equation}
+\textbf{Physical reason:} Skewing by one stator slot pitch establishes an effective phase spread of $2\pi\,\mathrm{rad}$ (one full wave cycle) along the axial core length at the slot harmonic wavelength. The positive and negative half-waves induced along the bar cancel out completely.
+The fundamental is only slightly diminished: $K_{\mathrm{sk},1} \approx 0.98\text{--}0.99$.
+
+\subsection{Summary Table: Slot Combination Rules to Prevent Parasitic Effects}
+\begin{center}
+\begin{tabular}{@{}p{0.24\textwidth}p{0.32\textwidth}p{0.40\textwidth}@{}}
+\toprule
+\textbf{Parasitic Phenomenon} & \textbf{Harmful Condition} & \textbf{Design Rule to Eliminate / Avoid} \\
+\midrule
+\textbf{Cogging} & $S_1 = S_2$ or $S_1/S_2 \in \mathbb{Z}$ & $(S_1 - S_2)/(2p) \neq \text{integer}$, $S_1/S_2$ fractional, skew slots \\
+\textbf{Harmonic induction torque} & Large rotor bar count & $S_2 < 1.25(S_1 + p)$ \\
+\textbf{Harmonic synchronous torque} & Synchronous speed lock & $S_1 \neq S_2 \quad\text{and}\quad S_1 - S_2 \neq \pm 2p$ \\
+\textbf{Unbalanced Magnetic Pull} & Pole count difference $= 2$ & $S_1 - S_2 \neq \pm 1 \quad\text{and}\quad S_1 - S_2 \neq \pm 2p \pm 1$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Exam Recipe: Calculating Skew Factors and Harmonic EMF Reduction}
+\textbf{Use when:} Problem specifies stator slot count $S_1$, pole pairs $p$ (or poles $2p$), and asks for skew distribution factors $K_{\mathrm{sk},1}, K_{\mathrm{sk},n}$ or reduced harmonic voltages when rotor is skewed by one stator slot pitch.
+
+\textbf{Steps:}
+\begin{enumerate}
+  \item \textbf{Determine slots per pole:}
+  \[
+  \text{Slots per pole} = \frac{S_1}{2p}.
+  \]
+  \item \textbf{Calculate electrical slot pitch angle $\gamma_{\mathrm{sk}}$:}
+  \[
+  \gamma_{\mathrm{sk}} = \frac{2\pi p}{S_1} = \frac{\pi}{S_1/(2p)} \quad [\mathrm{rad}].
+  \]
+  \item \textbf{Compute fundamental skew factor:}
+  \[
+  K_{\mathrm{sk},1} = \frac{\sin(\gamma_{\mathrm{sk}}/2)}{\gamma_{\mathrm{sk}}/2}.
+  \]
+  \item \textbf{Identify tooth harmonic orders:}
+  \[
+  n = \frac{S_1}{p} \pm 1.
+  \]
+  \item \textbf{Compute harmonic skew factor:}
+  \[
+  K_{\mathrm{sk},n} = \frac{\sin(n\gamma_{\mathrm{sk}}/2)}{n\gamma_{\mathrm{sk}}/2}.
+  \]
+  \item \textbf{Compute skewed induced voltages:}
+  \[
+  E_{1,\mathrm{skewed}} = E_{1,\mathrm{unskewed}}\cdot K_{\mathrm{sk},1}, \qquad E_{n,\mathrm{skewed}} = E_{n,\mathrm{unskewed}}\cdot |K_{\mathrm{sk},n}|.
+  \]
+  \item \textbf{Conclusion/Comment:} Note that $K_{\mathrm{sk},n} \ll 1$ (e.g., $< 0.05$), confirming that skewing by one stator slot pitch suppresses slot harmonics and eliminates cogging torque.
+\end{enumerate}
+
+\textbf{Fast checks:}
+\begin{itemize}
+  \item Fundamental factor $K_{\mathrm{sk},1}$ is always very close to 1 (typically $0.98\text{--}0.999$).
+  \item Harmonic factor $|K_{\mathrm{sk},n}|$ for $n = S_1/p \pm 1$ is always very small (typically $< 0.1$).
+\end{itemize}
+
+\textbf{Common traps:}
+\begin{itemize}
+  \item Using degrees instead of radians in the denominator of $\frac{\sin(\theta)}{\theta}$.
+  \item Using mechanical slot pitch $\tau_{s1} = 2\pi / S_1$ instead of electrical slot angle $\gamma_{\mathrm{sk}} = 2\pi p / S_1$.
+  \item Forgetting that $K_{dn} = K_{d1}$ for tooth harmonics (winding distribution cannot eliminate them; only skewing does).
+\end{itemize}

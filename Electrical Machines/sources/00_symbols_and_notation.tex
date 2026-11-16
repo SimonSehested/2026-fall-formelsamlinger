@@ -1,0 +1,236 @@
+\section{Symbol Glossary, Notation and Deterministic Subscript Key}
+
+Use this index to quickly look up any variable, its physical meaning, and its standard unit.
+To eliminate all ambiguity (such as distinguishing inductance from core length, conductor area from slot area, electrical loading, or moment of inertia), this formula collection consistently applies \textbf{deterministic subscripts}.
+
+\subsection{Deterministic Subscripts and Index Key ($c$, $\mathrm{cond}$, $\mathrm{slot}$, $\mathrm{core}$, $g$, $t$, $y$, $\mathrm{ph}$, $\mathrm{LL}$, $m$, $f$, $s$, $r$, $b$, $\mathrm{iner}$)}
+\begin{center}
+\begin{tabular}{@{}>{$}l<{$} p{7.5cm} >{$}l<{$}@{}}
+\toprule
+\text{Subscript} & \text{Meaning / Application} & \text{Examples}\\
+\midrule
+c & Axial core length / core geometry & L_c,\,D_g^2 L_c,\,I_c\\
+\mathrm{cond} & Single conductor & A_{\mathrm{cond}},\,J_{\mathrm{cond}},\,R_{\mathrm{cond}}\\
+\mathrm{slot} & Stator or rotor slot & A_{\mathrm{slot}},\,b_s,\,h_s,\,\lambda_{\mathrm{slot}}\\
+\mathrm{slot,cond} & Total conductor copper area in one slot & A_{\mathrm{slot,cond}} = z_s A_{\mathrm{cond}}\\
+\mathrm{core} & Iron core cross-section and core loss & A_{\mathrm{core}},\,P_{\mathrm{core}},\,B_{\mathrm{core}}\\
+g & Air gap & g,\,g',\,D_g,\,A_g,\,B_g,\,\Phi_g,\,F_g\\
+t & Tooth & B_t,\,b_t,\,h_t\\
+y & Yoke & B_y,\,b_y\\
+\mathrm{ph} & Phase RMS value & V_{\mathrm{ph}},\,I_{\mathrm{ph}},\,E_{\mathrm{ph}},\,T_{\mathrm{ph}},\,R_{\mathrm{ph}}\\
+\mathrm{LL} & Line-to-line RMS value & V_{\mathrm{LL}},\,I_{\mathrm{line}}\\
+m & Magnetizing branch & L_m,\,X_m,\,L_{aa,m},\,L_{ab,m}\\
+f,\,F & Rotor field winding / excitation & N_f,\,I_f,\,U_f,\,R_f,\,E_F,\,P_{\mathrm{Cu,f}}\\
+s & Stator, synchronous, or synchronizing & S_1,\,n_s,\,\omega_{ms},\,X_s,\,P_s,\,T_s\\
+r & Rotor & S_2,\,R_2,\,L_{2\ell},\,\omega_2\\
+\mathrm{st} & Starting / standstill condition ($s=1$) & T_{\mathrm{st}},\,I_{2,\mathrm{st}}\\
+b & Breakdown / pull-out operating point & T_b,\,\omega_{2b}\\
+\mathrm{iner} & Mechanical rotor inertia (moment of inertia) & J_{\mathrm{iner}}\\
+\mathrm{mech},\,m & Mechanical speed / mechanical output & \omega_m,\,\omega_{ms},\,n_m,\,P_{\mathrm{mech}}\\
+e & Electrical frequency ($2\pi f$) or electromagnetic & \omega_e,\,\omega_1,\,T_e\\
+\mathrm{coil} & Single coil inductance and turns & L_{\mathrm{coil}},\,N_{\mathrm{coil}}\\
+\ell,\,p & Leakage path & L_p,\,X_p,\,L_{2\ell}\\
+\mathrm{ch} & Chording / short-pitch angle & \varepsilon_{\mathrm{ch}}\\
+\mathrm{drop} & Fractional stator leakage voltage drop & \varepsilon_{\mathrm{drop}}\\
+\mathrm{ecc} & Relative eccentricity ($e_0/g$) & \varepsilon_{\mathrm{ecc}}\\
+\mathrm{Cu} & Copper conductor material & \sigma_{\mathrm{Cu}},\,P_{\mathrm{Cu}}\\
+\mathrm{sk} & Skewing factor / skew angle & K_{\mathrm{sk}},\,\gamma_{\mathrm{sk}}\\
+d & Inverter DC link & V_d\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Physical Constants and Material Properties ($\mu_0$, $\varepsilon_0$, $\sigma_{\mathrm{Cu}}$, $k_{\mathrm{fe}}$)}
+\begin{center}
+\begin{tabular}{@{}>{$}l<{$} >{$}l<{$} >{$}l<{$} p{6.5cm}@{}}
+\toprule
+\text{Symbol} & \text{Value} & \text{Unit} & \text{Description / Application}\\
+\midrule
+\mu_0 & 4\pi\times10^{-7} & \mathrm{H/m} & Permeability of free space / air gap\\
+\varepsilon_0 & 8.85\times10^{-12} & \mathrm{F/m} & Permittivity of free space\\
+\sigma_{\mathrm{Cu}} & 5.8\times10^7 & \mathrm{S/m} & Electrical conductivity of copper at \SI{20}{\degreeCelsius} ($4.5\times10^7$ at \SI{75}{\degreeCelsius})\\
+k_{\mathrm{fe}} & 0.90\text{--}0.95 & \text{dimensionless} & Stacking / packing factor for laminated iron core\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Magnetic Field Quantities, Flux and MMF ($\mathbf{B}$, $B_g$, $B_t$, $B_y$, $\mathbf{H}$, $\Phi$, $\lambda$, $F_g$, $N I$)}
+\begin{center}
+\begin{tabular}{@{}>{$}l<{$} p{8.5cm} >{$}l<{$}@{}}
+\toprule
+\text{Symbol} & \text{Meaning} & \text{Unit}\\
+\midrule
+\mathbf{B},\,B_{\mathrm{core}} & Local magnetic flux density in iron core & \mathrm{T}\\
+\bar{B} & Specific magnetic loading (average air-gap flux density) & \mathrm{T}\\
+B_g & Air-gap peak/average flux density under pole & \mathrm{T}\\
+B_t & Stator tooth flux density & \mathrm{T}\\
+B_y & Stator or rotor yoke flux density & \mathrm{T}\\
+B_{\mathrm{pole\_head}},\,B_{\mathrm{pole\_body}} & Flux density in pole shoe and pole body & \mathrm{T}\\
+\mathbf{H},\,H_{\mathrm{core}},\,H_g & Magnetic field strength & \mathrm{A/m}\\
+\Phi & Magnetic flux & \mathrm{Wb}\\
+\Phi_m & Maximum magnetic flux per pole & \mathrm{Wb}\\
+\Phi_g & Air-gap magnetic flux per pole ($B_g A_g$) & \mathrm{Wb}\\
+\lambda & Magnetic flux linkage ($N_{\mathrm{coil}}\Phi$) & \mathrm{Wb\text{-}turns}\\
+F_g,\,F_a,\,F_n & Magnetomotive force (MMF); air gap / fundamental / harmonic & \mathrm{A\text{-}turns}\\
+N_{\mathrm{coil}} & Number of turns on a coil & \text{dimensionless}\\
+(NI)_{\mathrm{source}} & Ampere-turns / source MMF & \mathrm{A\text{-}turns}\\
+N_f I_f & Rotor field excitation ampere-turns & \mathrm{A\text{-}turns}\\
+\ell_i & Magnetic path length of segment $i$ & \mathrm{m}\\
+g & Nominal mechanical air-gap clearance & \mathrm{m}\text{ or }\mathrm{mm}\\
+g' & Effective air gap corrected for slotting ($K_g g$) & \mathrm{m}\\
+A_{\mathrm{core}} & Iron core net cross-sectional area ($k_{\mathrm{fe}} A_{\mathrm{gross}}$) & \mathrm{m^2}\\
+A_g & Air-gap pole-face area per pole ($\tau L_c = \pi D_g L_c / (2p)$) & \mathrm{m^2}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Machine Geometry and Slotted Core Dimensions ($D_g$, $L_c$, $\tau$, $p$, $2p$, $S_1$, $q_1$, $z_s$, $b_s$, $h_s$, $A_{\mathrm{cond}}$, $k_{\mathrm{fill}}$)}
+\begin{center}
+\begin{tabular}{@{}>{$}l<{$} p{8.5cm} >{$}l<{$}@{}}
+\toprule
+\text{Symbol} & \text{Meaning} & \text{Unit}\\
+\midrule
+D_g & Air-gap bore diameter & \mathrm{m}\\
+L_c & Axial active iron core length & \mathrm{m}\\
+\tau & Pole pitch ($\pi D_g / (2p)$) & \mathrm{m}\\
+p & Number of pole-pairs & \text{dimensionless}\\
+2p & Total number of poles & \text{dimensionless}\\
+S_1,\,S_2 & Number of stator and rotor slots & \text{dimensionless}\\
+S_{\mathrm{slots}} & Total stator slot count ($q_1 \cdot 2p \cdot m$) & \text{dimensionless}\\
+q_1 & Slots per pole per phase in stator ($S_1 / (2p\cdot m)$) & \text{dimensionless}\\
+N_{\mathrm{ph}} & Slots per phase ($S_1 / m$) & \text{dimensionless}\\
+z_s & Number of conductors per slot ($2 T_{\mathrm{ph}} / N_{\mathrm{ph}}$) & \text{dimensionless}\\
+b_s,\,b_0,\,b_t,\,b_y & Slot width, slot opening, tooth width, yoke width & \mathrm{m}\\
+h_s & Slot depth & \mathrm{m}\\
+d_1,\,d_2,\,d_3,\,d_4 & Slot depth segments in leakage permeance calculations & \mathrm{m}\\
+\tau_s & Slot pitch along circumference ($\pi D_g / S_1$) & \mathrm{m}\\
+A_{\mathrm{cond}} & Cross-sectional area of a single conductor & \mathrm{m^2}\text{ or }\mathrm{mm^2}\\
+A_{\mathrm{slot,cond}} & Total conductor copper area in one slot ($z_s A_{\mathrm{cond}}$) & \mathrm{m^2}\text{ or }\mathrm{mm^2}\\
+A_{\mathrm{slot,s}},\,A_{\mathrm{slot,r}} & Stator and rotor gross slot area ($b_s h_s$) & \mathrm{m^2}\\
+k_{\mathrm{fill}} & Slot fill factor ($A_{\mathrm{slot,cond}} / A_{\mathrm{slot,s}}$) & \text{dimensionless}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Specific Loadings, Windings, Current Density and Induced EMF ($\bar{B}$, $ac$, $G$, $K_w$, $K_p$, $K_d$, $T_{\mathrm{ph}}$, $I_c$, $J_{\mathrm{cond}}$, $E_{\mathrm{ph}}$, $V_{\mathrm{LL}}$)}
+\begin{center}
+\begin{tabular}{@{}>{$}l<{$} p{8.5cm} >{$}l<{$}@{}}
+\toprule
+\text{Symbol} & \text{Meaning} & \text{Unit}\\
+\midrule
+\bar{B} & Specific magnetic loading ($2p\Phi_m / (\pi D_g L_c)$) & \mathrm{T}\\
+ac & Specific electric loading ($m(2T_{\mathrm{ph}}I_{\mathrm{ph}})/(\pi D_g)$) & \mathrm{A\text{-}conductors/m}\\
+G & Output coefficient ($S_{3\phi}/(D_g^2 L_c n_s)$) & \mathrm{VA\,s/m^3}\\
+K_w,\,K_{w1},\,K_{wn} & Winding factor (fundamental / $n$-th harmonic) & \text{dimensionless}\\
+K_p & Pitch / chording factor ($\cos(\varepsilon_{\mathrm{ch}}/2)$) & \text{dimensionless}\\
+K_d & Distribution / breadth factor & \text{dimensionless}\\
+K_{\mathrm{sk}},\,K_{\mathrm{sk},n} & Skew factor & \text{dimensionless}\\
+\varepsilon_{\mathrm{ch}} & Short-pitch / chording electrical angle & \mathrm{rad}\text{ or }^\circ\\
+\gamma & Slot angular pitch in electrical radians & \mathrm{rad}\text{ or }^\circ\\
+\sigma_{\mathrm{ph}} & Phase spread electrical angle ($m\gamma$) & \mathrm{rad}\text{ or }^\circ\\
+m & Number of phases (typically 3) & \text{dimensionless}\\
+T_{\mathrm{ph}} & Series turns per phase & \text{dimensionless}\\
+I_c & Conductor current ($I_{\mathrm{ph}}/a$, with $a$ parallel paths) & \mathrm{A}\\
+I_{\mathrm{ph}} & RMS phase current & \mathrm{A}\\
+I_{\mathrm{line}} & RMS line current & \mathrm{A}\\
+I_m & Peak phase current in MMF waveforms & \mathrm{A}\\
+I_f & DC field excitation current in rotor & \mathrm{A}\\
+J_{\mathrm{cond}},\,J_s,\,J_f & Conductor current density (stator / rotor) & \mathrm{A/mm^2}\text{ or }\mathrm{A/m^2}\\
+E_{\mathrm{ph}} & Induced phase EMF ($4.44 K_w T_{\mathrm{ph}} \Phi_m f$) & \mathrm{V}\\
+V_{\mathrm{ph}} & Terminal phase voltage (RMS) & \mathrm{V}\\
+V_{\mathrm{LL}} & Line-to-line voltage (RMS) & \mathrm{V}\\
+f & Electrical supply frequency & \mathrm{Hz}\\
+\omega_e,\,\omega_1 & Electrical angular frequency ($2\pi f$) & \mathrm{rad/s}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Circuits, Resistances, Inductances and Reactances ($R_{\mathrm{ph}}$, $R_2$, $L_m$, $X_p$, $X_m$, $X_s$, $X_d$, $X_q$, $\lambda_{\mathrm{slot}}$)}
+\begin{center}
+\begin{tabular}{@{}>{$}l<{$} p{8.5cm} >{$}l<{$}@{}}
+\toprule
+\text{Symbol} & \text{Meaning} & \text{Unit}\\
+\midrule
+R_{\mathrm{ph}} & Stator phase winding resistance & \Omega\\
+R_f & DC field winding resistance & \Omega\\
+R_2 & Rotor resistance referred to stator & \Omega\\
+R_b,\,R_e & Rotor cage bar and end-ring resistance & \Omega\\
+L_{\mathrm{coil}} & Self-inductance of a single coil ($\lambda / I_c$) & \mathrm{H}\\
+L_p & Leakage inductance per phase & \mathrm{H}\\
+L_m & Magnetizing inductance per phase & \mathrm{H}\\
+L_{aa,m},\,L_{ab,m} & Phase self- and mutual magnetizing inductance & \mathrm{H}\\
+L_{2\ell} & Rotor leakage inductance referred to stator & \mathrm{H}\\
+X_p & Leakage reactance per phase ($\omega_e L_p$) & \Omega\\
+X_m & Magnetizing reactance per phase ($\omega_e L_m$) & \Omega\\
+X_s & Synchronous reactance ($X_p + X_m$) & \Omega\\
+X_d,\,X_q & Direct- and quadrature-axis synchronous reactance & \Omega\\
+X_{s1},\,X_{s2}' & Stator and referred rotor slot leakage reactance & \Omega\\
+X_o,\,X_z,\,X_h & Overhang, zigzag, and differential leakage reactance & \Omega\\
+X_{e1} & Total equivalent leakage reactance referred to stator & \Omega\\
+\lambda_i,\,\lambda_{\mathrm{slot}} & Slot leakage permeance & \mathrm{H}\\
+\lambda_0 & Overhang leakage permeance & \mathrm{H}\\
+Z_1,\,Z_{\mathrm{base}} & Thevenin / base phase impedance & \Omega\\
+E_1 & Stator Thevenin phase EMF in induction motor torque model & \mathrm{V}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Rotational Speeds, Slip, Operating Frequencies, Power and Torque ($n_m$, $n_s$, $\omega_m$, $\omega_{ms}$, $s$, $S_{3\phi}$, $P_{\mathrm{mech}}$, $P_{\mathrm{Cu}}$, $P_{\mathrm{core}}$, $T_e$, $T_b$, $T_{\mathrm{st}}$)}
+\begin{center}
+\begin{tabular}{@{}>{$}l<{$} p{8.5cm} >{$}l<{$}@{}}
+\toprule
+\text{Symbol} & \text{Meaning} & \text{Unit}\\
+\midrule
+n_m & Rotor rotational speed & \mathrm{r/s}\text{ or }\mathrm{r/min}\\
+n_s & Synchronous rotational speed ($60f/p$ in r/min; $f/p$ in r/s) & \mathrm{r/s}\text{ or }\mathrm{r/min}\\
+\omega_m & Mechanical rotor angular speed ($2\pi n_m / 60$) & \mathrm{rad/s}\\
+\omega_{ms} & Mechanical synchronous angular speed ($\omega_e / p$) & \mathrm{rad/s}\\
+\omega_2 & Rotor electrical slip angular frequency ($s \omega_e$) & \mathrm{rad/s}\\
+\omega_{2b} & Slip frequency at breakdown torque ($R_2 / L_{2\ell}$) & \mathrm{rad/s}\\
+s & Slip ($(n_s - n_m)/n_s = (\omega_{ms}-\omega_m)/\omega_{ms}$) & \text{dimensionless}\\
+S_{3\phi} & Three-phase apparent power ($3 V_{\mathrm{ph}} I_{\mathrm{ph}} = \sqrt{3}V_{\mathrm{LL}}I_{\mathrm{line}}$) & \mathrm{VA}\\
+P_{\mathrm{mech}},\,P_{\mathrm{el}} & Active mechanical shaft or electrical terminal power & \mathrm{W}\\
+P_{\mathrm{Cu}},\,P_{\mathrm{core}} & Stator copper loss and core loss & \mathrm{W}\\
+P_{\mathrm{Cu,f}} & DC field winding copper loss & \mathrm{W}\\
+\eta & Machine efficiency ($P_{\mathrm{out}} / P_{\mathrm{in}}$) & \text{dimensionless}\\
+\cos\phi & Operating power factor & \text{dimensionless}\\
+T_e & Electromagnetic torque & \mathrm{N\cdot m}\\
+T_b & Breakdown / pull-out torque & \mathrm{N\cdot m}\\
+T_{\mathrm{st}} & Starting torque at standstill ($s=1$) & \mathrm{N\cdot m}\\
+P_s & Synchronizing power coefficient ($\partial P / \partial \delta$) & \mathrm{W/rad}\\
+T_s & Synchronizing torque coefficient ($P_s / \omega_m$) & \mathrm{N\cdot m/rad}\\
+J_{\mathrm{iner}} & Rotor moment of inertia & \mathrm{kg\cdot m^2}\\
+f_{\mathrm{osc}} & Natural oscillation hunting frequency & \mathrm{Hz}\\
+\varepsilon_{\mathrm{drop}} & Fractional stator leakage voltage drop & \text{dimensionless}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Unbalanced Magnetic Pull, Harmonics, Transformations and Inverter PWM ($e_0$, $\mathrm{UMP}$, $\nu$, $C_1$, $C_2$, $V_d$, $M$, $m_f$)}
+\begin{center}
+\begin{tabular}{@{}>{$}l<{$} p{8.5cm} >{$}l<{$}@{}}
+\toprule
+\text{Symbol} & \text{Meaning} & \text{Unit}\\
+\midrule
+e_0 & Static radial rotor displacement (eccentricity) & \mathrm{m}\\
+\varepsilon_{\mathrm{ecc}} & Relative eccentricity ($e_0 / g$) & \text{dimensionless}\\
+f_{m\theta} & Maxwell normal stress / force density in air gap & \mathrm{N/m^2}\\
+F_m & Resultant unbalanced magnetic pull (UMP) force & \mathrm{N}\\
+k & Integer harmonic index ($k = 1, 2, \dots$) & \text{dimensionless}\\
+n,\,\nu & Time / space harmonic order & \text{dimensionless}\\
+q_{p1},\,q_{p2} & Slots per pole in stator and rotor ($S_1/(2p),\,S_2/(2p)$) & \text{dimensionless}\\
+\delta & Power / load angle & \mathrm{rad}\\
+E_F & Open-circuit excitation EMF in synchronous machine & \mathrm{V}\\
+V_R,\,V_Y,\,V_B & Three-phase terminal voltages (Red, Yellow, Blue phases) & \mathrm{V}\\
+V_{10},\,V_{1+},\,V_{1-} & Zero-, positive-, and negative-sequence voltages & \mathrm{V}\\
+C_1,\,C_2,\,C_3 & Clarke, Park, and sequence transformation matrices & \text{dimensionless}\\
+V_d & Inverter DC link voltage & \mathrm{V}\\
+V_m & Peak fundamental phase output voltage & \mathrm{V}\\
+M & Amplitude modulation index ($V_m / (V_d/2)$) & \text{dimensionless}\\
+m_f & Frequency modulation ratio ($f_{\mathrm{tri}} / f_{\mathrm{fund}}$); course alias $p_{\mathrm{pwm}}$ & \text{dimensionless}\\
+A_{n,\mathrm{RY}} & Fourier peak amplitude of line-to-line harmonic $n$ & \mathrm{V}\\
+\gamma_{\mathrm{notch}} & Notch / cut angle in stepped PWM waveform & \mathrm{rad}\\
+\delta_{1k},\,\delta_{2k} & Gate pulse widths in asymmetrical double-edge PWM & \mathrm{rad}\text{ or }\mathrm{s}\\
+\bottomrule
+\end{tabular}
+\end{center}

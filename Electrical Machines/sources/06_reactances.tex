@@ -1,0 +1,311 @@
+\section{Leakage and Magnetizing Reactances}
+
+\subsection{Role and significance of leakage reactance in induction machines}
+
+\subsubsection{Impact of leakage reactance on starting current and breakdown torque}
+The total leakage reactance of an induction machine \(X_{\mathrm{leak}} = X_1 + X_2'\) governs its operating envelope:
+\begin{itemize}
+  \item \textbf{Starting current:} \(I_{\mathrm{st}} \approx \frac{V_{\mathrm{ph}}}{\sqrt{(R_1 + R_2')^2 + X_{\mathrm{leak}}^2}} \approx \frac{V_{\mathrm{ph}}}{X_{\mathrm{leak}}}\).
+  \item \textbf{Breakdown / pull-out torque:} \(T_b \approx \frac{3 V_{\mathrm{ph}}^2}{2\omega_{ms}\left[ R_1 + \sqrt{R_1^2 + X_{\mathrm{leak}}^2} \right]} \approx \frac{3 V_{\mathrm{ph}}^2}{2\omega_{ms} X_{\mathrm{leak}}}\).
+\end{itemize}
+\textbf{Design trade-off:}
+\begin{itemize}
+  \item Smaller leakage reactance (\(X_{\mathrm{leak}}\downarrow\)) \(\Rightarrow\) larger breakdown torque (\(T_b\uparrow\), high overload capability), but also \textbf{higher starting current} (\(I_{\mathrm{st}}\uparrow\)).
+  \item Larger leakage reactance (\(X_{\mathrm{leak}}\uparrow\)) \(\Rightarrow\) lower starting current (\(I_{\mathrm{st}}\downarrow\)), but reduced breakdown torque (\(T_b\downarrow\)) and lower operating power factor.
+\end{itemize}
+
+\subsection{Slot leakage permeance formulas: open, semi-closed, and round slots}
+
+\subsubsection{Magnetic permeance and inductance fundamentals}
+In magnetic circuit analysis analogous to electric conductance \(G = \sigma A / \ell\):
+\[
+\lambda = \mu_0 \frac{\text{area}}{\text{path length}} = \mu_0 L_c \frac{\text{height}}{\text{width}}\quad[\mathrm{H}].
+\]
+For a slot containing \(z_s\) conductors carrying current \(i_c\), the leakage inductance of that slot is:
+\[
+L_{\mathrm{slot}} = z_s^2 \lambda_{\mathrm{slot}}.
+\]
+
+\subsubsection{Open-slot leakage permeances ($\lambda_1, \lambda_2, \lambda_3$)}
+For a rectangular open slot of width \(b_s\), conductor region depth \(d_1\), slot depth above winding \(d_2\), and tooth width \(b_t\):
+\[
+\lambda_1 = \mu_0 L_c\frac{d_1}{3 b_s},
+\qquad
+\lambda_2 = \mu_0 L_c\frac{d_2}{b_s},
+\qquad
+\lambda_3 = \frac{\mu_0 L_c}{\pi}\ln\!\left(\frac{\pi b_t}{2 b_s}+1\right).
+\]
+\textbf{Physical paths:}
+\begin{itemize}
+  \item \(\lambda_1\): Across the conductor region. The factor \(1/3\) accounts for partial flux linkage (current linked increases linearly with height from bottom of slot).
+  \item \(\lambda_2\): Above the winding within the slot walls; links 100\% of the slot conductors.
+  \item \(\lambda_3\): Across the tooth-tips into the air gap.
+\end{itemize}
+Total open-slot leakage permeance:
+\[
+\lambda_{\mathrm{slot}} = \lambda_1 + \lambda_2 + \lambda_3.
+\]
+
+\subsubsection{Semi-closed slot leakage permeances ($\lambda_1$ to $\lambda_5$)}
+For a semi-closed slot with slot body width \(b_s\), slot opening width \(b_0\), tooth lip height \(d_4\), wedge height \(d_3\), and tooth pitch \(\tau_s\):
+\[
+\begin{aligned}
+\lambda_1 &= \mu_0 L_c\frac{d_1}{3 b_s} && (\text{conductor region}),\\
+\lambda_2 &= \mu_0 L_c\frac{d_2}{b_s} && (\text{straight space above conductors}),\\
+\lambda_3 &= \mu_0 L_c\frac{2 d_3}{b_0+b_s} && (\text{tapered wedge region, average width } (b_0+b_s)/2),\\
+\lambda_4 &= \mu_0 L_c\frac{d_4}{b_0} && (\text{tooth lip opening of width } b_0 \text{ and height } d_4),\\
+\lambda_5 &= \frac{\mu_0 L_c}{\pi}\ln\!\left(\frac{\tau_s}{b_0}\right) && (\text{circular tooth-tip fringing flux across opening}).
+\end{aligned}
+\]
+\textbf{Engineering note:} \(\lambda_5\) is small and typically neglected in induction motors where the air gap is small. Ignore tooth-tip and overhang permeances when the problem statement specifies slot-only leakage.
+Total semi-closed slot permeance:
+\[
+\lambda_{\mathrm{slot}} = \sum_{i=1}^4 \lambda_i
+\qquad(\text{or } \sum_{i=1}^5 \lambda_i\text{ if } \lambda_5\text{ included}).
+\]
+
+\subsubsection{Round slot leakage permeances}
+For a closed or round slot with circular conductor area of diameter \(d\), slot lip height \(h_4\), opening width \(b_0\), and tooth pitch \(\tau_s\):
+\[
+\lambda_1 = 0.623\,\mu_0 L_c,
+\qquad
+\lambda_4 = \mu_0 L_c\frac{h_4}{b_0},
+\qquad
+\lambda_5 = \frac{\mu_0 L_c}{\pi}\ln\!\left(\frac{\tau_s}{b_0}\right).
+\]
+Note: \(\lambda_1 = 0.623\,\mu_0 L_c\) is constant and independent of slot diameter.
+
+\subsection{Slot leakage inductance, reactance per phase $X_p$, and scaling laws}
+
+\subsubsection{Phase slot leakage reactance $X_p$ and inductance $L_p$}
+For a machine with single-layer series winding, \(N_{\mathrm{ph}}\) coils/slots per phase, and \(z_s\) conductors per slot:
+\[
+L_p = N_{\mathrm{ph}}\, z_s^2\, \lambda_{\mathrm{slot}},
+\qquad
+X_p = \omega_e L_p = 2\pi f N_{\mathrm{ph}} z_s^2 \lambda_{\mathrm{slot}}.
+\]
+For a three-phase machine:
+\[
+N_{\mathrm{ph}} = \frac{S_1}{m_{\mathrm{ph}}} = \frac{S_1}{3} = 2p \cdot q
+\]
+where \(q\) is slots per pole per phase, and total series turns per phase is \(T_{\mathrm{ph}} = N_{\mathrm{ph}} z_s / 2\).
+
+\subsubsection{Parametric scaling laws and current independence}
+Assuming linear iron permeability (\(\mu_{\mathrm{iron}}\to\infty\)):
+\begin{itemize}
+  \item \textbf{Conductors per slot:} \(X_p \propto z_s^2\). Doubling conductors per slot multiplies \(X_p\) by \(2^2 = 4\).
+  \item \textbf{Core length:} \(X_p \propto L_c\) (directly through each permeance \(\lambda_i \propto L_c\)).
+  \item \textbf{Frequency:} \(X_p \propto f\).
+  \item \textbf{Slot count per phase:} \(X_p \propto N_{\mathrm{ph}}\).
+  \item \textbf{Independence of current:} Leakage reactance is strictly independent of current amplitude:
+  \[
+  \frac{\partial X_p}{\partial I_c} = 0.
+  \]
+  \item \textbf{Narrowing slot openings:} As slot opening \(b_0 \to 0\), permeance \(\lambda_4 \propto 1/b_0 \to \infty\), dramatically increasing leakage reactance.
+  \item \textbf{Unused dimensions:} Altering an unused or unlinked dimension (e.g., \(d_3\) or \(d_4\) in a dummy/filler region carrying no flux) produces \textbf{zero effect} on \(X_p\).
+\end{itemize}
+
+\subsection{Exam recipe: slot leakage reactance calculation and parametric variations}
+
+\textbf{Use when:} given slot geometry dimensions (\(b_s, b_0, d_1, d_2, d_3, d_4\)), core length \(L_c\), turns \(T_{\mathrm{ph}}\) or \(z_s\), slots \(S_1\), and frequency \(f\).
+
+\textbf{Steps:}
+\begin{enumerate}
+  \item Determine active slot dimensions and convert all lengths to metres (\(\mathrm{cm}\times 10^{-2}\), \(\mathrm{mm}\times 10^{-3}\)).
+  \item Calculate individual permeances \(\lambda_i\) using the matching slot formula (open, semi-closed, or round).
+  \item Sum the active permeances: \(\lambda_{\mathrm{slot}} = \sum \lambda_i\).
+  \item Find slots per phase: \(N_{\mathrm{ph}} = S_1 / 3 = 2p \cdot q\). If conductors per slot \(z_s\) is not given, calculate \(z_s = 2 T_{\mathrm{ph}} / N_{\mathrm{ph}}\).
+  \item Calculate phase slot leakage reactance:
+  \[
+  X_p = 2\pi f N_{\mathrm{ph}} z_s^2 \lambda_{\mathrm{slot}}.
+  \]
+  \item For scaling problems with modified parameters, compute ratio:
+  \[
+  \frac{X_p'}{X_p} = \left(\frac{f'}{f}\right) \left(\frac{N_{\mathrm{ph}}'}{N_{\mathrm{ph}}}\right) \left(\frac{z_s'}{z_s}\right)^2 \left(\frac{\lambda_{\mathrm{slot}}'}{\lambda_{\mathrm{slot}}}\right).
+  \]
+\end{enumerate}
+
+\textbf{Fast checks:}
+\begin{itemize}
+  \item Permeance \(\lambda_{\mathrm{slot}}\) is typically on the order of \(0.1\mu_0\) to \(1.0\mu_0\) per metre of core length (\(\approx 10^{-7}\) to \(10^{-6}\,\mathrm{H}\)).
+  \item \(X_p\) is positive and typically between \(0.01\,\Omega\) (large machines) and a few ohms (small motors).
+\end{itemize}
+
+\textbf{Common traps:}
+\begin{itemize}
+  \item Forgetting the factor \(1/3\) in \(\lambda_1 = \mu_0 L_c \frac{d_1}{3 b_s}\).
+  \item Believing that \(X_p\) depends on conductor current \(I_c\) (it does not!).
+  \item Confusing conductors per slot \(z_s\) with turns per phase \(T_{\mathrm{ph}}\) (remember \(z_s = 2 T_{\mathrm{ph}} / N_{\mathrm{ph}}\)).
+  \item Changing an unlinked slot parameter (e.g.\ increasing \(b_1\) in a section where \(b_1<b_2\) doesn't change flux path) and incorrectly predicting a reactance shift.
+\end{itemize}
+
+\subsection{Magnetizing reactance $X_m$ and inductance $L_m$}
+
+\subsubsection{Magnetizing reactance formula and Carter-corrected air gap $g'$}
+The fundamental armature reaction MMF \(F_a\) produces an air-gap flux \(\Phi_m\) linking the stator winding and inducing a back-EMF \(E_a = 2\pi f K_w T_{\mathrm{ph}} \Phi_m\).
+The resulting magnetizing reactance and inductance per phase under balanced conditions are:
+\[
+X_m = 6\mu_0 f\left(\frac{K_w T_{\mathrm{ph}}}{p}\right)^2\frac{D_g L_c}{g'},
+\qquad
+L_m = \frac{X_m}{2\pi f} = \frac{3}{\pi}\mu_0\left(\frac{K_w T_{\mathrm{ph}}}{p}\right)^2\frac{D_g L_c}{g'}.
+\]
+where:
+\begin{itemize}
+  \item \(g' = K_g g\): effective air gap length, Carter-corrected for slot openings (\(K_g > 1\)).
+  \item \(D_g\): mean air-gap diameter; \(L_c\): active iron core length.
+  \item \(T_{\mathrm{ph}}\): series turns per phase; \(K_w\): fundamental winding factor.
+  \item \(p\): number of pole-pairs (\(2p\) is total poles).
+\end{itemize}
+\textbf{Iron core drop:} Formulas assume infinite iron permeability. If iron reluctance is included, the effective gap becomes \(g_{\mathrm{eff}} = g' + g_{\mathrm{iron}} > g'\), which reduces \(X_m\).
+
+\subsubsection{Physical implications for induction motors vs synchronous generators}
+\begin{itemize}
+  \item \textbf{Induction machines:} A small effective air gap \(g'\) is vital to obtain a high \(X_m\), which minimizes magnetizing current \(I_\mu = V_{\mathrm{ph}}/X_m\) and achieves a high power factor \(\cos\phi\). Larger, high-speed machines have larger \(D_g L_c\) and smaller \(p\), yielding higher \(X_m\) and superior power factor.
+  \item \textbf{Synchronous generators:} A large \(X_m\) would lead to excessive armature reaction and poor voltage regulation. Hence, synchronous machines are designed with a \textbf{much larger air gap} \(g'\) to keep \(X_m\) moderate.
+\end{itemize}
+
+\subsection{Exam recipe: estimate effective air gap $g'$ from magnetizing reactance $X_m$}
+
+\textbf{Use when:} given ratings (\(S_{3\phi}, V_{\mathrm{LL}}, f, 2p\)), reactances \(X_s\) and \(X_l\) (or in p.u.), specific magnetic loading \(\bar{B}\), and bore dimensions \(D_g, L_c\).
+
+\textbf{Steps:}
+\begin{enumerate}
+  \item Determine base quantities for star-connected machine:
+  \[
+  V_{\mathrm{base}} = V_{\mathrm{ph}} = \frac{V_{\mathrm{LL}}}{\sqrt{3}},
+  \qquad
+  I_{\mathrm{base}} = \frac{S_{3\phi}}{\sqrt{3} V_{\mathrm{LL}}},
+  \qquad
+  Z_{\mathrm{base}} = \frac{V_{\mathrm{base}}}{I_{\mathrm{base}}}.
+  \]
+  \item Obtain magnetizing reactance from synchronous and leakage reactances:
+  \[
+  X_m = X_s - X_l\quad[\Omega]
+  \qquad\text{or}\qquad
+  X_m = (x_s - x_l) Z_{\mathrm{base}}.
+  \]
+  \item Calculate pole-pitch area and fundamental flux per pole:
+  \[
+  A_g = \frac{\pi D_g L_c}{2p},
+  \qquad
+  \Phi_m = \bar{B} A_g = \bar{B}\frac{\pi D_g L_c}{2p}.
+  \]
+  \item Determine required turns per phase from the EMF equation:
+  \[
+  E_{\mathrm{ph}} \approx V_{\mathrm{ph}},
+  \qquad
+  T_{\mathrm{ph}} = \frac{E_{\mathrm{ph}}}{4.44 K_w \Phi_m f}
+  \quad(\text{using } K_w \approx 0.955\text{ for full-pitch uniform 3-}\phi).
+  \]
+  \item Round \(T_{\mathrm{ph}}\) to the nearest integer.
+  \item Rearrange the magnetizing reactance formula to solve for effective air gap \(g'\):
+  \[
+  g' = \frac{6\mu_0 f}{X_m}\left(\frac{K_w T_{\mathrm{ph}}}{p}\right)^2 D_g L_c.
+  \]
+\end{enumerate}
+
+\textbf{Fast checks:}
+\begin{itemize}
+  \item In induction motors, \(g'\) is small: typically \(0.2\,\mathrm{mm}\) to \(2.0\,\mathrm{mm}\).
+  \item In large synchronous generators, \(g'\) is large: typically \(10\,\mathrm{mm}\) to \(40\,\mathrm{mm}\).
+\end{itemize}
+
+\textbf{Common traps:}
+\begin{itemize}
+  \item Using line-to-line voltage \(V_{\mathrm{LL}}\) instead of phase voltage \(V_{\mathrm{ph}} = V_{\mathrm{LL}}/\sqrt{3}\).
+  \item Using total synchronous reactance \(X_s\) instead of magnetizing reactance \(X_m = X_s - X_l\).
+  \item Confusing pole-pairs \(p\) with total poles \(2p\) in \((\dots / p)^2\).
+\end{itemize}
+
+\subsection{Component breakdown of total leakage reactance in induction machines}
+
+\subsubsection{Total referred equivalent leakage reactance $X_{e1}$}
+The total equivalent leakage reactance per phase referred to the stator is the sum of five distinct physical components:
+\[
+X_{e1} = X_1 + X_2' = X_{s1} + X_{s2}' + X_o + X_z + X_h.
+\]
+
+\subsubsection{Stator and rotor slot leakage reactances $X_{s1}$ and $X_{s2}'$}
+\begin{itemize}
+  \item \(X_{s1}\): Stator slot leakage reactance, calculated from stator slot permeances \(\lambda_{\mathrm{slot1}}\).
+  \item \(X_{s2}'\): Rotor slot leakage reactance referred to stator turns:
+  \[
+  X_{s2}' = \left(\frac{K_{w1} T_{\mathrm{ph1}}}{K_{w2} T_{\mathrm{ph2}}}\right)^2 X_{s2}.
+  \]
+  For a squirrel-cage rotor with bar slot leakage reactance \(X_b\):
+  \[
+  X_{s2}' = 12\left(\frac{K_{w1} T_1}{S_2}\right)^2 (S_2 X_b) = 12 (K_{w1} T_1)^2 \frac{X_b}{S_2}.
+  \]
+\end{itemize}
+
+\subsubsection{Overhang (end-winding) leakage reactance $X_o$}
+The overhang leakage accounts for flux linking the coil ends outside the core:
+\[
+\lambda_o = \mu_0 L_o\left[ 0.336 \ln\!\left(\frac{L_o}{b}\right) + 0.11 \right],
+\]
+where \(L_o\) is the length and \(b\) the width of the end-winding coil bundle.
+This empirical formula accounts for both coil sides. The total coil permeance is \(\lambda_{\mathrm{coil}} = 2\lambda_s + \lambda_o\).
+
+\subsubsection{Zigzag leakage reactance $X_z$}
+Zigzag leakage is caused by flux threading back and forth across the air gap between stator and rotor tooth tips. It depends strongly on air-gap length:
+\[
+X_z = \frac{5}{6} X_m\left(\frac{1}{q_{p1}^2} + \frac{1}{q_{p2}^2}\right),
+\]
+where \(q_{p1} = \frac{S_1}{2p}\) and \(q_{p2} = \frac{S_2}{2p}\) are the numbers of slots per pole on stator and rotor.
+
+\subsubsection{Differential (harmonic) leakage reactance $X_h$}
+Higher-order space harmonics of the stator MMF cross the air gap to the rotor surface, but their short pole pitch prevents them from linking the rotor winding. They act as leakage flux:
+\[
+X_h = X_m(k_{h1} + k_{h2}),
+\]
+where \(k_{h1}\) and \(k_{h2}\) are harmonic leakage factors (read from Alger curves).
+
+\subsection{Phase self- and mutual magnetizing inductance matrix ($L_{aa}, L_{ab}$)}
+
+\subsubsection{Phase self-inductance $L_{aa,m}$ and mutual inductance $L_{ab,m}$}
+For a balanced three-phase stator winding with sinusoidal spatial distribution (excluding leakage):
+\[
+L_{aa,m} = \frac{2}{3} L_m = \frac{2}{\pi}\mu_0\left(\frac{K_w T_{\mathrm{ph}}}{p}\right)^2\frac{D_g L_c}{g'},
+\qquad
+L_{ab,m} = -\frac{1}{3} L_m = -\frac{1}{2} L_{aa,m}.
+\]
+\textbf{Sign explanation:} The mutual inductance \(L_{ab,m}\) is negative because the physical axis of phase B is shifted by \(120^\circ\) electrically, so \(\cos(120^\circ) = -0.5\).
+
+\subsubsection{Magnetizing inductance matrix $[L_m]$ and balanced three-phase operation}
+The flux linkage vector of the three phases is:
+\[
+\begin{bmatrix}
+\psi_{A,m} \\
+\psi_{B,m} \\
+\psi_{C,m}
+\end{bmatrix}
+=
+\begin{bmatrix}
+L_{aa,m} & L_{ab,m} & L_{ab,m} \\
+L_{ab,m} & L_{aa,m} & L_{ab,m} \\
+L_{ab,m} & L_{ab,m} & L_{aa,m}
+\end{bmatrix}
+\begin{bmatrix}
+i_A \\
+i_B \\
+i_C
+\end{bmatrix}
+= L_m
+\begin{bmatrix}
+2/3 & -1/3 & -1/3 \\
+-1/3 & 2/3 & -1/3 \\
+-1/3 & -1/3 & 2/3
+\end{bmatrix}
+\begin{bmatrix}
+i_A \\
+i_B \\
+i_C
+\end{bmatrix}.
+\]
+Under balanced three-phase excitation (\(\dot{I}_A + \dot{I}_B + \dot{I}_C = 0 \Rightarrow \dot{I}_B + \dot{I}_C = -\dot{I}_A\)):
+\[
+\dot{\psi}_{A,m} = L_{aa,m}\dot{I}_A + L_{ab,m}(\dot{I}_B + \dot{I}_C)
+= \left[ \frac{2}{3}L_m - \left(-\frac{1}{3}L_m\right) \right]\dot{I}_A
+= L_m\dot{I}_A.
+\]
+The phase magnetizing flux linkage under balanced currents is simply \(L_m \dot{I}_A\). The inductance matrix remains valid for unbalanced currents.

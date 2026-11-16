@@ -1,0 +1,145 @@
+\section{Isolated DC/DC converters}
+
+\subsection{Ctrl+F keywords: flyback, forward, phase-shift, phase-shifted full bridge, transformer, turns ratio, magnetising, reset winding, tertiary, two-transistor forward, isolation, \(N_1:N_2:N_3\)}
+
+Isolation is used for large step ratios, galvanic isolation, EMI and regulatory requirements. Isolated SMPS are PWM converters with a high-frequency transformer.
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Non-isolated & Isolated counterpart & CCM gain\\
+\midrule
+Buck \(D\) & Forward & \((N_2/N_1)D\)\\
+Boost \(1/(1-D)\) & --- in this lesson & ---\\
+Buck-boost \(D/(1-D)\) & Flyback & \(N D/(1-D)\)\\
+Full bridge PWM & Phase-shifted full bridge & \(N D=N\theta/\pi\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Flyback CCM}
+Energy is stored in \(L_m\) when \(T\) is on (secondary diode reverse-biased by \(N V_{\mathrm{in}}+V_o\)) and released to the output when \(T\) is off.
+
+Volt-second on \(L_m\):
+\[
+V_{\mathrm{in}} D T_s=\frac{V_o}{N}(1-D)T_s \quad\Rightarrow\quad \frac{V_o}{V_{\mathrm{in}}}=\frac{N D}{1-D}.
+\]
+CCM gain is load-independent and spans \(0\) to \(\infty\) (same caveats as buck-boost as \(D\to 1\)).
+
+\[
+\Delta I_p=\frac{V_{\mathrm{in}} D T_s}{L_m}=\frac{V_o}{N L_m}(1-D)T_s,\qquad
+\Delta I_s=\frac{\Delta I_p}{N}.
+\]
+Power:
+\[
+V_{\mathrm{in}} I_{\mathrm{in}}=V_o I_o,\qquad I_{\mathrm{in}}=\frac{N D}{1-D}I_o.
+\]
+On-state: \(i_p=i_m\). Off-state: \(i_s=i_m/N\). Peak constructions used in the notes:
+\[
+I_x=\frac{I_{\mathrm{in}}}{D}=N I_o+I_{\mathrm{in}},\qquad
+I_y=\frac{I_o}{1-D}=I_o+\frac{I_{\mathrm{in}}}{N}.
+\]
+Average primary:
+\[
+i_p=I_{\mathrm{in}}=\frac{V_{\mathrm{in}}}{R}\left(\frac{N D}{1-D}\right)^2.
+\]
+Output ripple (buck-boost analogue):
+\[
+\Delta V_o=\frac{D V_o T_s}{R C},\qquad \frac{\Delta V_o}{V_o}=\frac{D T_s}{R C}.
+\]
+
+\subsection{Flyback DCM}
+Magnetising current is a triangle from zero. Primary peak equals the whole ramp:
+\[
+\Delta I_p=\hat{\imath}_p=\frac{V_{\mathrm{in}} D T_s}{L_m}=\frac{V_o\delta T_s}{N L_m},\qquad
+\hat{\imath}_s=\frac{\Delta I_p}{N},\qquad
+\delta=\frac{N V_{\mathrm{in}} D}{V_o},\quad D+\delta<1.
+\]
+Input power from the triangle average \(\overline{i}_p=(\Delta I_p/2)D\):
+\[
+P_{\mathrm{in}}=V_{\mathrm{in}} I_{\mathrm{in}}=V_{\mathrm{in}}\frac{\Delta I_p}{2}D=\frac{V_{\mathrm{in}}^2 D^2 T_s}{2 L_m}.
+\]
+Lossless energy balance (course form used to get \(I_{\mathrm{in}}\) after \(V_o\)):
+\[
+P_o=\frac{V_o^2}{R},\qquad I_{\mathrm{in}}=\frac{P_o}{V_{\mathrm{in}}}=\frac{V_o^2}{R V_{\mathrm{in}}}.
+\]
+Equating \(P_{\mathrm{in}}=P_o\) gives the conversion ratio. \(M\) does not contain \(N\) when \(K\) uses primary \(L_m\) and load \(R\); \(M\) is proportional to \(D\):
+\[
+\frac{V_o}{V_{\mathrm{in}}}=\frac{D}{\sqrt{K}},\qquad K=\frac{2 L_m}{R T_s}.
+\]
+Boundary (CCM if \(K\) is larger). Lecture Q1 with \(T_x=1:N\):
+\[
+K_{\mathrm{crit}}=\left(\frac{1-D}{N}\right)^2.
+\]
+
+\subsection{Forward CCM (three-winding)}
+Derived from a buck with transformer \(N_1:N_2\) and reset winding \(N_3\). While \(T\) is on, \(v_2=(N_2/N_1)V_{\mathrm{in}}\) and the output inductor sees that voltage minus \(V_o\). Reset: magnetising current flows in \(N_3\) through \(D_3\).
+
+Flux reset:
+\[
+\Delta\Phi=\frac{V_{\mathrm{in}}}{N_1}D T_s=\frac{V_{\mathrm{in}}}{N_3}D_R T_s \quad\Rightarrow\quad D_R=\frac{N_3}{N_1}D.
+\]
+Need \(D_R\le 1-D\):
+\[
+D\le \frac{1}{1+N_3/N_1}=\frac{N_1}{N_1+N_3}=D_{\max}.
+\]
+Output inductor volt-seconds:
+\[
+V_o(1-D)T_s=\Bigl(\frac{N_2}{N_1}V_{\mathrm{in}}-V_o\Bigr)D T_s \quad\Rightarrow\quad
+\frac{V_o}{V_{\mathrm{in}}}=\frac{N_2}{N_1}D.
+\]
+Transistor voltage during reset:
+\[
+v_{T,\mathrm{off}}=V_{\mathrm{in}}\Bigl(1+\frac{N_1}{N_3}\Bigr).
+\]
+
+\subsection{Forward DCM}
+Same algebraic shape as buck DCM with the transformer factor in front:
+\[
+\frac{V_o}{V_{\mathrm{in}}}=\frac{N_2/N_1}{1+\sqrt{1+4K/D^2}}.
+\]
+% Added from exam coverage (reference notes Eq.\ (5.26); \(K=2L/(R T_s)\) on the output inductor).
+
+\subsection{Two-transistor forward}
+Both transistors switch together. Reset through \(D_A\), \(D_B\). Each transistor is rated \(V_{\mathrm{in}}\) (lower than single-transistor forward). No shoot-through pair in one leg. Extra device count. Used at higher power / higher \(V_{\mathrm{in}}\).
+
+\subsection{Phase-shifted full bridge}
+Four switches in two legs, transformer \(1:N\), output diode bridge and \(LC\) filter. Device duty \(\approx 0.5\) with dead-time. Output is regulated by phase shift \(\theta\in[0,\pi]\) between legs:
+\[
+D=\frac{\theta}{\pi},\qquad \frac{V_o}{V_{\mathrm{in}}}=N D=\frac{N\theta}{\pi}.
+\]
+Typically CCM. ZVS can be obtained using \(C_r\) with transformer leakage over a wide load range. High-power: loss split over four devices; MOSFET gate can be AC square \(\pm 15\,\mathrm{V}\) to reject turn-on noise.
+
+\subsection{Exam recipe: flyback CCM or DCM identification}
+\textbf{Use when:} given \(f_s\), \(L_m\), \(R\), \(C\), \(V_{\mathrm{in}}\), \(D\), \(1:N\).
+
+\textbf{Steps:}
+\begin{enumerate}
+  \item \(K=2 L_m/(R T_s)\), \(K_{\mathrm{crit}}=[(1-D)/N]^2\).
+  \item If \(K>K_{\mathrm{crit}}\) \(\Rightarrow\) CCM: \(V_o=N D V_{\mathrm{in}}/(1-D)\), \(I_{\mathrm{in}}=N D I_o/(1-D)\), \(\Delta V_o=D V_o T_s/(R C)\).
+  \item If \(K<K_{\mathrm{crit}}\) \(\Rightarrow\) DCM: \(V_o=V_{\mathrm{in}} D/\sqrt{K}\), then \(P_o=V_o^2/R\) and \(I_{\mathrm{in}}=P_o/V_{\mathrm{in}}\). Peaks \(\hat{\imath}_p=\Delta I_p=V_{\mathrm{in}} D T_s/L_m\), \(\hat{\imath}_s=\Delta I_p/N\).
+  \item If CCM, peaks: \(\Delta I_p=V_{\mathrm{in}} D T_s/L_m\) added to the DC level (\(I_{\mathrm{in}}\) on primary). Secondary peak \(=\Delta I_p/N\) plus secondary DC.
+  \item To force DCM, reduce \(K\): smaller \(L_m\) or larger \(R\), not a larger \(L_m\).
+\end{enumerate}
+
+\textbf{Fast checks:} \(N=2\), \(D=0.5\) CCM \(\Rightarrow\) \(V_o=2 V_{\mathrm{in}}\).
+
+\textbf{Common traps:} putting \(N\) into the DCM \(D/\sqrt{K}\) formula; using CCM \(I_{\mathrm{in}}=ND I_o/(1-D)\) in DCM instead of \(I_{\mathrm{in}}=P_o/V_{\mathrm{in}}\); using buck ripple \(8LC\); requiring larger \(L_m\) to enter DCM.
+
+\subsection{Exam recipe: forward reset and \(D_{\max}\)}
+\textbf{Use when:} three-winding forward, flux reset, maximum duty.
+
+\textbf{Steps:}
+\begin{enumerate}
+  \item \(D_R=(N_3/N_1)D\le 1-D\).
+  \item \(D_{\max}=N_1/(N_1+N_3)\).
+  \item CCM gain \(V_o=(N_2/N_1) D V_{\mathrm{in}}\) only if \(D\le D_{\max}\).
+\end{enumerate}
+
+\textbf{Common traps:} \(D_{\max}=0.5\) is only for \(N_1=N_3\); forgetting the extra transistor voltage \(V_{\mathrm{in}}(1+N_1/N_3)\).
+
+\subsection{Recognition rules}
+Flyback: one switch, two-winding transformer, no output inductor (only \(C\)). Forward: output \(L\), reset winding or two-transistor clamp. Phase-shift: four switches, \(\theta\) not PWM \(D\) on a single device.
+
+\subsection{One-line checks}
+Flyback CCM \(=\) isolated buck-boost. Forward CCM \(=\) isolated buck. Phase-shift \(M\) linear in \(\theta\). Flyback DCM: \(I_{\mathrm{in}}=P_o/V_{\mathrm{in}}\) with \(P_o=V_o^2/R\), not the CCM formula \(I_{\mathrm{in}}=ND I_o/(1-D)\).

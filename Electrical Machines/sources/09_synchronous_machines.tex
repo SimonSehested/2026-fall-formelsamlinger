@@ -1,0 +1,153 @@
+\section{Synchronous Machines: Power-Angle, Synchronizing Torque and Hunting}
+
+\subsection{Cylindrical-Rotor Power-Angle Equation: \texorpdfstring{$P_{\mathrm{el}} = \frac{3 E_F V_{\mathrm{ph}}}{X_s}\sin\delta$}{Pel = (3 EF Vph / Xs) sin delta}}
+For a three-phase round-rotor (cylindrical) synchronous machine connected to an infinite bus, neglecting armature resistance ($R_a \approx 0$):
+\begin{equation}
+\boxed{P_{\mathrm{el}} = \frac{3 E_F V_{\mathrm{ph}}}{X_s}\sin\delta = \frac{V_{\mathrm{LL}} E_{\mathrm{LL}}}{X_s}\sin\delta \quad [\mathrm{W}]}
+\end{equation}
+where:
+\begin{itemize}
+  \item $E_F$: excitation EMF per phase (open-circuit phase voltage induced by field current) $[\mathrm{V}]$.
+  \item $V_{\mathrm{ph}}$: terminal phase voltage $[\mathrm{V}]$ ($V_{\mathrm{ph}} = V_{\mathrm{LL}}/\sqrt{3}$ in star connection).
+  \item $X_s$: synchronous reactance per phase $[\Omega]$ ($X_s = X_m + X_p$).
+  \item $\delta$: power angle / load angle between $\vec{E}_F$ and $\vec{V}_{\mathrm{ph}}$ $[\mathrm{elect.\,rad}]$.
+\end{itemize}
+\textbf{Operating conventions:}
+\begin{itemize}
+  \item $\delta > 0$: \textbf{Generator mode} ($\vec{E}_F$ leads $\vec{V}_{\mathrm{ph}}$; electric power exported to grid).
+  \item $\delta < 0$: \textbf{Motor mode} ($\vec{E}_F$ lags $\vec{V}_{\mathrm{ph}}$; electric power imported from grid).
+  \item Steady-state pull-out limit: occurs at $\delta = 90^\circ$ ($\pi/2\,\mathrm{rad}$), with maximum power $P_{\max} = \frac{3 E_F V_{\mathrm{ph}}}{X_s}$.
+\end{itemize}
+
+\subsection{Synchronizing Power Coefficient: \texorpdfstring{$P_s = \frac{\partial P}{\partial\delta} = \frac{3 E_F V_{\mathrm{ph}}}{X_s}\cos\delta$}{Ps = dP/ddelta = (3 EF Vph / Xs) cos delta}}
+The synchronizing power coefficient represents the electrical stiffness (restoring power gradient per unit electrical angle displacement):
+\begin{equation}
+\boxed{P_s = \frac{\partial P_{\mathrm{el}}}{\partial\delta} = \frac{3 E_F V_{\mathrm{ph}}}{X_s}\cos\delta \quad [\mathrm{W/\text{elect.\,rad}}]}
+\end{equation}
+\textbf{Short-circuit current ratio relation ($k = I_{\mathrm{sc}}/I_{\mathrm{ph}}$):}
+In exam problems, the excitation condition is often specified via the steady-state short-circuit current:
+\begin{equation}
+I_{\mathrm{sc}} = \frac{E_F}{X_s} = k I_{\mathrm{ph}}
+\end{equation}
+where $k$ is the short-circuit current multiple (typically $k \in [3, 6]$), and $I_{\mathrm{ph}}$ is rated phase current.
+Substituting into $P_s$ and using total three-phase apparent rating $S_{3\phi} = 3 V_{\mathrm{ph}} I_{\mathrm{ph}}$:
+\begin{equation}
+\boxed{P_s = 3\left(\frac{E_F}{X_s}\right)V_{\mathrm{ph}}\cos\delta = 3(k I_{\mathrm{ph}})V_{\mathrm{ph}}\cos\delta = k S_{3\phi}\cos\delta \quad [\mathrm{W/\text{elect.\,rad}}]}
+\end{equation}
+\textbf{Operating point approximations:}
+\begin{itemize}
+  \item \textbf{No-load / small load angle ($\delta \approx 0$):} $\cos\delta \approx 1 \implies P_s \approx k S_{3\phi}$.
+  \item \textbf{Stability limit ($\delta = 90^\circ$):} $\cos 90^\circ = 0 \implies P_s = 0$ (no restoring power; machine loses synchronism).
+\end{itemize}
+
+\subsection{Salient-Pole Machine Power Equation and Reluctance Torque (\texorpdfstring{$X_d, X_q, \sin 2\delta$}{Xd, Xq, sin 2delta})}
+In salient-pole machines, the air-gap reluctance varies with rotor position, requiring two-reaction analysis ($X_d > X_q$):
+\begin{equation}
+\boxed{P_{\mathrm{el}} = \underbrace{\frac{3 E_F V_{\mathrm{ph}}}{X_d}\sin\delta}_{\text{Excitation power}} + \underbrace{\frac{3 V_{\mathrm{ph}}^2(X_d - X_q)}{2 X_d X_q}\sin 2\delta}_{\text{Reluctance power}} \quad [\mathrm{W}]}
+\end{equation}
+\textbf{Components of power and torque:}
+\begin{enumerate}
+  \item \textbf{Excitation power:} Depends directly on field current $E_F$ and varies as $\sin\delta$.
+  \item \textbf{Reluctance power:} Completely independent of field excitation $E_F$! It arises purely from rotor saliency ($X_d \neq X_q$) and varies as $\sin 2\delta$ (two power peaks per electrical cycle).
+\end{enumerate}
+\textbf{Reluctance torque:}
+\begin{equation}
+\boxed{T_{\mathrm{rel}} = \frac{P_{\mathrm{rel}}}{\omega_m} = \frac{3 V_{\mathrm{ph}}^2(X_d - X_q)}{2 \omega_m X_d X_q}\sin 2\delta \quad [\mathrm{N\cdot m}]}
+\end{equation}
+\textbf{Key properties of salient-pole machines:}
+\begin{itemize}
+  \item Reluctance torque can run an unexcited motor at synchronous speed ($E_F = 0$, synchronous reluctance motor).
+  \item The peak total power occurs at load angle $\delta_{\max} < 90^\circ$ (typically $\delta \approx 60^\circ\text{--}75^\circ$).
+  \item If saliency vanishes ($X_d = X_q = X_s$), the reluctance term becomes identically zero, recovering the cylindrical-rotor formula.
+\end{itemize}
+
+\subsection{Synchronizing Torque Coefficient: \texorpdfstring{$T_s = P_s / \omega_m$}{Ts = Ps / omega(m)}}
+The mechanical angular velocity of the rotor is:
+\begin{equation}
+\omega_m = \frac{2\pi n_m}{60} = \frac{\omega_e}{p} = \frac{2\pi f}{p} \quad [\mathrm{rad/s}]
+\end{equation}
+where $n_m$ is in $\mathrm{r/min}$, $f$ is supply frequency in $\mathrm{Hz}$, and $p$ is pole-pairs.
+
+The synchronizing torque coefficient is:
+\begin{equation}
+\boxed{T_s = \frac{P_s}{\omega_m} \quad [\mathrm{N\cdot m/\text{elect.\,rad}}]}
+\end{equation}
+\textbf{Conversion to mechanical radians:}
+Since electrical angle $\delta = p\,\theta_{\mathrm{mech}}$:
+\begin{equation}
+T_{s,\mathrm{mech}} = \frac{\mathrm{d}T}{\mathrm{d}\theta_{\mathrm{mech}}} = p\cdot T_s \quad [\mathrm{N\cdot m/\text{mech.\,rad}}].
+\end{equation}
+
+\subsection{Natural Oscillation Frequency (Hunting): \texorpdfstring{$f_{\mathrm{osc}} = \frac{1}{2\pi}\sqrt{\frac{p T_s}{J_{\mathrm{iner}}}}$}{f(osc) = 1/(2pi) sqrt(p Ts / J)}}
+\textbf{Physical definition of hunting:} Small periodic angular oscillations of the rotor about the synchronous speed equilibrium position following a sudden load change, switching event, or prime-mover pulsation.
+
+\textbf{Equation of small torsional motion:}
+For a small deviation $\Delta\theta_{\mathrm{mech}} = \Delta\delta / p$:
+\begin{equation}
+J_{\mathrm{iner}}\frac{\mathrm{d}^2\Delta\theta_{\mathrm{mech}}}{\mathrm{d}t^2} + T_{s,\mathrm{mech}}\Delta\theta_{\mathrm{mech}} = 0 \iff \frac{J_{\mathrm{iner}}}{p}\frac{\mathrm{d}^2\Delta\delta}{\mathrm{d}t^2} + T_s\Delta\delta = 0
+\end{equation}
+where $J_{\mathrm{iner}}$ is the total rotor + prime-mover moment of inertia in $\mathrm{kg\cdot m^2}$.
+
+The undamped natural angular frequency is:
+\begin{equation}
+\omega_{\mathrm{osc}} = \sqrt{\frac{p\,T_s}{J_{\mathrm{iner}}}} \quad [\mathrm{rad/s}].
+\end{equation}
+The natural oscillation frequency in Hertz (hunting frequency) is:
+\begin{equation}
+\boxed{f_{\mathrm{osc}} = \frac{1}{2\pi}\sqrt{\frac{p\cdot T_s}{J_{\mathrm{iner}}}} \quad [\mathrm{Hz}]}
+\end{equation}
+where:
+\begin{itemize}
+  \item $p$: number of pole-pairs ($p = \text{poles}/2$).
+  \item $T_s$: synchronizing torque coefficient $[\mathrm{N\cdot m/\text{elect.\,rad}}]$.
+  \item $J_{\mathrm{iner}}$: rotor moment of inertia $[\mathrm{kg\cdot m^2}]$.
+\end{itemize}
+\textbf{Typical values and damper windings:}
+\begin{itemize}
+  \item Large grid machines typically exhibit $f_{\mathrm{osc}} \approx 1\text{--}5\,\mathrm{Hz}$.
+  \item \textbf{Damper windings (amortisseur bars):} Squirrel-cage bars embedded in rotor pole faces and shorted by end rings. During steady synchronous rotation, no voltage is induced. During hunting ($\mathrm{d}\delta/\mathrm{d}t \neq 0$), induction currents flow, generating an asynchronous damping torque to rapidly suppress oscillations.
+\end{itemize}
+
+\subsection{Exam Recipe: Calculating Hunting Frequency and Synchronizing Torque}
+\textbf{Use when:} Given machine rating $S_{3\phi}$ (VA), short-circuit ratio/relation $E_F/X_s = k I_{\mathrm{ph}}$, speed $n_m$ (rpm) or frequency $f$ and poles $2p$, and moment of inertia $J_{\mathrm{iner}}$ ($\mathrm{kg\cdot m^2}$).
+
+\textbf{Steps:}
+\begin{enumerate}
+  \item \textbf{Identify pole-pairs and rated speed:}
+  \[
+  p = \frac{\text{poles}}{2} = \frac{60 f}{n_m}, \qquad n_m = \frac{60 f}{p} \quad [\mathrm{r/min}].
+  \]
+  \item \textbf{Calculate mechanical angular velocity $\omega_m$:}
+  \[
+  \omega_m = \frac{2\pi n_m}{60} = \frac{2\pi f}{p} \quad [\mathrm{rad/s}].
+  \]
+  \item \textbf{Compute synchronizing power coefficient $P_s$:}
+  \[
+  P_s = k S_{3\phi}\cos\delta.
+  \]
+  If $\delta$ is not specified, assume near no-load / small angle: $\cos\delta \approx 1 \implies P_s = k S_{3\phi}$.
+  Ensure $S_{3\phi}$ is in Volt-Amperes ($\mathrm{VA}$), e.g., $50\,\mathrm{MVA} = 50\times 10^6\,\mathrm{VA}$.
+  \item \textbf{Compute synchronizing torque coefficient $T_s$:}
+  \[
+  T_s = \frac{P_s}{\omega_m} \quad [\mathrm{N\cdot m/\text{elect.\,rad}}].
+  \]
+  \item \textbf{Compute natural oscillation frequency $f_{\mathrm{osc}}$:}
+  \[
+  f_{\mathrm{osc}} = \frac{1}{2\pi}\sqrt{\frac{p\cdot T_s}{J_{\mathrm{iner}}}} \quad [\mathrm{Hz}].
+  \]
+\end{enumerate}
+
+\textbf{Fast checks:}
+\begin{itemize}
+  \item $f_{\mathrm{osc}}$ should typically fall between $1$ and $10\,\mathrm{Hz}$.
+  \item $T_s$ is typically $10^5\text{--}10^7\,\mathrm{N\cdot m/rad}$ for utility-scale generators.
+\end{itemize}
+
+\textbf{Common traps:}
+\begin{itemize}
+  \item \textbf{Poles vs.\ pole-pairs:} Using total poles $2p$ instead of pole-pairs $p$ inside the square root $\sqrt{p T_s / J_{\mathrm{iner}}}$.
+  \item \textbf{Speed conversion:} Using electrical frequency $\omega_e = 2\pi f$ instead of mechanical speed $\omega_m = 2\pi n_m / 60 = 2\pi f / p$ to find $T_s = P_s / \omega_m$.
+  \item \textbf{Power units:} Inserting MVA or kVA directly without converting to VA ($10^6$ or $10^3$).
+  \item \textbf{Inertia symbol:} Confusing moment of inertia $J_{\mathrm{iner}}$ ($\mathrm{kg\cdot m^2}$) with current density $J_{\mathrm{cond}}$ ($\mathrm{A/mm^2}$).
+  \item \textbf{Angular units:} Forgetting that $f_{\mathrm{osc}}$ is in Hz (cycles per second), so the division by $2\pi$ is essential ($\omega_{\mathrm{osc}} = 2\pi f_{\mathrm{osc}}$).
+\end{itemize}

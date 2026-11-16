@@ -1,0 +1,111 @@
+\section{Induction machine torque and equivalent circuit}
+
+\subsection{Rotor current and torque equation (simplified Thevenin / flux-linkage model, slip frequency \texorpdfstring{$\omega_2 = s \omega_1$}{omega_2 = s omega_1})}
+Under the stator Thevenin / flux-linkage model utilized in course exams:
+\begin{itemize}
+  \item \textbf{Synchronous electrical angular velocity:} \(\omega_1 = 2\pi f = p \omega_{ms}\) (\(\mathrm{rad/s}\)).
+  \item \textbf{Per-unit slip:} \(s = \frac{\omega_{ms}-\omega_m}{\omega_{ms}} = \frac{n_s-n_m}{n_s}\).
+  \item \textbf{Rotor slip frequency:} \(\omega_2 = s \omega_1\) (\(\mathrm{rad/s}\)).
+  \item \textbf{Rotor parameters referred to stator:} \(R_2\) (rotor resistance, \(\Omega\)), \(L_2\) (rotor leakage inductance, \(\mathrm{H}\)).
+  \item \textbf{Stator Thevenin phase EMF:} \(E_1\) (RMS volts per phase, \(E_1/\omega_1 = \lambda_1\) is phase flux linkage).
+\end{itemize}
+
+Rotor phase current magnitude (referred to stator):
+\[
+I_2 = \left(\frac{E_1}{\omega_1}\right)\frac{\omega_2}{\sqrt{R_2^2 + \omega_2^2 L_2^2}}.
+\]
+Three-phase air-gap power transferred to the rotor:
+\[
+P_{\mathrm{ag}} = 3 I_2^2 \frac{R_2}{s} = 3 I_2^2 R_2 \frac{\omega_1}{\omega_2}.
+\]
+Electromagnetic torque developed across all three phases:
+\[
+T_e = \frac{P_{\mathrm{ag}}}{\omega_{ms}} = 3\frac{I_2^2 R_2}{\omega_1 s} = 3\frac{I_2^2 R_2}{\omega_2}.
+\]
+Substituting \(I_2\) yields the torque in terms of rotor slip frequency \(\omega_2\):
+\[
+T_e = 3\left(\frac{E_1}{\omega_1}\right)^2\frac{\omega_2 R_2}{R_2^2 + \omega_2^2 L_2^2}.
+\]
+Equivalently, expressing \(\omega_2 = s \omega_1\) gives torque in terms of per-unit slip \(s\):
+\[
+T_e = 3\left(\frac{E_1}{\omega_1}\right)^2\frac{s \omega_1 R_2}{R_2^2 + s^2 \omega_1^2 L_2^2}.
+\]
+\emph{Note:} If stator Thevenin phase impedance \(Z_1\) is included, the flux-linkage factor \(\left(E_1/\omega_1\right)\) is generalized to \(\left(E_1/Z_1\right)\).
+
+\subsection{Breakdown (pull-out) torque \texorpdfstring{$T_b$}{T_b}, breakdown slip \texorpdfstring{$s_b$}{s_b}, and slip frequency \texorpdfstring{$\omega_{2b} = R_2/L_2$}{omega_2b = R_2/L_2}}
+Differentiating \(T_e\) with respect to rotor slip frequency \(\omega_2\):
+\[
+\frac{\mathrm{d}T_e}{\mathrm{d}\omega_2} = 3\left(\frac{E_1}{\omega_1}\right)^2 R_2\,\frac{(R_2^2 + \omega_2^2 L_2^2) - 2\omega_2^2 L_2^2}{(R_2^2 + \omega_2^2 L_2^2)^2} = 0
+\quad\implies\quad
+R_2^2 - \omega_2^2 L_2^2 = 0.
+\]
+This defines the breakdown slip frequency and breakdown slip:
+\[
+\omega_{2b} = \pm \frac{R_2}{L_2} \quad [\mathrm{rad/s}],
+\qquad
+s_b = \frac{\omega_{2b}}{\omega_1} = \pm \frac{R_2}{\omega_1 L_2} = \pm \frac{R_2}{X_2}
+\]
+(\(+\) for motoring, \(-\) for generating).
+
+Substituting \(\omega_{2b}\) back into the torque equation yields the maximum breakdown torque:
+\[
+T_b = \pm \frac{3}{2 L_2}\left(\frac{E_1}{\omega_1}\right)^2 \quad [\mathrm{N\cdot m}].
+\]
+
+\subsubsection{Independence of breakdown torque \texorpdfstring{$T_b$}{T_b} from rotor resistance \texorpdfstring{$R_2$}{R_2}}
+\begin{itemize}
+  \item The peak breakdown torque \(T_b\) depends only on stator phase flux \((E_1/\omega_1)\) and rotor leakage inductance \(L_2\).
+  \item It is strictly \textbf{independent of rotor resistance} \(R_2\).
+  \item Increasing \(R_2\) (e.g.\ via wound-rotor external resistors) shifts the peak breakdown point to a higher slip \(s_b\) (lower motor speed), without changing the magnitude of \(T_b\).
+\end{itemize}
+
+\subsection{Starting torque at standstill (\texorpdfstring{$s=1$, $\omega_2=\omega_1$, $T_{\mathrm{st}}$}{s=1, omega_2=omega_1, T_st})}
+At motor standstill, rotor speed is zero (\(n_m = 0 \implies s = 1\)), so the rotor slip frequency equals the supply frequency (\(\omega_2 = \omega_1\)):
+\[
+I_{2,\mathrm{st}} = \left(\frac{E_1}{\omega_1}\right)\frac{\omega_1}{\sqrt{R_2^2 + \omega_1^2 L_2^2}} = \frac{E_1}{\sqrt{R_2^2 + \omega_1^2 L_2^2}} = \frac{E_1}{\sqrt{R_2^2 + X_2^2}}.
+\]
+The starting torque developed at standstill is:
+\[
+T_{\mathrm{st}} = 3\left(\frac{E_1}{\omega_1}\right)^2\frac{\omega_1 R_2}{R_2^2 + \omega_1^2 L_2^2}
+= \frac{3 E_1^2}{\omega_1}\cdot\frac{R_2}{R_2^2 + \omega_1^2 L_2^2}.
+\]
+\textbf{Maximum starting torque condition:}
+To produce maximum torque at starting (\(T_{\mathrm{st}} = T_b\)), breakdown must occur at standstill (\(s_b = 1\)), which requires:
+\[
+R_2 = \omega_1 L_2 = X_2.
+\]
+
+\subsection{Exam recipe: calculating breakdown torque \texorpdfstring{$T_b$}{T_b}, starting torque \texorpdfstring{$T_{\mathrm{st}}$}{T_st}, and ratio \texorpdfstring{$T_{\mathrm{st}}/T_b$}{T_st/T_b}}
+\textbf{Use when:} given stator voltage/EMF \(E_1\) (or \(V_{\mathrm{ph}}\)), stator supply frequency \(f\) (\(\omega_1 = 2\pi f\)), rotor resistance \(R_2\), and rotor leakage inductance \(L_2\).
+
+\textbf{Steps:}
+\begin{enumerate}
+  \item Compute stator angular supply frequency: \(\omega_1 = 2\pi f\) (\(\mathrm{rad/s}\)).
+  \item Compute breakdown slip frequency and breakdown slip:
+  \[
+  \omega_{2b} = \frac{R_2}{L_2} \quad [\mathrm{rad/s}],
+  \qquad
+  s_b = \frac{\omega_{2b}}{\omega_1} = \frac{R_2}{\omega_1 L_2}.
+  \]
+  \item Compute maximum breakdown torque:
+  \[
+  T_b = \frac{3}{2 L_2}\left(\frac{E_1}{\omega_1}\right)^2 \quad [\mathrm{N\cdot m}].
+  \]
+  \item Compute starting torque at standstill (\(s=1, \omega_2=\omega_1\)):
+  \[
+  T_{\mathrm{st}} = 3\left(\frac{E_1}{\omega_1}\right)^2\frac{\omega_1 R_2}{R_2^2 + \omega_1^2 L_2^2}
+  = \frac{3 E_1^2}{\omega_1}\frac{R_2}{R_2^2 + \omega_1^2 L_2^2} \quad [\mathrm{N\cdot m}].
+  \]
+  \item Compute the starting-to-breakdown torque ratio:
+  \[
+  \frac{T_{\mathrm{st}}}{T_b} = \frac{2 \omega_1 \omega_{2b}}{\omega_1^2 + \omega_{2b}^2} = \frac{2 s_b}{1 + s_b^2}.
+  \]
+  \item General operating torque ratio at any slip \(s\) (Kloss formula):
+  \[
+  \frac{T_e}{T_b} = \frac{2}{\frac{s}{s_b} + \frac{s_b}{s}} = \frac{2 s s_b}{s^2 + s_b^2} = \frac{2 \omega_2 \omega_{2b}}{\omega_2^2 + \omega_{2b}^2}.
+  \]
+\end{enumerate}
+
+\textbf{Fast checks:} \(T_{\mathrm{st}} \le T_b\); torque ratio \(T_{\mathrm{st}}/T_b \le 1\) (equals 1 only if \(s_b=1\)); factor 3 is included for three phases.
+
+\textbf{Common traps:} forgetting the 3-phase factor 3; confusing supply electrical frequency \(\omega_1 = 2\pi f\) with slip frequency \(\omega_2 = s \omega_1\) or mechanical speed \(\omega_m\); assuming \(T_b\) changes when \(R_2\) is varied (it does not!).

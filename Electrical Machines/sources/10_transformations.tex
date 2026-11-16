@@ -1,0 +1,152 @@
+\section{Coordinate and winding transformations}
+
+\subsection{Three-phase symmetrical components (Fortescue, positive, negative, zero sequence, unitary \texorpdfstring{$1/\sqrt{3}$}{1/sqrt(3)} scaling)}
+With the complex phase-shift operator:
+\[
+a = e^{j 2\pi/3} = -\frac{1}{2} + j\frac{\sqrt{3}}{2},
+\qquad
+a^2 = e^{j 4\pi/3} = -\frac{1}{2} - j\frac{\sqrt{3}}{2},
+\qquad
+a^3 = 1,
+\qquad
+1 + a + a^2 = 0.
+\]
+Phase voltages synthesized from sequence components:
+\[
+\begin{bmatrix}V_R\\V_Y\\V_B\end{bmatrix}
+= \frac{1}{\sqrt{3}}
+\begin{bmatrix}
+1&1&1\\
+1&a^2&a\\
+1&a&a^2
+\end{bmatrix}
+\begin{bmatrix}V_{10}\\V_{1+}\\V_{1-}
+\end{bmatrix}.
+\]
+Sequence current decomposition from three-phase line currents:
+\[
+\begin{bmatrix}I_{10}\\I_{1+}\\I_{1-}
+\end{bmatrix}
+= \frac{1}{\sqrt{3}}
+\begin{bmatrix}
+1&1&1\\
+1&a&a^2\\
+1&a^2&a
+\end{bmatrix}
+\begin{bmatrix}I_R\\I_Y\\I_B\end{bmatrix}.
+\]
+Here \(V_{10}, I_{10}\), \(V_{1+}, I_{1+}\), and \(V_{1-}, I_{1-}\) are zero-, positive-, and negative-sequence phasor components:
+\begin{itemize}
+  \item \textbf{Zero sequence (\(V_{10}, I_{10}\)):} Three equal phasors in identical phase; sum to non-zero only with a neutral or earth return path.
+  \item \textbf{Positive sequence (\(V_{1+}, I_{1+}\)):} Balanced three-phase system with standard phase sequence \(R \to Y \to B\); produces a forward rotating magnetic field at synchronous speed.
+  \item \textbf{Negative sequence (\(V_{1-}, I_{1-}\)):} Balanced three-phase system with reversed phase sequence \(R \to B \to Y\); produces a backward rotating magnetic field, inducing double-frequency rotor currents and braking torque.
+\end{itemize}
+\emph{Note on scaling:} Course formula sheet (item 12) utilizes the unitary / power-invariant scaling factor \(1/\sqrt{3}\) for both forward and inverse transforms so that the matrix is unitary (\(C^{*T} = C^{-1}\)). In classical Fortescue power-system literature, the forward matrix uses factor \(1\) and the inverse uses \(1/3\).
+
+\subsection{Power-invariant Clarke / \texorpdfstring{$0\alpha\beta$}{0alpha-beta} transformation (\texorpdfstring{$C_1$}{C1} matrix, scaling \texorpdfstring{$b=\sqrt{2/3}$}{b=sqrt(2/3)}, \texorpdfstring{$c=1/\sqrt{2}$}{c=1/sqrt(2)})}
+Maps three-phase stationary quantities (\(i_R, i_Y, i_B\)) into orthogonal stationary axes (\(i_0, i_\alpha, i_\beta\)):
+\[
+\begin{bmatrix}i_0\\i_\alpha\\i_\beta\end{bmatrix}
+= C_1
+\begin{bmatrix}i_R\\i_Y\\i_B\end{bmatrix},
+\qquad
+C_1 = \sqrt{\frac{2}{3}}
+\begin{bmatrix}
+\frac{1}{\sqrt{2}}&\frac{1}{\sqrt{2}}&\frac{1}{\sqrt{2}}\\[6pt]
+1&-\frac{1}{2}&-\frac{1}{2}\\[6pt]
+0&\frac{\sqrt{3}}{2}&-\frac{\sqrt{3}}{2}
+\end{bmatrix}.
+\]
+In general parameterized form:
+\[
+C_1 = b
+\begin{bmatrix}
+c&c&c\\[4pt]
+1&-\frac{1}{2}&-\frac{1}{2}\\[4pt]
+0&\frac{\sqrt{3}}{2}&-\frac{\sqrt{3}}{2}
+\end{bmatrix},
+\qquad
+b = \sqrt{\frac{2}{3}},\quad c = \frac{1}{\sqrt{2}}.
+\]
+Because rows and columns are orthonormal, the inverse transformation is simply the transpose:
+\[
+C_1^{-1} = C_1^T = \sqrt{\frac{2}{3}}
+\begin{bmatrix}
+\frac{1}{\sqrt{2}}&1&0\\[6pt]
+\frac{1}{\sqrt{2}}&-\frac{1}{2}&\frac{\sqrt{3}}{2}\\[6pt]
+\frac{1}{\sqrt{2}}&-\frac{1}{2}&-\frac{\sqrt{3}}{2}
+\end{bmatrix}.
+\]
+\begin{itemize}
+  \item \textbf{Power invariance:} The instantaneous electrical power is identical in both coordinate systems:
+  \[
+  p(t) = v_R i_R + v_Y i_Y + v_B i_B = v_0 i_0 + v_\alpha i_\alpha + v_\beta i_\beta.
+  \]
+  \item \textbf{Balanced condition:} If \(i_R + i_Y + i_B = 0\), the zero-sequence component is identically zero (\(i_0 = 0\)), reducing the three-phase system to two decoupled orthogonal coordinates \((\alpha, \beta)\).
+\end{itemize}
+
+\subsection{Park rotation into \texorpdfstring{$dq$}{dq} reference frame (\texorpdfstring{$C_2$}{C2} matrix, rotor electrical angle \texorpdfstring{$\theta$}{theta}) and sequence mapping matrix (\texorpdfstring{$C_3$}{C3})}
+Park rotation matrix \(C_2\) transforms the stationary \(\alpha\beta\) frame into the rotor-fixed \(dq\) reference frame at rotor electrical angle \(\theta\):
+\[
+\begin{bmatrix}x_0\\x_d\\x_q\end{bmatrix}
+= C_2
+\begin{bmatrix}x_0\\x_\alpha\\x_\beta\end{bmatrix},
+\qquad
+C_2 =
+\begin{bmatrix}
+1&0&0\\
+0&\sin\theta&\cos\theta\\
+0&\cos\theta&-\sin\theta
+\end{bmatrix}.
+\]
+The matrix \(C_2\) is orthogonal (\(C_2^{-1} = C_2^T\) and \(C_2 C_2^T = I\)) with \(\det(C_2) = -1\). It transforms sinusoidal AC stator variables into constant DC quantities in steady state, decoupling flux and torque control.
+
+Sequence mapping matrix \(C_3\) relates orthogonal coordinates to sequence phasor components:
+\[
+\begin{bmatrix}x_0\\x_+\\x_-\end{bmatrix}
+= C_3
+\begin{bmatrix}x_0\\x_\alpha\\x_\beta\end{bmatrix},
+\qquad
+C_3 = \frac{1}{\sqrt{2}}
+\begin{bmatrix}
+\sqrt{2}&0&0\\
+0&1&1\\
+0&-j&j
+\end{bmatrix}.
+\]
+
+\subsection{Exam recipe: finding scaling constants \texorpdfstring{$b$}{b} and \texorpdfstring{$c$}{c} for orthogonal transformation matrices}
+\textbf{Use when:} given a parametric transformation matrix \(C = b \begin{bmatrix} c & c & c \\ 1 & -1/2 & -1/2 \\ 0 & \sqrt{3}/2 & -\sqrt{3}/2 \end{bmatrix}\) and asked to find \(b, c\) such that \(C\) is orthogonal (\(C^{*T} = C^{-1} \Leftrightarrow C^{*T} C = I\)).
+
+\textbf{Steps:}
+\begin{enumerate}
+  \item Write the orthogonality condition: \(C^{*T} C = I\) (or \(C C^T = I\) for real matrices).
+  \item Equate the (1,1) diagonal entry to 1:
+  \[
+  b^2 (c^2 + c^2 + c^2) = 3 b^2 c^2 = 1 \implies b^2 c^2 = \frac{1}{3}.
+  \]
+  \item Equate the (2,2) diagonal entry to 1:
+  \[
+  b^2 \left(1^2 + \left(-\frac{1}{2}\right)^2 + \left(-\frac{1}{2}\right)^2\right) = b^2 \left(1 + \frac{1}{4} + \frac{1}{4}\right) = \frac{3}{2} b^2 = 1.
+  \]
+  \item Solve for \(b\) and \(c\):
+  \[
+  b^2 = \frac{2}{3} \implies b = \sqrt{\frac{2}{3}},
+  \qquad
+  c^2 = \frac{1}{3 b^2} = \frac{1}{3(2/3)} = \frac{1}{2} \implies c = \frac{1}{\sqrt{2}}.
+  \]
+  \item Verify row mutual orthogonality (off-diagonal terms are identically zero):
+  \[
+  \text{Row 1}\cdot\text{Row 2} = b^2 \left[c(1) + c\left(-\tfrac{1}{2}\right) + c\left(-\tfrac{1}{2}\right)\right] = 0,
+  \]
+  \[
+  \text{Row 1}\cdot\text{Row 3} = b^2 \left[c(0) + c\left(\tfrac{\sqrt{3}}{2}\right) + c\left(-\tfrac{\sqrt{3}}{2}\right)\right] = 0,
+  \]
+  \[
+  \text{Row 2}\cdot\text{Row 3} = b^2 \left[1(0) + \left(-\tfrac{1}{2}\right)\left(\tfrac{\sqrt{3}}{2}\right) + \left(-\tfrac{1}{2}\right)\left(-\tfrac{\sqrt{3}}{2}\right)\right] = 0.
+  \]
+\end{enumerate}
+
+\textbf{Fast checks:} \(b = \sqrt{2/3} \approx 0.8165\); \(c = 1/\sqrt{2} \approx 0.7071\); all rows and columns must be unit vectors and mutually perpendicular.
+
+\textbf{Common traps:} forgetting the square on \(b\) when evaluating dot products; omitting complex conjugation if complex elements (\(j\)) appear; confusing forward matrix with inverse matrix.

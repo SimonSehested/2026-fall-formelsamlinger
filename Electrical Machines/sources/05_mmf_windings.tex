@@ -1,0 +1,249 @@
+\section{MMF of Windings and Winding Factors}
+
+\subsection{Single-phase winding MMF and peak amplitude per pole}
+
+\subsubsection{MMF of a single coil and concentrated winding}
+For a single concentrated coil carrying current \(i\) with \(z_s\) conductors (or \(N_{\mathrm{coil}}\) turns):
+\[
+F_{\mathrm{coil}} = \frac{1}{2} z_s i_c = N_{\mathrm{coil}} i.
+\]
+For a concentrated full-pitch phase winding with \(T_{\mathrm{ph}}\) turns in series across \(2p\) poles:
+\[
+F_{\mathrm{peak}} = \frac{T_{\mathrm{ph}} i}{2p}.
+\]
+The spatial MMF distribution produced by a concentrated coil is a rectangular pulse of height \(\pm F_{\mathrm{coil}}\).
+
+\subsubsection{MMF of a distributed phase winding (trapezoidal distribution)}
+Distributing conductors across several slots smooths the rectangular waveform into a stepped or trapezoidal distribution:
+\[
+F(\theta, t) = \sum_{n=1,3,5,\dots}^\infty F_n(\theta, t),
+\qquad
+F_n(\theta, t) = I_m \cos(\omega_e t) \cdot \frac{2}{n\pi} (K_{wn} T_{\mathrm{ph}}) \sin(n\theta).
+\]
+\textbf{Properties of single-phase MMF:}
+\begin{itemize}
+  \item A single-phase MMF pulsates in time and stands stationary in space (it does \textbf{not} rotate).
+  \item It contains all odd space harmonics (\(n = 1, 3, 5, 7, \dots\)).
+  \item Even harmonics are identically zero due to half-wave odd symmetry: \(F(\theta + \pi) = -F(\theta)\).
+\end{itemize}
+
+\subsubsection{Air-gap flux density and effect of iron MMF drop}
+With an air-gap length \(g\) (or effective gap \(g'=K_g g\)) and negligible iron reluctance:
+\[
+H_g = \frac{F_g}{g'} = \frac{F_a}{g'},
+\qquad
+B_g = \mu_0 H_g = \frac{\mu_0 F_a}{g'}.
+\]
+\textbf{Iron saturation effect:} If the MMF drop in the iron core (stator and rotor teeth and yokes) is taken into account:
+\[
+F_{\mathrm{total}} = F_g + F_{\mathrm{iron}}
+\quad\Rightarrow\quad
+F_g = F_{\mathrm{total}} - F_{\mathrm{iron}} < F_{\mathrm{total}}.
+\]
+Hence, the net air-gap MMF drop \(F_g\) and the resulting air-gap flux density \(B_g\) \textbf{become smaller}.
+
+\subsection{Winding factors: pitch factor $K_p$, distribution factor $K_d$, and $K_w = K_p K_d$}
+
+\subsubsection{Pitch factor / chording factor $K_p$ (short-pitch angle $\varepsilon_{\mathrm{ch}}$)}
+A coil is short-pitched (chorded) by an electrical angle \(\varepsilon_{\mathrm{ch}} = 180^\circ - \beta_{\mathrm{coil}}\) where \(\beta_{\mathrm{coil}}\) is the coil span in electrical degrees.
+The pitch factor for the fundamental is:
+\[
+K_p = \cos\frac{\varepsilon_{\mathrm{ch}}}{2}.
+\]
+For the \(n\)-th space harmonic order:
+\[
+K_{pn} = \cos\frac{n\varepsilon_{\mathrm{ch}}}{2}.
+\]
+\textbf{Design purpose:} Chording completely eliminates a specific harmonic \(n\) if \(\cos(n\varepsilon_{\mathrm{ch}}/2) = 0 \Rightarrow n\varepsilon_{\mathrm{ch}}/2 = 90^\circ \Rightarrow \varepsilon_{\mathrm{ch}} = 180^\circ/n\). For example, choosing \(\varepsilon_{\mathrm{ch}} = 36^\circ\) eliminates the 5th harmonic (\(K_{p5} = \cos(5\times 18^\circ) = \cos(90^\circ) = 0\)). It also shortens end-turn length, saving copper.
+
+\subsubsection{Distribution factor $K_d$ and phase spread $\sigma_{\mathrm{ph}}$}
+Let \(m\) be the number of adjacent slots in a phase group (slots per pole per phase, \(m = q = S_1/(2p \cdot m_{\mathrm{ph}})\)), and \(\gamma\) the slot electrical angle:
+\[
+\gamma = p \cdot \frac{360^\circ}{S_1}\quad[\text{electrical degrees}],
+\qquad
+\sigma_{\mathrm{ph}} = m\gamma\quad(\text{total phase spread / belt width}).
+\]
+For discrete slots, the distribution factor for the fundamental is:
+\[
+K_d = \frac{\sin(m\gamma/2)}{m\sin(\gamma/2)} = \frac{\sin(\sigma_{\mathrm{ph}}/2)}{m\sin(\sigma_{\mathrm{ph}}/(2m))}.
+\]
+For a uniformly continuous winding distribution (\(m\to\infty\)):
+\[
+K_d = \frac{\sin(\sigma_{\mathrm{ph}}/2)}{\sigma_{\mathrm{ph}}/2}.
+\]
+For the \(\nu\)-th space harmonic, replace \(\gamma\to \nu\gamma\) and \(\sigma_{\mathrm{ph}}\to \nu\sigma_{\mathrm{ph}}\):
+\[
+K_{d\nu} = \frac{\sin(m\nu\gamma/2)}{m\sin(\nu\gamma/2)}
+\qquad\text{or}\qquad
+K_{d\nu} = \frac{\sin(\nu\sigma_{\mathrm{ph}}/2)}{\nu\sigma_{\mathrm{ph}}/2}.
+\]
+
+\subsubsection{Total winding factor $K_w = K_p K_d$ and reference values}
+The total winding factor is the product of pitch factor and distribution factor:
+\[
+K_w = K_p K_d,
+\qquad
+K_{wn} = K_{pn} K_{dn}.
+\]
+\textbf{Standard 3-phase winding value:}
+For a standard 3-phase winding with \(60^\circ\) phase spread (\(\sigma_{\mathrm{ph}} = 60^\circ = \pi/3\,\mathrm{rad}\)) and full-pitch coils (\(K_p = 1\)):
+\[
+K_d = \frac{\sin(\pi/6)}{\pi/6} = \frac{0.5}{\pi/6} = \frac{3}{\pi} \approx 0.95493 \approx 0.955.
+\]
+\[
+K_w = K_p K_d = 1.0 \times 0.955 = 0.955.
+\]
+
+\subsection{Three-phase rotating travelling MMF wave and synchronous speed}
+
+\subsubsection{Resultant fundamental rotating wave $F_1(\theta, t)$}
+In a balanced three-phase winding excited by balanced currents with peak \(I_m = \sqrt{2}I_{\mathrm{ph}}\), the sum of the three phase MMFs yields a travelling rotating wave:
+\[
+F(\theta, t) = F_A(\theta, t) + F_B(\theta, t) + F_C(\theta, t).
+\]
+The fundamental rotating wave is:
+\[
+F_1(\theta, t) = \frac{3}{\pi} T_{\mathrm{ph}} I_m K_{w1}\sin(\theta - \omega_e t).
+\]
+Peak amplitude of the fundamental air-gap MMF per pole (\(m_{\mathrm{ph}}=3\) phases, RMS conductor current \(I_c\)):
+\[
+F_a = \frac{3\sqrt{2}}{\pi} \frac{K_{w1} T_{\mathrm{ph}} I_c}{p} = 1.35\, K_{w1} \frac{T_{\mathrm{ph}} I_c}{p}.
+\]
+For a general \(m_{\mathrm{ph}}\)-phase machine:
+\[
+F_a = \frac{m_{\mathrm{ph}}\sqrt{2}}{\pi} \frac{K_{w1} T_{\mathrm{ph}} I_c}{p}.
+\]
+
+\subsubsection{Synchronous speed and mechanical rotation speed}
+The rotating fundamental MMF travels around the air gap at synchronous speed:
+\[
+\omega_e = 2\pi f\quad[\text{electrical rad/s}].
+\]
+The mechanical rotational speed of the MMF wave is:
+\[
+\omega_{ms} = \frac{\omega_e}{p} = \frac{2\pi f}{p}\quad[\text{rad/s}],
+\qquad
+n_{\mathrm{mec}} = n_s = \frac{60 f}{p}\quad[\mathrm{r/min}].
+\]
+\textbf{Speed control rule:} To increase the MMF rotational speed, increase electrical supply frequency \(f\) or reduce pole-pairs \(p\).
+
+\subsubsection{Space harmonics $6k \pm 1$ and rotation directions}
+Under balanced 3-phase excitation:
+\begin{itemize}
+  \item \textbf{Triplen harmonics} (\(n = 3, 9, 15, \dots\)) sum to \textbf{zero} and are completely absent from the resultant air-gap MMF.
+  \item \textbf{Forward harmonics} of order \(n = 6k + 1\) (e.g.\ \(n = 7, 13, 19, \dots\), with \(k = 1, 2, \dots\)):
+  \[
+  F_n(\theta, t) = \frac{3}{\pi}\frac{K_{wn} T_{\mathrm{ph}}}{n} I_m \sin(n\theta - \omega_e t)
+  \]
+  rotate in the \textbf{same direction} as the fundamental at speed \(\omega_{\mathrm{mec},n} = +\frac{\omega_e}{n p} = +\frac{\omega_{ms}}{n}\).
+  \item \textbf{Backward harmonics} of order \(n = 6k - 1\) (e.g.\ \(n = 5, 11, 17, \dots\), with \(k = 1, 2, \dots\)):
+  \[
+  F_n(\theta, t) = \frac{3}{\pi}\frac{K_{wn} T_{\mathrm{ph}}}{n} I_m \sin(n\theta + \omega_e t)
+  \]
+  rotate in the \textbf{opposite direction} to the fundamental at speed \(\omega_{\mathrm{mec},n} = -\frac{\omega_e}{n p} = -\frac{\omega_{ms}}{n}\).
+\end{itemize}
+
+\subsection{Squirrel-cage rotor winding as multiphase winding}
+
+\subsubsection{Multiphase cage parameters: phases $m_{\mathrm{cage}}$, turns $T_{\mathrm{ph,cage}}$, winding factor $K_{w1,\mathrm{cage}}$}
+A squirrel-cage rotor with \(S_2\) bars (slots) and \(2p\) poles acts as an equivalent balanced multiphase winding:
+\[
+m_{\mathrm{cage}} = \frac{S_2}{2p}\quad(\text{number of phases = slots per pole}),
+\qquad
+T_{\mathrm{ph,cage}} = p\quad(\text{turns per phase}),
+\qquad
+K_{w1,\mathrm{cage}} = 1.
+\]
+The rotor slot electrical angle is:
+\[
+\alpha = \frac{2\pi p}{S_2}\quad[\text{rad}].
+\]
+
+\subsubsection{Bar current $I_b$ and end-ring current $I_e$ referred to stator current $I_2'$}
+Equating fundamental air-gap MMF per pole produced by rotor and stator:
+\[
+F_{2a} = \frac{\sqrt{2}}{\pi}\frac{S_2}{p} I_b,
+\qquad
+F_{1a} = \frac{3\sqrt{2}}{\pi}\frac{K_{w1} T_{\mathrm{ph1}}}{p} I_2'
+\quad\Rightarrow\quad
+I_b = \frac{6 K_{w1} T_{\mathrm{ph1}}}{S_2} I_2'.
+\]
+From the phasor geometry of adjacent rotor bars and end-ring segments:
+\[
+I_b = 2 I_e \sin\frac{\alpha}{2} \approx I_e \alpha = I_e \frac{2\pi p}{S_2}.
+\]
+Thus, the RMS end-ring current is:
+\[
+I_e = \frac{S_2}{2\pi p} I_b = \frac{3 K_{w1} T_{\mathrm{ph1}}}{\pi p} I_2'.
+\]
+\textbf{Key spatial relation:} The maximum instantaneous end-ring current occurs at the spatial location where the bar current is zero.
+
+\subsubsection{Rotor copper loss $P_{\mathrm{Cu,r}}$ and equivalent rotor resistance $R_2'$ referred to stator}
+Total rotor copper loss accounts for all \(S_2\) bars and two complete end-rings:
+\[
+P_{\mathrm{Cu,r}} = S_2 I_b^2 R_b + 2 I_e^2 R_e = 3 {I_2'}^2 R_2',
+\]
+where:
+\begin{itemize}
+  \item \(R_b\): resistance of an individual rotor bar.
+  \item \(R_e\): total resistance of one complete end-ring (length \(\pi D_{\mathrm{ring}}\)).
+\end{itemize}
+Equating losses gives the referred rotor resistance per phase:
+\[
+R_2' = 12 (K_{w1} T_1)^2 \left( \frac{R_b}{S_2} + \frac{R_e}{2\pi^2 p^2} \right)
+= 12 \left(\frac{K_{w1} T_1}{S_2}\right)^2 \left( S_2 R_b + \frac{S_2^2}{2\pi^2 p^2} R_e \right).
+\]
+Similarly, the referred rotor slot leakage reactance is:
+\[
+X_{s2}' = 12 (K_{w1} T_1)^2 \left(\frac{X_b}{S_2}\right)
+= 12 \left(\frac{K_{w1} T_1}{S_2}\right)^2 (S_2 X_b)
+= \left(\frac{K_{w1} T_{\mathrm{ph1}}}{K_{w2} T_{\mathrm{ph2}}}\right)^2 X_{s2}.
+\]
+
+\subsection{Exam recipe: cage rotor currents, copper loss, and referred resistance}
+
+\textbf{Use when:} given stator rating, no-load and full-load currents and power factors, stator turns \(T_1\), winding factor \(K_{w1}\), rotor slots \(S_2\), pole-pairs \(p\), bar resistance \(R_b\), end-ring resistance \(R_e\).
+
+\textbf{Steps:}
+\begin{enumerate}
+  \item Calculate phase currents and power-factor angles:
+  \[
+  \dot{I}_{1,\mathrm{NL}} = I_{1,\mathrm{NL}} \angle -\arccos(\cos\phi_{\mathrm{NL}}),
+  \qquad
+  \dot{I}_{1,\mathrm{FL}} = I_{1,\mathrm{FL}} \angle -\arccos(\cos\phi_{\mathrm{FL}}).
+  \]
+  \item Determine referred rotor current by phasor subtraction:
+  \[
+  \dot{I}_2' = \dot{I}_{1,\mathrm{FL}} - \dot{I}_{1,\mathrm{NL}}
+  \quad\Rightarrow\quad I_2' = |\dot{I}_2'|.
+  \]
+  \item Calculate RMS rotor bar current:
+  \[
+  I_b = \frac{6 K_{w1} T_1}{S_2} I_2'.
+  \]
+  \item Calculate RMS end-ring current:
+  \[
+  I_e = \frac{S_2}{2\pi p} I_b = \frac{3 K_{w1} T_1}{\pi p} I_2'.
+  \]
+  \item Calculate full-load rotor copper loss:
+  \[
+  P_{\mathrm{Cu,r}} = S_2 I_b^2 R_b + 2 I_e^2 R_e.
+  \]
+  \item Calculate referred rotor resistance:
+  \[
+  R_2' = \frac{P_{\mathrm{Cu,r}}}{3 {I_2'}^2} = 12 (K_{w1} T_1)^2 \left(\frac{R_b}{S_2} + \frac{R_e}{2\pi^2 p^2}\right).
+  \]
+\end{enumerate}
+
+\textbf{Fast checks:}
+\begin{itemize}
+  \item End-ring current is larger than bar current: \(I_e / I_b = S_2 / (2\pi p) > 1\) (typically 3 to 6 times larger).
+  \item Loss consistency: check that \(S_2 I_b^2 R_b + 2 I_e^2 R_e\) exactly equals \(3 {I_2'}^2 R_2'\).
+\end{itemize}
+
+\textbf{Common traps:}
+\begin{itemize}
+  \item \textbf{Missing \(p\) in \(I_e\):} The denominator is \(2\pi p\) (or \(\pi p\)), NOT \(2\pi\). Omitting \(p\) leads to an error factor of \(p\).
+  \item \textbf{Scalar subtraction:} Subtracting RMS magnitudes directly (\(I_1 - I_0\)) instead of phasor subtraction yields a wrong \(I_2'\).
+  \item \textbf{Missing factor of 2 in end-ring losses:} A rotor has two end-rings, so the term is \(2 I_e^2 R_e\), not \(I_e^2 R_e\).
+\end{itemize}

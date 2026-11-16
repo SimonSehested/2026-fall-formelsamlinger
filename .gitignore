@@ -1,0 +1,20 @@
+# LaTeX build
+*.aux
+*.log
+*.toc
+*.out
+*.idx
+*.ind
+*.ilg
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+build.log
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Editor
+.vscode/
+.DS_Store

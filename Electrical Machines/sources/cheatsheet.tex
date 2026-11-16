@@ -1,0 +1,149 @@
+\thispagestyle{empty}
+\newgeometry{margin=0.8cm,top=0.7cm,bottom=0.7cm}
+\begin{center}
+{\bfseries\large EXAM CHEATSHEET --- ELECTRICAL MACHINES (EE4003)}\\[-0.5em]
+\rule{\textwidth}{0.8pt}
+\end{center}
+\vspace{-1.2em}
+
+\begin{multicols}{2}
+\footnotesize
+\setlength{\parskip}{0.18em}
+
+\textbf{1. Physical Constants \& Conversion Rules}
+\vspace{-0.3em}
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+  \item $\mu_0 = 4\pi\times 10^{-7}\,\mathrm{H/m},\quad \varepsilon_0 = 8.85\times 10^{-12}\,\mathrm{F/m}$.
+  \item Speed: $n_s = 60f/p$ [r/min] $\Leftrightarrow n = n_s/60 = f/p$ [r/s].
+  \item Angular speeds: $\omega_e = 2\pi f$, $\omega_m = 2\pi n_m/60$, $\omega_{ms} = \omega_e/p$.
+  \item Slip: $s = \frac{n_s - n_m}{n_s} = \frac{\omega_{ms}-\omega_m}{\omega_{ms}} \implies \omega_m = \omega_{ms}(1-s)$.
+  \item Star (Y): $V_{\mathrm{ph}} = V_{\mathrm{LL}}/\sqrt{3},\; I_{\mathrm{ph}} = I_{\mathrm{line}}$.
+  \item Delta ($\Delta$): $V_{\mathrm{ph}} = V_{\mathrm{LL}},\; I_{\mathrm{ph}} = I_{\mathrm{line}}/\sqrt{3}$.
+  \item Apparent power: $S_{3\phi} = \sqrt{3}V_{\mathrm{LL}}I_{\mathrm{line}} = 3V_{\mathrm{ph}}I_{\mathrm{ph}}$.
+  \item Motor input: $S_{3\phi} = \frac{P_{\mathrm{mech}}}{\eta\cos\phi}$; Generator: $S_{3\phi} = \frac{P_{\mathrm{el}}}{\cos\phi}$.
+  \item Torque: $T_e = P_{\mathrm{mech}}/\omega_m$. Pole-pairs $p$, poles $2p$.
+\end{itemize}
+
+\textbf{2. Magnetic Circuits \& Air-Gap Inductance}
+\vspace{-0.3em}
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+  \item Ampere: $\sum H_i \ell_i = \sum N I$. Air gap: $B_g = \mu_0 H_g$.
+  \item Two-gap core: $B_g = \frac{\mu_0 N I_c}{2g},\quad \Phi_g = B_g A_g,\quad L = \frac{\mu_0 N^2 A_g}{2g}$.
+  \item Conductor: $J = \frac{I_c}{A_{\mathrm{cond}}},\quad R = \frac{\ell}{\sigma_{\mathrm{Cu}} A_{\mathrm{cond}}},\quad \sigma_{\mathrm{Cu}} \approx 5.8\times 10^7\,\mathrm{S/m}$.
+\end{itemize}
+
+\textbf{3. Core Losses, Copper Losses \& Efficiency}
+\vspace{-0.3em}
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+  \item $P_{\mathrm{core}} = P_{\mathrm{eddy}} + P_{\mathrm{hyst}} \propto B^2 \propto V_{\mathrm{ph}}^2;\quad P_{\mathrm{Cu}} = 3 I_{\mathrm{ph}}^2 R_{\mathrm{ph}} \propto I^2$.
+  \item Maximum efficiency when: $P_{\mathrm{Cu}} \approx P_{\mathrm{core}}$.
+  \item Partial load: decrease $V_{\mathrm{ph}}$ so $P_{\mathrm{core}}\downarrow$ matches lower $P_{\mathrm{Cu}}$.
+  \item Core saturation: $B\uparrow \implies P_{\mathrm{core}}\uparrow$, $I_\mu\uparrow\uparrow \implies \cos\phi\downarrow\downarrow$.
+\end{itemize}
+
+\textbf{4. Main Dimensions \& Output Coefficient}
+\vspace{-0.3em}
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+  \item Spec.\ magnetic loading: $\bar{B} = \frac{2p \Phi_m}{\pi D_g L_c} = \frac{\Phi_m}{\tau L_c}$ [$\mathrm{T}$].
+  \item Spec.\ electric loading: $ac = \frac{3(2 T_{\mathrm{ph}} I_{\mathrm{ph}})}{\pi D_g}$ [$\mathrm{A/m}$].
+  \item Output coeff: $G = \frac{S_{3\phi}}{D_g^2 L_c n} = 1.11 K_w \pi^2 \bar{B} ac$ (\textbf{$n$ in r/s!}).
+  \item Machine volume: $D_g^2 L_c = \frac{S_{3\phi}}{G n}$.
+  \item Square pole ($\tau = L_c$): $\frac{\pi D_g}{2p} = L_c \implies D_g = \left(\frac{2p}{\pi}\frac{S_{3\phi}}{G n}\right)^{1/3}$.
+  \item EMF eq: $E_{\mathrm{ph}} = 4.44 K_w T_{\mathrm{ph}} \Phi_m f \implies T_{\mathrm{ph}} = \frac{E_{\mathrm{ph}}}{4.44 K_w \Phi_m f}$.
+  \item Turns from $ac$: $T_{\mathrm{ph}} = \frac{ac \pi D_g}{6 I_{\mathrm{ph}}}$. Slots/phase $N_{\mathrm{ph}} = S_1/3$.
+  \item Slot conductors: $z_s = \frac{2 T_{\mathrm{ph}}}{N_{\mathrm{ph}}},\; A_{\mathrm{cond}} = \frac{I_c}{J},\; A_{\mathrm{slot}} = \frac{z_s A_{\mathrm{cond}}}{k_{\mathrm{fill}}} = b_s h_s$.
+  \item Stator tooth: $b_t = \frac{\Phi_m}{(S_1/2p) B_t L_c},\; b_s = \tau_s - b_t$. Yoke: $b_y = \frac{\Phi_m/2}{B_y L_c}$.
+\end{itemize}
+
+\textbf{5. Air-Gap Length, Carter Factors \& Fringing}
+\vspace{-0.3em}
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+  \item Empirical air gap (IM): $g = 0.2 + 2\sqrt{D_g L_c}$ [$\mathrm{mm}$].
+  \item Carter: $g' = K_g g = K_s K_d g > g$, $K_s = \frac{\tau_s}{\tau_s - k_s b_s}$, $K_d = \frac{L_c}{L_c - n_d k_d w_d}$.
+  \item Fringing: $L_c' = L_c + 2g$ (\textit{reduces} magnetic reluctance).
+\end{itemize}
+
+\textbf{6. Windings \& MMF Harmonics}
+\vspace{-0.3em}
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+  \item Winding factor: $K_w = K_p K_d$. (Uniform 60°: $K_w \approx 0.955$).
+  \item Pitch: $K_p = \cos(\varepsilon_{\mathrm{ch}}/2)$. Distr: $K_d = \frac{\sin(m\gamma/2)}{m\sin(\gamma/2)}$.
+  \item Rotating MMF: Peak $F_a = \frac{3\sqrt{2}}{\pi} K_{w1} \frac{T_{\mathrm{ph}} I_c}{p} = 1.35 K_{w1}\frac{T_{\mathrm{ph}} I_c}{p}$.
+  \item Space harmonics: $n = 6k \pm 1$.
+    \begin{itemize}\setlength{\itemsep}{0pt}
+      \item $n = 6k+1$ (7th, 13th): \textbf{forward} at speed $+n_s/n$.
+      \item $n = 6k-1$ (5th, 11th): \textbf{reverse} at speed $-n_s/n$.
+      \item Triplens ($3,9,15\dots$) cancel; Evens ($2,4,6\dots$) cancel.
+    \end{itemize}
+  \item Cage rotor: $I_b = \frac{6 K_w T_{\mathrm{ph1}}}{S_2} I_2',\quad I_e = \frac{S_2}{2\pi p} I_b$.
+  \item Rotor loss: $P_{\mathrm{Cu,r}} = S_2 I_b^2 R_b + 2 I_e^2 R_e = 3 I_2'^2 R_2'$.
+\end{itemize}
+
+\columnbreak
+
+\textbf{7. Leakage \& Magnetizing Reactances}
+\vspace{-0.3em}
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+  \item Magnetizing: $X_m = 6\mu_0 f \left(\frac{K_w T_{\mathrm{ph}}}{p}\right)^2 \frac{D_g L_c}{g'},\quad L_m = \frac{X_m}{2\pi f}$.
+  \item Recipe for $g'$: $X_m = X_s - X_p \implies g' = \frac{6\mu_0 f}{X_m}\left(\frac{K_w T_{\mathrm{ph}}}{p}\right)^2 D_g L_c$.
+  \item Slot leakage: $X_p = 2\pi f N_{\mathrm{ph}} z_s^2 \lambda_{\mathrm{slot}}$ (\textbf{independent of $I_c$}!).
+  \item Scaling: $X_p \propto z_s^2,\; X_p \propto L_c,\; X_p \propto N_{\mathrm{ph}}$.
+  \item Open slot: $\lambda_1 = \mu_0 L_c \frac{d_1}{3b_s},\; \lambda_2 = \mu_0 L_c \frac{d_2}{b_s},\; \lambda_3 = \frac{\mu_0 L_c}{\pi}\ln(\frac{\pi b_t}{2b_s}+1)$.
+  \item Semi-closed: $\lambda_1 = \mu_0 L_c \frac{d_1}{3b_s},\; \lambda_2 = \mu_0 L_c \frac{d_2}{b_s},\; \lambda_3 = \mu_0 L_c \frac{2d_3}{b_0+b_s}$,\\
+        $\lambda_4 = \mu_0 L_c \frac{d_4}{b_0},\; \lambda_5 = \mu_0 L_c \frac{1}{\pi}\ln(\frac{\tau_s}{b_0})$.
+  \item Breakdown: $X_{e1} = X_{s1} + X_{s2}' + X_o + X_z + X_h$.
+\end{itemize}
+
+\textbf{8. Unbalanced Magnetic Pull (UMP) \& Slot Rules}
+\vspace{-0.3em}
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+  \item Relative eccentricity: $\varepsilon_{\mathrm{ecc}} = e_0/g$. Maxwell stress: $f_m = B^2/(2\mu_0)$.
+  \item Total UMP force: $F_m = \frac{\pi D_g L_c}{4\mu_0} B_g^2 \varepsilon_{\mathrm{ecc}}$ [$\mathrm{N}$].
+  \item Slot-combination rules:
+    \begin{itemize}\setlength{\itemsep}{0pt}
+      \item \textbf{Avoid UMP}: $S_1 - S_2 \neq \pm 1$ and $S_1 - S_2 \neq \pm 2p \pm 1$.
+      \item \textbf{Avoid Cogging}: $S_1 \neq S_2$, $S_1/S_2 \notin \mathbb{Z}$, $(S_1-S_2)/(2p) \notin \mathbb{Z}$.
+      \item \textbf{Avoid Crawling (hooks)}: $S_1 \neq S_2$ and $S_1 - S_2 \neq \pm 2p$.
+      \item \textbf{Limit Crawling (saddles)}: $S_2 < 1.25(S_1 + p)$.
+    \end{itemize}
+  \item Skew factor: $K_{\mathrm{sk},n} = \frac{\sin(n\gamma_{\mathrm{sk}}/2)}{n\gamma_{\mathrm{sk}}/2}$.
+  \item For 1 stator pitch skew ($\gamma_{\mathrm{sk}} = \frac{2\pi p}{S_1}$): $K_{\mathrm{sk},n} \approx 0$ for $n = \frac{S_1}{p}\pm 1$.
+\end{itemize}
+
+\textbf{9. Synchronous Machines: Power \& Hunting}
+\vspace{-0.3em}
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+  \item Cylindrical rotor: $P_{\mathrm{el}} = \frac{3 E_F V_{\mathrm{ph}}}{X_s}\sin\delta = \frac{V_{\mathrm{LL}} E_{\mathrm{LL}}}{X_s}\sin\delta$.
+  \item Salient pole: $P_{\mathrm{el}} = \frac{3 E_F V_{\mathrm{ph}}}{X_d}\sin\delta + \frac{3 V_{\mathrm{ph}}^2(X_d - X_q)}{2 X_d X_q}\sin 2\delta$.
+  \item Synchronizing power: $P_s = \frac{\partial P}{\partial \delta} = \frac{3 E_F V_{\mathrm{ph}}}{X_s}\cos\delta$.
+  \item With $I_{\mathrm{sc}} = E_F/X_s = k I_{\mathrm{ph}}$: $P_s = k S_{3\phi}\cos\delta$ ($\approx k S_{3\phi}$ at small $\delta$).
+  \item Synchronizing torque: $T_s = P_s / \omega_m$ [$\mathrm{N\cdot m/\text{elect.\,rad}}$], $\omega_m = \frac{2\pi n_m}{60}$.
+  \item Hunting frequency: $f_{\mathrm{osc}} = \frac{1}{2\pi}\sqrt{\frac{p T_s}{J_{\mathrm{iner}}}}$ [$\mathrm{Hz}$] ($J_{\mathrm{iner}}$ in $\mathrm{kg\cdot m^2}$).
+\end{itemize}
+
+\textbf{10. Induction Motor Torque \& Breakdown}
+\vspace{-0.3em}
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+  \item Torque: $T_e = 3\left(\frac{E_1}{\omega_1}\right)^2 \frac{\omega_2 R_2}{R_2^2 + \omega_2^2 L_2^2},\quad \omega_2 = s\omega_1$.
+  \item Breakdown: $\omega_{2b} = \frac{R_2}{L_2} \iff s_b = \frac{R_2}{\omega_1 L_2}$.
+  \item Pull-out torque: $T_b = \frac{3}{2 L_2}\left(\frac{E_1}{\omega_1}\right)^2$ (\textbf{independent of $R_2$}!).
+  \item Starting torque ($s=1, \omega_2=\omega_1$): $T_{\mathrm{st}} = \frac{3 E_1^2}{\omega_1}\frac{R_2}{R_2^2 + \omega_1^2 L_2^2}$.
+  \item Torque ratio: $\frac{T_{\mathrm{st}}}{T_b} = \frac{2\omega_1\omega_{2b}}{\omega_1^2 + \omega_{2b}^2} = \frac{2 s_b}{1 + s_b^2}$.
+\end{itemize}
+
+\textbf{11. Transforms \& Inverter PWM}
+\vspace{-0.3em}
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+  \item Symmetrical components: $1/\sqrt{3}$ unitary power-invariant scaling.
+  \item Clarke $C_1$: $b = \sqrt{2/3},\; c = 1/\sqrt{2}$ ensures $C_1 C_1^T = I$.
+  \item Modulation index: $M = \frac{V_m}{V_d/2} = \frac{\sqrt{2}V_{\mathrm{ph}}}{V_d/2}$.
+  \item 3rd harmonic injection: linear up to $M = 2/\sqrt{3} \approx 1.155$ ($+M/6$ term).
+  \item Carrier ratio: $m_f = f_{\mathrm{tri}}/f_{\mathrm{fund}}$ ($p$). Step: $\delta_0 = \pi/(2m_f)$.
+  \item DC link (diode bridge): $V_{d,\mathrm{peak}} = \sqrt{2}V_{\mathrm{LL}},\; V_{d,\mathrm{avg}} \approx 1.35 V_{\mathrm{LL}}$.
+  \item Fourier line voltage: $A_{n,\mathrm{RY}} = \frac{2 V_d}{n\pi}\cos(\frac{n\gamma_{\mathrm{notch}}}{2})$.
+  \item Eliminate $n$-th harmonic: $\gamma_{\mathrm{notch}} = \pi/n$ (for 7th: $\gamma = \pi/7$).
+\end{itemize}
+
+\end{multicols}
+\clearpage
+\restoregeometry
