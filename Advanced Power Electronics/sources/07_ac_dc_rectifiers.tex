@@ -483,20 +483,25 @@ During the switch on-time $t_{\mathrm{on}}(t) = d(t) T_s = d(t)/f_s$, the induct
 \begin{equation}
 \Delta i_L(t) = \frac{|v_{ac}(t)| d(t)}{L_{pfc} f_s} = \frac{|v_{ac}(t)|\left(V_o - |v_{ac}(t)|\right)}{L_{pfc} f_s V_o}
 \end{equation}
-Evaluating the ripple at the peak of the AC input voltage where $|v_{ac}| = \sqrt{2} V_{in}$:
+Evaluating the ripple at the peak of the AC input voltage where $|v_{ac}| = \sqrt{2} V_{in}$ gives the maximum peak-to-peak ripple current $\Delta I_L$:
 \begin{equation}
 \Delta I_L = \frac{\sqrt{2} V_{in}\left(V_o - \sqrt{2} V_{in}\right)}{L_{pfc} f_s V_o}
 \end{equation}
-The peak input current at minimum input voltage $V_{in}$ and rated power $P_o$ (assuming conversion efficiency $\eta$):
+Solving directly for the required inductance yields the sizing equation in terms of absolute ripple current $\Delta I_L$ [A]:
 \begin{equation}
-P_o = \eta V_{in} I_{in,\mathrm{rms}} = \eta \frac{\sqrt{2} V_{in}}{2} \hat{I}_{in} \implies \hat{I}_{in} = \frac{\sqrt{2} P_o}{\eta V_{in}}
+\label{eq:pfc_L_sizing_abs}
+L_{pfc} \ge \frac{\sqrt{2} V_{in}\left(V_o - \sqrt{2} V_{in}\right)}{f_s \Delta I_L V_o}
 \end{equation}
-Expressing the ripple in terms of the allowable peak-to-peak ripple current $\Delta I_L$ yields the sizing equation:
+Alternatively, express $\Delta I_L$ in terms of the fractional ripple ratio $r = \Delta I_L / \hat{I}_{in}$ (dimensionless, typically $r = 0.20 - 0.40$) relative to the peak AC line input current $\hat{I}_{in}$. With rated output power $P_o$ and converter efficiency $\eta$:
+\begin{equation}
+P_o = \eta V_{in} I_{in,\mathrm{rms}} = \eta V_{in} \left(\frac{\hat{I}_{in}}{\sqrt{2}}\right) \implies \hat{I}_{in} = \frac{\sqrt{2} P_o}{\eta V_{in}}
+\end{equation}
+Substituting $\Delta I_L = r \hat{I}_{in} = r \dfrac{\sqrt{2} P_o}{\eta V_{in}}$ into Eq.~\eqref{eq:pfc_L_sizing_abs}:
 \begin{equation}
 \label{eq:pfc_L_sizing}
-L_{pfc} \ge \frac{V_{in}^2 \left(V_o - \sqrt{2} V_{in}\right)}{f_s \Delta I_L V_o P_o}
+L_{pfc} \ge \frac{\sqrt{2} V_{in}\left(V_o - \sqrt{2} V_{in}\right)}{f_s \left(r \dfrac{\sqrt{2} P_o}{\eta V_{in}}\right) V_o} = \frac{\eta V_{in}^2 \left(V_o - \sqrt{2} V_{in}\right)}{f_s \cdot r \cdot P_o V_o}
 \end{equation}
-where $V_{in}$ is the nominal/minimum RMS line voltage, $V_o$ is the regulated DC output, $f_s$ is the switching frequency, and $\Delta I_L$ is the specified ripple current (typically chosen as $20\% - 40\%$ of peak input current $\hat{I}_{in}$).
+Both forms are physically and dimensionally identical: Eq.~\eqref{eq:pfc_L_sizing_abs} is used when a specific absolute ripple current $\Delta I_L$ (in amperes) is given, while Eq.~\eqref{eq:pfc_L_sizing} is used when a percentage ripple ratio $r$ and power $P_o$ are specified.
 
 \subsubsection{Analytical Derivation of Bulk Output Capacitor Sizing ($C_o$)}
 The instantaneous AC input power under unity power factor is:
@@ -513,17 +518,21 @@ i_C(t) = \frac{p_C(t)}{V_o} = -\frac{P_o}{V_o}\cos(2\omega_{\mathrm{line}} t)
 \end{equation}
 Integrating to obtain the double-line-frequency ripple voltage across $C_o$:
 \begin{equation}
-\tilde{v}_o(t) = \frac{1}{C_o}\int i_C(t)\,dt = -\frac{P_o}{2\omega_{\mathrm{line}} V_o C_o}\sin(2\omega_{\mathrm{line}} t)
+\tilde{v}_o(t) = \frac{1}{C_o}\int i_C(t)\,dt = -\frac{P_o}{2\omega_{\mathrm{line}} V_o C_o}\sin(2\omega_{\mathrm{line}} t) = -\Delta V_o \sin(2\omega_{\mathrm{line}} t)
 \end{equation}
-The peak ripple amplitude $\Delta V_o$ (or half of peak-to-peak ripple $\Delta V_{o,pp} = 2\Delta V_o$) is:
-\begin{equation}
-\Delta V_o = \frac{P_o}{2\omega_{\mathrm{line}} V_o C_o} = \frac{P_o}{4\pi f_{\mathrm{line}} V_o C_o}
-\end{equation}
-Rearranging gives the required bulk capacitance for a specified voltage ripple limit $\Delta V_o$:
-\begin{equation}
-\label{eq:pfc_Co_sizing}
-C_o \ge \frac{P_o}{2\omega_{\mathrm{line}} V_o \Delta V_o} = \frac{P_o}{4\pi f_{\mathrm{line}} V_o \Delta V_o}
-\end{equation}
+where $\Delta V_o$ is the \textbf{peak ripple amplitude} (deviation from nominal DC $V_o$), and $\Delta V_{o,pp} = 2\Delta V_o$ is the total \textbf{peak-to-peak ripple voltage}.
+\begin{itemize}
+  \item In terms of \textbf{peak ripple amplitude} $\Delta V_o$ [V]:
+  \begin{equation}
+  \label{eq:pfc_Co_sizing}
+  C_o \ge \frac{P_o}{2\omega_{\mathrm{line}} V_o \Delta V_o} = \frac{P_o}{4\pi f_{\mathrm{line}} V_o \Delta V_o}
+  \end{equation}
+  \item In terms of total \textbf{peak-to-peak ripple voltage} $\Delta V_{o,pp} = 2\Delta V_o$ [V]:
+  \begin{equation}
+  \label{eq:pfc_Co_sizing_pp}
+  C_o \ge \frac{P_o}{\omega_{\mathrm{line}} V_o \Delta V_{o,pp}} = \frac{P_o}{2\pi f_{\mathrm{line}} V_o \Delta V_{o,pp}}
+  \end{equation}
+\end{itemize}
 \paragraph{Hold-Up Time Criterion:}
 In telecommunication and server power supplies, $C_o$ must also sustain full load power $P_o$ during a complete AC line dropout of duration $t_{\mathrm{hold}}$ (typically $10 - 20\,\si{\milli\second}$), while voltage drops from $V_o$ to the minimum permissible operating limit $V_{o,\min}$:
 \begin{equation}
@@ -649,7 +658,7 @@ A 3-phase 6-pulse controlled SCR bridge is fed from a $400\,\si{\volt}_{\mathrm{
   \]
   \item \textbf{Calculate Minimum Boost Inductance $L_{pfc}$:}
   \[
-  L_{pfc} \ge \frac{V_{in}^2 (V_o - \sqrt{2} V_{in})}{f_s \Delta I_L V_o P_o}
+  \text{Absolute ripple form: } L_{pfc} \ge \frac{\sqrt{2} V_{in}(V_o - \sqrt{2} V_{in})}{f_s \Delta I_L V_o} = \frac{\eta V_{in}^2 (V_o - \sqrt{2} V_{in})}{f_s \cdot r \cdot P_o V_o} \quad (\text{fractional ripple form})
   \]
   \item \textbf{Calculate Minimum Bulk Capacitance for $2 f_{\mathrm{line}}$ Ripple:}
   \[
@@ -684,14 +693,18 @@ Design a Boost PFC preregulator with specifications:
   \[
   \Delta I_L = 0.25 \times 6.472\,\si{\ampere} = 1.618\,\si{\ampere}
   \]
-  \item \textbf{Step 3 (Inductor Sizing via Eq.~\ref{eq:pfc_L_sizing}):}
+  \item \textbf{Step 3 (Inductor Sizing via Eq.~\ref{eq:pfc_L_sizing_abs} / Eq.~\ref{eq:pfc_L_sizing}):}
+  Using the absolute ripple form (Eq.~\ref{eq:pfc_L_sizing_abs}) with $\Delta I_L = 1.618\,\si{\ampere}$:
   \begin{align*}
-  L_{pfc} &\ge \frac{(230)^2 \times (400 - \sqrt{2} \times 230)}{100\times 10^3 \times 1.618 \times 400 \times 1000} = \frac{52900 \times (400 - 325.27)}{6.472 \times 10^{10}} \\
-  &= \frac{52900 \times 74.73}{6.472 \times 10^{10}} = \frac{3.953 \times 10^6}{6.472 \times 10^{10}} = 6.108 \times 10^{-5}\,\si{\henry}
+  L_{pfc} &\ge \frac{\sqrt{2} \times 230 \times (400 - \sqrt{2} \times 230)}{100\times 10^3 \times 1.618 \times 400} = \frac{325.269 \times 74.731}{6.472 \times 10^7} \\
+  &= \frac{24307.78}{6.472 \times 10^7} = 3.7558 \times 10^{-4}\,\si{\henry} = 375.6\,\si{\micro\henry}
   \end{align*}
-  \[
-  L_{pfc} \ge 61.1\,\si{\micro\henry} \quad \implies \quad \text{Select standard } L_{pfc} \ge 65\,\si{\micro\henry} \text{ or } 100\,\si{\micro\henry}.
-  \]
+  Equivalently, using the fractional ripple ratio form (Eq.~\ref{eq:pfc_L_sizing}) with $r = 0.25, \eta = 0.95$:
+  \begin{align*}
+  L_{pfc} &\ge \frac{0.95 \times (230)^2 \times (400 - 325.269)}{100\times 10^3 \times 0.25 \times 1000 \times 400} = \frac{0.95 \times 52900 \times 74.731}{10^{10}} \\
+  &= \frac{3.7558 \times 10^6}{10^{10}} = 3.7558 \times 10^{-4}\,\si{\henry} = 375.6\,\si{\micro\henry}
+  \end{align*}
+  Select standard inductor: $L_{pfc} \ge 390\,\si{\micro\henry}$ or $470\,\si{\micro\henry}$.
   \item \textbf{Step 4 (Capacitor Sizing for $100\,\si{\hertz}$ Ripple via Eq.~\ref{eq:pfc_Co_sizing}):}
   \[
   \omega_{\mathrm{line}} = 2\pi (50) = 100\pi \approx 314.16\,\si{\radian\per\second}

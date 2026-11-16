@@ -122,8 +122,8 @@ $0.042$ \\
 \vspace{-10pt}
 \noindent\textbf{Power Quality Metrics \& Boost PFC Sizing Summary:} \par\vspace{1pt}
 \noindent$\bullet$ \textbf{Power Factor Decomposition:} $PF = \dfrac{P}{S} = \left(\dfrac{I_{s1,rms}}{I_{s,rms}}\right) \cos\phi_1 = DF \times DPF = \dfrac{\cos\phi_1}{\sqrt{1 + THD^2}}$, where $DF = \dfrac{1}{\sqrt{1 + THD^2}}$, $DPF = \cos\phi_1$. \par\vspace{1pt}
-\noindent$\bullet$ \textbf{THD:} $THD = \dfrac{\sqrt{I_{s,rms}^2 - I_{s1,rms}^2}}{I_{s1,rms}} = \sqrt{\dfrac{1}{DF^2} - 1}$. \quad
-$\bullet$ \textbf{Boost PFC Inductor Sizing Rule:} $L \ge \dfrac{V_{in}^2 (V_o - \sqrt{2}V_{in})}{f_s \Delta I_L V_o P_o}$ ($V_{in}$ line RMS, $\sqrt{2}V_{in}$ peak input, $V_o > \sqrt{2}V_{in}$, ripple $\Delta I_L$, load $P_o$).
+\noindent$\bullet$ \textbf{THD:} $THD = \dfrac{\sqrt{I_{s,rms}^2 - I_{s1,rms}^2}}{I_{s1,rms}} = \sqrt{\dfrac{1}{DF^2} - 1}$. \par\vspace{1pt}
+\noindent$\bullet$ \textbf{Boost PFC Inductor Sizing Rule:} $L \ge \dfrac{\sqrt{2}V_{in}(V_o - \sqrt{2}V_{in})}{f_s \Delta I_L V_o} = \dfrac{\eta V_{in}^2 (V_o - \sqrt{2}V_{in})}{f_s \cdot r \cdot P_o V_o}$ ($V_{in}$ line RMS, $\sqrt{2}V_{in}$ peak input, $V_o > \sqrt{2}V_{in}$, ripple $\Delta I_L = r \hat{I}_{in}$, load $P_o$, efficiency $\eta$).
 
 \clearpage
 
