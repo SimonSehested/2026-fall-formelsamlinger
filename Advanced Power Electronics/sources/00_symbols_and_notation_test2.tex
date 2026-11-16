@@ -168,6 +168,25 @@ $\det(\cdot)$ & Determinant of matrix / characteristic polynomial & various \\
 \end{tabular}
 \end{center}
 
+\subsection{Resonant and Quasi-Resonant Converters (Weeks 3--4 / Appendix)}
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Symbol} & \textbf{Meaning / Course Terminology} & \textbf{SI Unit} \\
+\midrule
+$L_r,\, C_r$ & Resonant tank inductance and capacitance & \si{\henry} (H), \si{\farad} (F) \\
+$Z_0$ & Characteristic impedance of resonant tank ($\sqrt{L_r/C_r}$) & \si{\ohm} ($\Omega$) \\
+$\omega_0,\, f_0$ & Resonant tank angular frequency ($1/\sqrt{L_r C_r}$) and frequency ($\omega_0/(2\pi)$) & \si{\radian\per\second}, \si{\hertz} \\
+$\Phi$ & Normalized load parameter (ZCS: $I_o Z_0 / V_{in}$; ZVS: $V_{in} / (I_o Z_0)$) & dimensionless \\
+$g$ & Unified quasi-resonant conversion gain function & dimensionless \\
+$\alpha$ & Resonant conduction interval angle ($\sin^{-1}(-\Phi)$) & \si{\radian} (rad) / $^\circ$ \\
+$K_{\mathrm{crit}}$ & Critical conduction parameter at CCM/DCM boundary & dimensionless \\
+$C_j$ & Switch junction / parasitic output capacitance ($C_{oss}$) & \si{\farad} (F) \\
+$R_n$ & Normalized load resistance ($R/Z_0$) & dimensionless \\
+\bottomrule
+\end{tabular}
+\end{center}
+
 \subsection{Standard Subscripts, Operators, and Mathematical Conventions}
 \begin{center}
 \begin{tabular}{@{}l p{9.0cm} p{5.5cm}@{}}
@@ -186,6 +205,8 @@ $X, U, D$ & Upper-case letters: DC steady-state quiescent operating points & $X 
 $\hat{x}, \hat{u}, \hat{d}$ & Hat symbols: small-signal AC perturbations & $x(t) = X + \hat{x}(t)$ \\
 $x, u, d$ & Lower-case symbols: total instantaneous quantities & $d(t) = D + \hat{d}(t)$ \\
 CCM / DCM & Continuous / Discontinuous Inductor Conduction Mode & $i_L(t) > 0$ vs $i_L(t) = 0$ interval \\
+ZCS / ZVS & Zero-Current Switching / Zero-Voltage Switching & Soft switching via resonant tank \\
+QRC & Quasi-Resonant Converter & Resonant switch replacing PWM switch \\
 SPWM & Sinusoidal Pulse-Width Modulation & Comparison of $v_{\mathrm{control}}$ with $v_{\mathrm{tri}}$ \\
 RHP & Right-Half-Plane of Laplace $s$-plane ($\mathrm{Re}\{s\} > 0$) & Phase lag; non-minimum phase \\
 PFC & Power Factor Correction & Active Boost ($I_s$ shaped to sine) \\

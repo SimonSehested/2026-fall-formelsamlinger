@@ -1,0 +1,280 @@
+\clearpage
+\appendix
+\section{Foundational Cheat Sheet: Weeks 1--4 (CCM, DCM \& QRC)}
+
+\noindent\textbf{Ctrl+F keywords:} foundational cheat sheet, weeks 1 to 4, CCM, DCM, QRC, buck, boost, buck-boost, Cuk, volt-second balance, charge balance, inductor ripple, capacitor ripple, K parameter, K\_crit, critical resistance, DCM conversion ratio, soft switching, ZCS, ZVS, resonant switch, half-wave, full-wave, characteristic impedance, resonant frequency, Phi, junction capacitance, Coss, Cj absorption.
+
+% =============================================================================
+\vspace{-3pt}
+\subsection{Week 1: Non-Isolated DC/DC in Continuous Conduction Mode (CCM)}
+\vspace{-3pt}
+% =============================================================================
+
+\subsubsection*{Fundamental Steady-State Conservation Laws}
+\vspace{-4pt}
+\begin{itemize}\setlength{\itemsep}{1pt}\setlength{\parskip}{0pt}
+  \item \textbf{Inductor Volt-Second Balance:} Net DC voltage across ideal inductor is zero:
+  $\int_0^{T_s} v_L(t)\,\mathrm{d}t = 0 \iff \sum_i V_{L,i} \Delta t_i = 0$.
+  \item \textbf{Capacitor Charge (Ampere-Second) Balance:} Net DC current through capacitor is zero:
+  $\int_0^{T_s} i_C(t)\,\mathrm{d}t = 0 \iff \sum_i I_{C,i} \Delta t_i = 0$.
+  \item \textbf{Small-Ripple Approximation:} $\Delta v_o \ll V_o \implies v_C(t) \approx V_o$; $\Delta i_L \ll I_L \implies i_L(t) \approx I_L$.
+  \item \textbf{Energy, Frequency \& Filter Cutoff:}
+  $E_L = \tfrac{1}{2} L I_L^2, \quad E_C = \tfrac{1}{2} C V_C^2, \quad P = E f_s = \tfrac{E}{T_s}, \quad f_c = \frac{1}{2\pi\sqrt{LC}} \ll f_s$.
+  \item \textbf{Duty Ratio \& RMS:} $D = t_{\mathrm{on}}/T_s \in (0, 1)$, $D' = 1 - D$. For DC $+$ triangular ripple:
+  $I_{\mathrm{rms}} = \sqrt{\overline{I}^2 + \tfrac{(\Delta I)^2}{12}}$, $I_{sw,\mathrm{rms}} = \sqrt{D} \sqrt{\overline{I}_{\mathrm{on}}^2 + \tfrac{(\Delta I)^2}{12}}$.
+\end{itemize}
+
+\vspace{-6pt}
+\subsubsection*{Master Summary Table: CCM Topologies}
+\vspace{-4pt}
+\begin{center}
+\vspace{-6pt}
+\footnotesize
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{@{} >{\raggedright\arraybackslash}p{1.8cm} >{\raggedright\arraybackslash}p{2.0cm} >{\raggedright\arraybackslash}p{3.2cm} >{\raggedright\arraybackslash}p{3.2cm} >{\raggedright\arraybackslash}p{2.6cm} >{\raggedright\arraybackslash}X @{}}
+\toprule
+\textbf{Topology} & \textbf{Ratio $M = \frac{V_o}{V_{in}}$} & \textbf{Inductor Current Ripple $\Delta I_L$} & \textbf{Output Voltage Ripple $\Delta V_o$} & \textbf{Stresses ($V_{sw}, V_D, I_L$)} & \textbf{Port Waveforms} \\
+\midrule
+\textbf{Buck} \newline (Step-down) &
+$M = D$ \newline ($0 \le M \le 1$) &
+$\Delta I_L = \dfrac{(V_{in}-V_o)D T_s}{L} = \dfrac{V_o(1-D)T_s}{L}$ &
+$\Delta V_o = \dfrac{\Delta I_L T_s}{8 C} = \dfrac{(1-D)V_o T_s^2}{8 L C} = \dfrac{V_o(1-D)\pi^2}{2}\left(\dfrac{f_c}{f_s}\right)^2$ &
+$V_{sw} = V_{in}$ \newline
+$V_D = V_{in}$ \newline
+$I_L = I_o, \; I_{sw,avg} = D I_o$ &
+Continuous output current (low ripple $\propto T_s^2$). Pulsating/chopped input current ($I_{sw}$ pulses of height $I_o$). \\
+
+\textbf{Boost} \newline (Step-up) &
+$M = \dfrac{1}{1-D}$ \newline ($M \ge 1$) &
+$\Delta I_L = \dfrac{V_{in} D T_s}{L} = \dfrac{(V_o-V_{in})(1-D)T_s}{L}$ &
+$\Delta V_o = \dfrac{I_o D T_s}{C} = \dfrac{V_o D T_s}{R C}$ \newline
+(Independent of $L$; load dependent) &
+$V_{sw} = V_o$ \newline
+$V_D = V_o$ \newline
+$I_L = \dfrac{I_o}{1-D} = I_{in}$ &
+Continuous input current (low EMI). Pulsating output diode current; high cap RMS ripple: $i_{C,rms} = I_o\sqrt{\frac{D}{1-D}}$. \\
+
+\textbf{Buck-Boost} \newline (Inverting) &
+$M = -\dfrac{D}{1-D}$ \newline ($0 \le |M| < \infty$, $|M|=1$ at $0.5$) &
+$\Delta I_L = \dfrac{V_{in} D T_s}{L} = \dfrac{|V_o|(1-D)T_s}{L}$ &
+$\Delta V_o = \dfrac{I_o D T_s}{C} = \dfrac{|V_o| D T_s}{R C}$ &
+$V_{sw} = V_{in} + |V_o|$ \newline
+$V_D = V_{in} + |V_o|$ \newline
+$I_L = \dfrac{I_o}{1-D} = I_{in} + I_o$ &
+Both input and output currents are pulsating. Output polarity inverted. High device voltage stress ($V_{in}+|V_o|$). \\
+
+\textbf{\'{C}uk} \newline (Inverting, continuous) &
+$M = -\dfrac{D}{1-D}$ \newline
+$V_{C1} = V_{in} + |V_o|$ &
+$\Delta I_{L1} = \dfrac{V_{in} D T_s}{L_1}$ \newline
+$\Delta I_{L2} = \dfrac{|V_o|(1-D)T_s}{L_2}$ &
+$\Delta V_{C1} = \dfrac{I_o D T_s}{C_1}$ \newline
+$\Delta V_o = \dfrac{\Delta I_{L2} T_s}{8 C_2} = \dfrac{|V_o|(1-D)T_s^2}{8 L_2 C_2}$ &
+$V_{sw} = V_{in} + |V_o|$ \newline
+$V_D = V_{in} + |V_o|$ \newline
+$I_{L1} = I_{in}, \; I_{L2} = I_o$ &
+Both input and output currents continuous! Coupling cap $C_1$ carries total power: $V_{C1} = \frac{V_{in}}{1-D} = \frac{|V_o|}{D}$. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+% =============================================================================
+\vspace{-6pt}
+\subsection{Week 2: Non-Isolated DC/DC in Discontinuous Conduction Mode (DCM)}
+\vspace{-4pt}
+% =============================================================================
+
+\subsubsection*{Physical Mechanism, Conduction Parameter $K$, and Critical Boundary $K_{\mathrm{crit}}$}
+\vspace{-4pt}
+DCM occurs at light load (high $R$) when inductor current reaches zero before $T_s$ ends. Diode blocks reverse current.
+Three subintervals: (1) ON ($0 < t \le D T_s$): $i_L$ ramps $0 \to \Delta I_L$; (2) Diode conduction ($D T_s < t \le (D+\delta)T_s$): $i_L$ ramps $\Delta I_L \to 0$; (3) Idle ($(D+\delta)T_s < t \le T_s$): $i_L = 0$, $C$ feeds load alone ($D + \delta < 1$).
+\begin{itemize}\setlength{\itemsep}{1pt}\setlength{\parskip}{0pt}
+  \item \textbf{Conduction Parameter:} $K = \dfrac{2L}{R T_s} = \dfrac{2L f_s}{R}$. \textbf{Condition:} CCM if $K > K_{\mathrm{crit}}(D)$, DCM if $K < K_{\mathrm{crit}}(D)$.
+  \item \textbf{Critical Resistance:} $R_{\mathrm{crit}} = \dfrac{2L f_s}{K_{\mathrm{crit}}}$. DCM occurs for lighter loads ($R > R_{\mathrm{crit}}$ or $I_o < I_{o,\mathrm{crit}}$).
+\end{itemize}
+
+\vspace{-6pt}
+\subsubsection*{Master Summary Table: DCM Boundaries and Conversion Ratios}
+\vspace{-4pt}
+\begin{center}
+\vspace{-6pt}
+\footnotesize
+\renewcommand{\arraystretch}{1.20}
+\begin{tabularx}{\textwidth}{@{} >{\raggedright\arraybackslash}p{2.0cm} >{\raggedright\arraybackslash}p{2.8cm} >{\raggedright\arraybackslash}p{3.3cm} >{\raggedright\arraybackslash}p{2.5cm} >{\raggedright\arraybackslash}X @{}}
+\toprule
+\textbf{Topology} & \textbf{Boundary Condition $K_{\mathrm{crit}}(D)$} & \textbf{DCM Conversion Ratio $M(D, K)$} & \textbf{Diode Fraction $\delta$} & \textbf{Peak Inductor Current $\Delta I_L$ \& Notes} \\
+\midrule
+\textbf{Buck} &
+$K_{\mathrm{crit}} = 1 - D$ &
+$M = \dfrac{2}{1 + \sqrt{1 + 4K/D^2}}$ &
+$\delta = \dfrac{(V_{in} - V_o)D}{V_o} = \dfrac{K}{M}$ &
+$\Delta I_L = \dfrac{V_{in}-V_o}{L} D T_s$. \newline
+$M < D$ (gain drops below CCM). $I_{in} = \tfrac{1}{2} \Delta I_L D$, $I_o = \tfrac{1}{2} \Delta I_L (D+\delta)$. \\
+
+\textbf{Boost} &
+$K_{\mathrm{crit}} = D(1-D)^2$ \newline
+\textbf{Max at $D = 1/3$:} \newline
+$K_{\mathrm{crit},\max} = \dfrac{4}{27} \approx 0.148$ &
+$M = \dfrac{1 + \sqrt{1 + 4D^2/K}}{2}$ &
+$\delta = \dfrac{V_{in} D}{V_o - V_{in}} = \dfrac{D}{M-1}$ &
+$\Delta I_L = \dfrac{V_{in} D T_s}{L}$. \newline
+\textbf{Always CCM if $K > 4/27$} ($\forall D$). \newline
+As $R \to \infty$ ($K \to 0$), $M \to \infty$ (voltage runaway! Requires dummy load). \\
+
+\textbf{Buck-Boost} &
+$K_{\mathrm{crit}} = (1-D)^2$ &
+$M = \dfrac{D}{\sqrt{K}}$ &
+$\delta = \sqrt{K}$ &
+$\Delta I_L = \dfrac{V_{in} D T_s}{L}$. \newline
+Gain $M$ is linear in $D$ at fixed $K$! $I_o = \tfrac{1}{2} \Delta I_L \delta$. \\
+
+\textbf{\'{C}uk} &
+$K_{\mathrm{crit}} = (1-D)^2$ \newline
+($L = L_1 \parallel L_2 = \frac{L_1 L_2}{L_1 + L_2}$) &
+$M = \dfrac{D}{\sqrt{K}}$ &
+$\delta = \sqrt{K}$ &
+Combined inductor current is discontinuous through switch and diode. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\vspace{-4pt}
+\begin{itemize}\setlength{\itemsep}{1pt}\setlength{\parskip}{0pt}
+  \item \textbf{DCM RMS Currents:} $I_{sw,\mathrm{rms}} = \Delta I_L \sqrt{\tfrac{D}{3}}$, \quad $I_{D,\mathrm{rms}} = \Delta I_L \sqrt{\tfrac{\delta}{3}}$.
+  \item \textbf{DCM Output Voltage Ripple:} $\Delta V_o = \dfrac{\delta T_s (\Delta I_L - I_o)^2}{2 C \Delta I_L}$.
+  \item \textbf{Blocking Voltages in DCM:} Identical to CCM ($V_{in}$ for Buck; $V_o$ for Boost; $V_{in}+|V_o|$ for Buck-Boost/\'{C}uk).
+\end{itemize}
+
+% =============================================================================
+\vspace{-6pt}
+\subsection{Weeks 3 \& 4: Resonant Quasi-Resonant Converters (QRC)}
+\vspace{-4pt}
+% =============================================================================
+
+\subsubsection*{Resonant Tank Fundamentals \& Unified Gain Function $g$}
+\vspace{-4pt}
+LC tank eliminates hard-switching overlap loss ($P_{\mathrm{sw}} \propto f_s V I$).
+$Z_0 = \sqrt{L_r/C_r}$, $\omega_0 = 1/\sqrt{L_r C_r}$, $f_0 = \omega_0/(2\pi) \implies L_r = \frac{Z_0}{2\pi f_0}, \; C_r = \frac{1}{2\pi f_0 Z_0}$.
+Effective duty ratio is replaced by $g(f_s, \Phi) = \frac{f_s}{2\pi f_0} \left[ \frac{\Phi}{2} + \alpha + \frac{1-\cos\alpha}{\Phi} \right]$.
+In full-wave mode, $g \approx f_s/f_0$ (load-independent); in half-wave mode, $g$ is load-dependent.
+Conversion ratio mapping: Buck ($M_{ZCS}=g, M_{ZVS}=1-g$), Boost ($M_{ZCS}=\frac{1}{1-g}, M_{ZVS}=\frac{1}{g}$), Buck-Boost ($M_{ZCS}=\frac{g}{1-g}, M_{ZVS}=\frac{1-g}{g}$).
+
+\vspace{-6pt}
+\subsubsection*{Master Comparison: ZCS-QRC vs. ZVS-QRC}
+\vspace{-4pt}
+\begin{center}
+\vspace{-6pt}
+\footnotesize
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{@{} >{\raggedright\arraybackslash}p{2.6cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X @{}}
+\toprule
+\textbf{Feature} & \textbf{Zero-Current Switching (ZCS-QRC) --- Week 3} & \textbf{Zero-Voltage Switching (ZVS-QRC) --- Week 4} \\
+\midrule
+\textbf{Switch Network} &
+$L_r$ in \textbf{series} with switch; $C_r$ in parallel with diode loop. &
+$C_r$ in \textbf{parallel} with switch; $L_r$ in series with filter loop. \\
+
+\textbf{Soft Switching Mechanism} &
+Switch current $i_{sw}$ resonates to zero before turn-off. $L_r$ limits $di/dt$ at turn-on (soft turn-on). &
+Switch voltage $v_{sw}$ resonates to zero before turn-on. $C_r$ limits $dv/dt$ at turn-off (soft turn-off). \\
+
+\textbf{Half-Wave vs Full-Wave} &
+Half-wave: series diode, $i_{sw} \ge 0$, load-dependent. \newline
+Full-wave: antiparallel diode, $i_{sw}$ reverses, $g \approx f_s/f_0$. &
+Half-wave: antiparallel diode clamps $v_{sw} \ge 0$ (\textbf{standard}). \newline
+Full-wave: series diode traps charge in $C_j$; \textbf{not used}. \\
+
+\textbf{Normalized Parameter $\Phi$} &
+$\Phi = \dfrac{I_o Z_0}{V_{in}}$ (Buck) \quad $\left[\Phi = \dfrac{M}{R_n}, \; R_n = \dfrac{R}{Z_0}\right]$ \newline
+$\Phi = \dfrac{I_{in} Z_0}{V_o}$ (Boost), \quad $\Phi = \dfrac{(I_{in}+I_o)Z_0}{V_{in}+V_o}$ (Buck-Boost) &
+$\Phi = \dfrac{V_{in}}{I_o Z_0}$ (Buck) \quad $\left[\Phi = \dfrac{R_n}{M}, \; R_n = \dfrac{R}{Z_0}\right]$ \newline
+$\Phi = \dfrac{V_o}{I_{in} Z_0}$ (Boost), \quad $\Phi = \dfrac{V_{in}+V_o}{(I_{in}+I_o)Z_0}$ (Buck-Boost) \\
+
+\textbf{Soft Switching Condition} &
+$\Phi \le 1 \iff Z_0 \le \dfrac{V_{in}}{I_o}$ (Buck). Requires light enough load current ($I_o \le V_{in}/Z_0$). $L_r$ not too large, $C_r$ not too small. &
+$\Phi \le 1 \iff Z_0 \ge \dfrac{V_{in}}{I_o}$ (Buck). Requires heavy enough load current ($I_o \ge V_{in}/Z_0$); loses ZVS at light load ($R \to \infty$). \\
+
+\textbf{Component Stresses} &
+\textbf{Voltage:} $\hat{V}_{sw} = V_{in}$ (Buck), $V_o$ (Boost) --- \textbf{no overvoltage!} \newline
+\textbf{Peak current:} $\hat{I}_{sw} = I_o(1 + 1/\Phi) = I_o + V_{in}/Z_0$ (at $\Phi=1$, $\hat{I}_{sw} = 2 I_o$). &
+\textbf{Current:} $\hat{I}_{sw} = I_o$ (Buck) --- \textbf{no overcurrent!} \newline
+\textbf{Peak voltage:} $\hat{V}_{sw} = V_{in}(1 + 1/\Phi) = V_{in} + Z_0 I_o$ (at $\Phi=1$, $\hat{V}_{sw} = 2 V_{in}$; up to $3\sim 5 V_{in}$). \\
+
+\textbf{Parasitic Capacitance} &
+Output cap $C_j$ ($C_{oss}$) dumps energy at turn-on: \newline
+$P_{\mathrm{cap}} = \tfrac{1}{2} C_j V_{sw}^2 f_s \implies$ limits $f_s \le 1\sim 2\,\si{\mega\hertz}$. &
+$C_j$ is in parallel with switch and is \textbf{absorbed into $C_r$}: \newline
+$C_r = C_{r,\mathrm{calc}} - C_j \implies$ True soft switching up to $>10\,\si{\mega\hertz}$! \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\vspace{-6pt}
+\subsubsection*{Four Operating Stages: ZCS vs. ZVS Buck}
+\vspace{-4pt}
+\begin{center}
+\vspace{-6pt}
+\footnotesize
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{@{} >{\raggedright\arraybackslash}p{2.6cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X @{}}
+\toprule
+\textbf{Stage} & \textbf{ZCS Buck ($L_r$ in series with switch)} & \textbf{ZVS Buck ($C_r$ in parallel with switch)} \\
+\midrule
+\textbf{Stage 1: Linear / Charging} &
+Diode freewheels. $i_{Lr}$ ramps linearly under $V_{in}$: \newline
+$i_{Lr}(t) = \dfrac{V_{in}}{L_r} t \implies T_{d1} = \dfrac{L_r I_o}{V_{in}} = \dfrac{\Phi}{\omega_0}$. &
+Switch off. $i_{Lr} = I_o$ charges $C_r$ linearly: \newline
+$v_{Cr}(t) = \dfrac{I_o}{C_r} t \implies T_{d1} = \dfrac{C_r V_{in}}{I_o} = \dfrac{\Phi}{\omega_0}$. \\
+
+\textbf{Stage 2: Resonant} &
+Diode off. $L_r-C_r$ resonates: $i_{Lr}(t) = I_o + \frac{V_{in}}{Z_0}\sin\omega_0 t$. \newline
+Ends at $i_{Lr}=0$: $\alpha = \sin^{-1}(-\Phi) \implies T_{d2} = \dfrac{\alpha}{\omega_0}$. &
+Diode $D_F$ on. $L_r-C_r$ resonates: $v_{Cr}(t) = V_{in} + Z_0 I_o\sin\omega_0 t$. \newline
+Ends at $v_{Cr}=0$: $\alpha = \sin^{-1}(-\Phi) \implies T_{d2} = \dfrac{\alpha}{\omega_0}$. \\
+
+\textbf{Stage 3: Recovering} &
+Switch off. $C_r$ discharges at $I_o$: $T_{d3} = \dfrac{1-\cos\alpha}{\omega_0 \Phi}$. &
+Diode clamps $v_{Cr}=0$. Switch turns on. $i_{Lr}$ ramps to $I_o$: $T_{d3} = \dfrac{1-\cos\alpha}{\omega_0 \Phi}$. \\
+
+\textbf{Stage 4: Freewheel} &
+$v_{Cr}=0$. Diode freewheels $I_o$: $T_{d4} = T_s - (T_{d1}+T_{d2}+T_{d3})$. &
+Switch conducts $I_o$ steadily: $T_{d4} = T_s - (T_{d1}+T_{d2}+T_{d3})$. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+% =============================================================================
+\vspace{-6pt}
+\subsection{Synthesis, Decision Trees \& Rapid Exam Recipes}
+\vspace{-4pt}
+% =============================================================================
+
+\subsubsection*{Recipe 1: CCM vs. DCM Boundary Verification}
+\vspace{-4pt}
+\textbf{Given:} $V_{in}, V_o, P_o$ (or $I_o, R$), $L, f_s$.
+\textbf{Steps:}
+(1) Calculate $T_s = 1/f_s$ and $R = V_o^2/P_o = V_o/I_o$.
+(2) Calculate $K = \dfrac{2L}{R T_s} = \dfrac{2L f_s}{R}$.
+(3) Nominal CCM duty $D$: Buck ($V_o/V_{in}$); Boost ($1-V_{in}/V_o$); Buck-Boost ($|V_o|/(V_{in}+|V_o|)$).
+(4) Evaluate $K_{\mathrm{crit}}(D)$: Buck ($1-D$); Boost ($D(1-D)^2$, unconditional CCM if $K > 4/27 \approx 0.148$); Buck-Boost ($(1-D)^2$).
+(5) \textbf{Decision:} If $K > K_{\mathrm{crit}} \implies$ \textbf{CCM}; if $K < K_{\mathrm{crit}} \implies$ \textbf{DCM} (use DCM conversion ratio $M(D,K)$).
+
+\vspace{-4pt}
+\subsubsection*{Recipe 2: Always-CCM Minimum Inductance / Maximum Load Resistance (Boost)}
+\vspace{-4pt}
+To operate strictly in CCM for \textbf{all} $D \in (0,1)$: $\max_D \{D(1-D)^2\} = 4/27$ at $D = 1/3$.
+\textbf{Criterion:} $K > \dfrac{4}{27} \iff \dfrac{2L f_s}{R} > \dfrac{4}{27} \implies R < R_{\max} = \dfrac{27}{2} L f_s = 13.5 L f_s \quad \text{or} \quad L > L_{\min} = \dfrac{2 R_{\max}}{27 f_s}$.
+
+\vspace{-4pt}
+\subsubsection*{Recipe 3: Resonant Tank Design at Boundary ($\Phi = 1$)}
+\vspace{-4pt}
+\textbf{Given:} $V_{in}, V_o, I_o, f_s$, switch parasitic capacitance $C_j$ ($C_{oss}$).
+\begin{enumerate}\setlength{\itemsep}{1pt}\setlength{\parskip}{0pt}
+  \item \textbf{Characteristic Impedance at Boundary ($\Phi = 1$):} $Z_0 = \dfrac{V_{in}}{I_o}$ (Buck ZCS or ZVS).
+  \item \textbf{Resonant Frequency $f_0$:}
+  Full-Wave ZCS Buck ($M \approx \frac{f_s}{f_0} \implies f_0 \approx \frac{f_s}{M} = f_s \frac{V_{in}}{V_o}$);
+  Half-Wave ZVS Buck ($M = 1 - \frac{f_s}{f_0} \implies f_0 = \frac{f_s}{1-M} = f_s \frac{V_{in}}{V_{in}-V_o}$).
+  \item \textbf{Tank Inductance and Capacitance:} $\omega_0 = 2\pi f_0 \implies L_r = \dfrac{Z_0}{2\pi f_0}, \quad C_{r,\mathrm{calc}} = \dfrac{1}{2\pi f_0 Z_0}$.
+  \item \textbf{Parasitic Absorption:} For \textbf{ZVS}, $C_{r,\mathrm{ext}} = C_{r,\mathrm{calc}} - C_j$. For \textbf{ZCS}, $C_j$ is not absorbed ($P_{loss} = \frac{1}{2} C_j V_{in}^2 f_s$).
+  \item \textbf{Worst-Case Peak Ratings at $\Phi = 1$:} ZCS Buck ($\hat{V}_{sw} = V_{in}, \; \hat{I}_{sw} = 2 I_o$); ZVS Buck ($\hat{I}_{sw} = I_o, \; \hat{V}_{sw} = 2 V_{in}$).
+\end{enumerate}
