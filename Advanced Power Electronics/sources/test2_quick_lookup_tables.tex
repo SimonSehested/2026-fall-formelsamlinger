@@ -42,7 +42,7 @@ $D < 0.5$. Magnetizing energy clamped to $V_{in}$ via 2 primary diodes. Switches
 
 \textbf{Forward (Overlap)} &
 $V_o = \dfrac{N_2}{N_1} D V_{in} - \Delta V_o$ \newline
-$\Delta V_o = 2 f_s L_k \left(\dfrac{N_2}{N_1}\right)^2 I_o$ &
+$\Delta V_o = f_s L_k I_o = \left(\dfrac{N_2}{N_1} V_{in}\right)\dfrac{t_{ov}}{T_s}$ &
 $V_{sw} = V_{in}\left(1 + \dfrac{N_1}{N_3}\right)$ &
 $V_{D1} = \dfrac{N_2}{N_1} V_{in}$ \newline
 $V_{D2} = \dfrac{N_2}{N_1} V_{in}\left(1 + \dfrac{N_1}{N_3}\right)$ &
@@ -62,7 +62,7 @@ for $\phi \in [-\pi/2, \pi/2]$ &
 $V_{sw1} = V_1$ \newline
 $V_{sw2} = V_2$ &
 --- (Active H-bridges) &
-$P_{\max} = \dfrac{\pi V_1 V_2}{8 \omega L_k} = \dfrac{V_1 V_2}{8 f_s L_k}$ at $\phi = \pi/2$. Bidirectional power transfer. Inherent soft-switching (ZVS). \\
+$P_{\max} = \dfrac{\pi V_1 V_2}{4 \omega L_k} = \dfrac{V_1 V_2}{8 f_s L_k}$ at $\phi = \pi/2$. Bidirectional power transfer. Inherent soft-switching (ZVS). \\
 \bottomrule
 \end{tabularx}
 \vspace{-4pt}
