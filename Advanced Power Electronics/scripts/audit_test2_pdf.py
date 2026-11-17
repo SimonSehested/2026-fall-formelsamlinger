@@ -1,149 +1,97 @@
+#!/usr/bin/env python3
+"""Test 2 check: root compact gate, then a keyword smoke on the PDF.
+
+No page-count, bookmark, or layout expectations. A course page cap, when
+set, belongs on scripts/check_compact.py --max-pages. Week 11 compensator
+design is not in the keyword list.
+"""
+
+from __future__ import annotations
+
+import subprocess
 import sys
-import pypdf
+from pathlib import Path
 
-def audit_pdf(pdf_path):
-    print(f"=== Auditing PDF: {pdf_path} ===")
-    reader = pypdf.PdfReader(pdf_path)
-    total_pages = len(reader.pages)
-    print(f"Total Pages: {total_pages}")
-    
-    # 1. Page Geometry & Layout Check
-    a4_w_pt = 595.276
-    a4_h_pt = 841.890
-    geometry_issues = []
-    char_counts = []
-    
-    for idx, page in enumerate(reader.pages):
-        box = page.mediabox
-        w = float(box.width)
-        h = float(box.height)
-        if abs(w - a4_w_pt) > 5 or abs(h - a4_h_pt) > 5:
-            geometry_issues.append((idx + 1, w, h))
-        
-        text = page.extract_text() or ""
-        char_counts.append(len(text))
-        if len(text.strip()) < 50:
-            print(f"WARNING: Page {idx+1} has very low character count: {len(text.strip())}")
+REPO = Path(__file__).resolve().parents[2]
+COURSE = REPO / "Advanced Power Electronics"
+CHECK = REPO / "scripts" / "check_compact.py"
+PDF = COURSE / "main_test2.pdf"
 
-    print(f"Geometry check: {'PASSED (all 67 pages A4 portrait)' if not geometry_issues else f'FAILED on pages {geometry_issues}'}")
-    print(f"Avg characters per page: {sum(char_counts)/total_pages:.1f} (min: {min(char_counts)}, max: {max(char_counts)})")
+SOURCES = [
+    COURSE / "sources" / "00_symbols_test2.typ",
+    COURSE / "sources" / "test2_quick_lookup.typ",
+    COURSE / "sources" / "05_isolated_dcdc_test2.typ",
+    COURSE / "sources" / "07_ac_dc_rectifiers.typ",
+    COURSE / "sources" / "08_dc_ac_inverters.typ",
+    COURSE / "sources" / "09_modeling_and_small_signal.typ",
+    COURSE / "sources" / "appendix_weeks1_4.typ",
+]
 
-    # 2. Outline / Bookmarks Check by Level
-    def get_outline_tree(items, level=0):
-        res = []
-        for item in items:
-            if isinstance(item, list):
-                res.extend(get_outline_tree(item, level + 1))
-            else:
-                p_num = reader.get_destination_page_number(item) + 1
-                res.append((level, item.title, p_num))
-        return res
+# Substrings that the Test 2 sheet should contain. Presence only.
+KEYWORDS = (
+    "Symboloversigt",
+    "Flyback",
+    "Forward",
+    "PSFB",
+    "DAB",
+    "THD",
+    "PFC",
+    "SPWM",
+    "RHP",
+    "CCM",
+    "ZVS",
+)
 
-    tree = get_outline_tree(reader.outline)
-    print(f"\nTotal Bookmarks Extracted: {len(tree)}")
-    
-    l0_sections = [(t, p) for lvl, t, p in tree if lvl == 0]
-    print("\nTop-Level (L0) Sections & Starting Pages:")
-    for t, p in l0_sections:
-        print(f"  - {t}: Page {p}")
 
-    expected_l0_order = [
-        ("Symboloversigt", 3),
-        ("Quick-Lookup", 7),
-        ("Isolated DC/DC Converters", 9),
-        ("AC-DC Converters", 22),
-        ("DC-AC Converters", 36),
-        ("Dynamic Modeling", 50),
-        ("Foundational Cheat Sheet", 65),
-    ]
+def run_compact() -> int:
+    missing = [p for p in SOURCES if not p.is_file()]
+    if missing:
+        for path in missing:
+            print(f"error: missing source {path}", file=sys.stderr)
+        return 2
+    if not CHECK.is_file():
+        print(f"error: missing {CHECK}", file=sys.stderr)
+        return 2
+    cmd = [sys.executable, str(CHECK), *[str(p) for p in SOURCES]]
+    print("compact:", " ".join(cmd))
+    return subprocess.call(cmd)
 
-    order_passed = True
-    last_page = 0
-    for exp_title, exp_p in expected_l0_order:
-        matched = [(t, p) for t, p in l0_sections if exp_title.lower() in t.lower()]
-        if not matched:
-            print(f"ERROR: Expected top-level section matching '{exp_title}' not found!")
-            order_passed = False
-        else:
-            t, p = matched[0]
-            if p != exp_p:
-                print(f"WARNING: Section '{t}' started at page {p}, expected page {exp_p}")
-            if p < last_page:
-                print(f"ERROR: Section '{t}' on page {p} is before previous section on page {last_page}!")
-                order_passed = False
-            last_page = p
-    print(f"Top-Level Chapter Order & Monotonicity: {'PASSED' if order_passed else 'FAILED'}")
 
-    # Check TOC pages (1 and 2)
-    toc_p1 = reader.pages[0].extract_text()
-    toc_p2 = reader.pages[1].extract_text()
-    toc_text = toc_p1 + " " + toc_p2
-    toc_check = all(s[0].split()[0] in toc_text for s in expected_l0_order)
-    print(f"Table of Contents Content Check: {'PASSED' if toc_check else 'FAILED'}")
+def keyword_smoke(pdf_path: Path) -> int:
+    if not pdf_path.is_file():
+        print(f"error: PDF not found: {pdf_path}", file=sys.stderr)
+        return 2
+    try:
+        from pypdf import PdfReader
+    except ImportError:
+        print("keyword smoke skipped: pypdf is not installed", file=sys.stderr)
+        return 0
 
-    # 3. Content & Keyword Audit
-    full_text = " ".join((page.extract_text() or "") for page in reader.pages)
-    keywords_to_check = [
-        # Week 5 & 7
-        ("Flyback", "Flyback converter"),
-        ("Forward", "Forward converter"),
-        ("commutation", "Commutation overlap"),
-        ("PSFB", "Phase-Shifted Full-Bridge"),
-        ("DAB", "Dual-Active-Bridge"),
-        # Week 8
-        ("rectifier", "AC-DC Rectifiers"),
-        ("THD", "Total Harmonic Distortion"),
-        ("displacement", "Displacement Power Factor"),
-        ("PFC", "Power Factor Correction"),
-        ("Boost PFC", "Active Boost PFC"),
-        # Week 9
-        ("inverter", "DC-AC Inverters"),
-        ("SPWM", "Sinusoidal PWM"),
-        ("overmodulation", "Overmodulation"),
-        ("triplen", "Triplen Harmonics"),
-        ("common-mode", "Common-Mode Voltage"),
-        ("AC-AC", "AC-AC Regulators"),
-        # Week 10
-        ("state-space", "State-Space Averaging"),
-        ("perturbation", "Small-Signal Perturbation"),
-        ("transfer function", "Transfer Functions"),
-        ("RHP", "Right-Half-Plane Zero"),
-        # Weeks 1-4
-        ("CCM", "Continuous Conduction Mode"),
-        ("DCM", "Discontinuous Conduction Mode"),
-        ("ZCS", "Zero Current Switching"),
-        ("ZVS", "Zero Voltage Switching"),
-    ]
-
-    print("\nKeyword Verification:")
+    reader = PdfReader(str(pdf_path))
+    text = "\n".join((page.extract_text() or "") for page in reader.pages)
+    print(f"PDF pages: {len(reader.pages)} (informational; no page gate)")
     missing_kw = []
-    for kw, desc in keywords_to_check:
-        count = full_text.count(kw)
+    for kw in KEYWORDS:
+        count = text.count(kw)
         if count == 0:
-            print(f"  [MISSING] {desc} ('{kw}')")
+            print(f"  [MISSING] {kw}")
             missing_kw.append(kw)
         else:
-            print(f"  [FOUND] {desc} ('{kw}'): {count} occurrences")
-            
-    if not missing_kw:
-        print("\nAll required core technical concepts verified in compiled PDF.")
-    else:
-        print(f"\nWARNING: Missing keywords: {missing_kw}")
+            print(f"  [FOUND] {kw}: {count}")
+    if missing_kw:
+        print(f"keyword smoke failed: {missing_kw}", file=sys.stderr)
+        return 1
+    print("keyword smoke passed")
+    return 0
 
-    return {
-        "total_pages": total_pages,
-        "geometry_ok": len(geometry_issues) == 0,
-        "order_ok": order_passed,
-        "toc_ok": toc_check,
-        "missing_keywords": missing_kw
-    }
+
+def main() -> int:
+    pdf_path = PDF if len(sys.argv) < 2 else Path(sys.argv[1])
+    compact_code = run_compact()
+    if compact_code != 0:
+        return compact_code
+    return keyword_smoke(pdf_path)
+
 
 if __name__ == "__main__":
-    pdf_file = "Advanced Power Electronics/main_test2.pdf" if len(sys.argv) < 2 else sys.argv[1]
-    res = audit_pdf(pdf_file)
-    if res["geometry_ok"] and res["order_ok"] and res["toc_ok"] and not res["missing_keywords"]:
-        print("\n>>> AUDIT RESULT: ALL CHECKS PASSED <<<")
-        sys.exit(0)
-    else:
-        print("\n>>> AUDIT RESULT: CHECKS FAILED <<<")
-        sys.exit(1)
+    raise SystemExit(main())

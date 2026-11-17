@@ -15,9 +15,22 @@ build.log
 __pycache__/
 *.py[cod]
 
-# Editor
+# Editor / agent tooling
 .vscode/
+.cursor/
+.antigravity/
 .DS_Store
+
+# Typst
+.typstcache/
+*.typst-pdf-cache
 
 # Superpowers
 .superpowers/
+
+# Git worktrees
+.worktrees/
+
+
+templates/formula-sheet/smoke.pdf
+
