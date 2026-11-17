@@ -1,0 +1,151 @@
+\section{Unbalanced Magnetic Pull (UMP)}
+
+\subsection{Causes of UMP: Rotor Eccentricity (\texorpdfstring{$e_0$}{e0}) and Slot Combinations (\texorpdfstring{$S_1, S_2$}{S1, S2})}
+\textbf{Definition:} Unbalanced Magnetic Pull (UMP) is an asymmetric, net radial magnetic attraction force acting between stator and rotor cores. In a perfectly symmetric machine, radial forces cancel around the bore. When symmetry is broken, a large net lateral/radial force develops.
+
+\textbf{Primary physical causes:}
+\begin{enumerate}
+  \item \textbf{Mechanical rotor eccentricity:} The rotor axis is offset from the stator bore axis by a static or dynamic displacement $e_0$ (caused by manufacturing tolerances, bearing wear, or shaft deflection).
+  \item \textbf{Unfavourable stator/rotor slot combinations ($S_1, S_2$):} Space tooth harmonics interact such that the pole numbers of stator and rotor harmonic fields differ by 2, producing dynamic radial pull.
+\end{enumerate}
+
+\textbf{Consequences:} Excessive bearing loads and accelerated wear, mechanical shaft deflection and whirling, severe vibration, acoustic hum/noise, and possible rotor-stator rubbing (rub).
+
+\subsection{Air-Gap Distribution under Static Rotor Eccentricity (\texorpdfstring{$e_0, \varepsilon_{\mathrm{ecc}} = e_0/g$}{e0, eps = e0/g})}
+When the rotor center is displaced downward by static distance $e_0$, the local air-gap length $g(\theta)$ at spatial angle $\theta$ measured from the displacement axis is:
+\begin{equation}
+g_1(\theta) = g + e_0\cos\theta, \qquad g_2(\theta) = g - e_0\cos\theta.
+\end{equation}
+Here $g$ is the nominal uniform air gap.
+
+\textbf{Relative eccentricity:}
+\begin{equation}
+\boxed{\varepsilon_{\mathrm{ecc}} = \frac{e_0}{g}} \qquad (0 \le \varepsilon_{\mathrm{ecc}} < 1).
+\end{equation}
+
+\textbf{Air-gap flux density distribution:}
+Assuming equal MMF across the air gap for opposite poles and negligible iron reluctance:
+\begin{equation}
+B_{g1}(\theta)\,g_1(\theta) = B_{g2}(\theta)\,g_2(\theta) = B_g\,g.
+\end{equation}
+For small eccentricity ($\varepsilon_{\mathrm{ecc}} = e_0/g \ll 1$):
+\begin{align}
+B_{g1}(\theta) &= \frac{B_g g}{g + e_0\cos\theta} \approx B_g(1 - \varepsilon_{\mathrm{ecc}}\cos\theta), \\
+B_{g2}(\theta) &= \frac{B_g g}{g - e_0\cos\theta} \approx B_g(1 + \varepsilon_{\mathrm{ecc}}\cos\theta).
+\end{align}
+The differential flux density between diametrically opposite points is:
+\begin{equation}
+\Delta B_g(\theta) = B_{g2}(\theta) - B_{g1}(\theta) \approx 2 B_g\,\varepsilon_{\mathrm{ecc}}\cos\theta.
+\end{equation}
+
+\subsection{Maxwell Stress Tensor and Net Radial Force Density (\texorpdfstring{$f_{\mathrm{Maxwell}}, f_{m\theta}$}{f(Maxwell), f(m,theta)})}
+The magnetic normal stress (force per unit surface area) acting on the iron surface according to Maxwell's stress tensor:
+\begin{equation}
+\boxed{f_{\mathrm{Maxwell}} = \frac{B^2}{2\mu_0} \quad [\mathrm{N/m^2}]}
+\end{equation}
+where $\mu_0 = 4\pi\times 10^{-7}\,\mathrm{H/m}$. (The tangential shear stress is $f_t = B_n H_t = \frac{1}{\mu_0}B_n B_t$, producing useful torque).
+
+Along any diametral axis $b_1 b_2$ inclined at angle $\theta$ to the displacement axis:
+\begin{equation}
+f_{m\theta} = \frac{1}{2\mu_0}\left(B_{g2}^2 - B_{g1}^2\right) = \frac{1}{2\mu_0}\left(B_{g2} + B_{g1}\right)\left(B_{g2} - B_{g1}\right).
+\end{equation}
+Substituting $B_{g2} + B_{g1} \approx 2B_g$ and $B_{g2} - B_{g1} \approx 2B_g\varepsilon_{\mathrm{ecc}}\cos\theta$:
+\begin{equation}
+f_{m\theta} = \frac{2 B_g^2}{\mu_0}\,\varepsilon_{\mathrm{ecc}}\cos\theta \quad [\mathrm{N/m^2}].
+\end{equation}
+The vertical component of this force density along the direction of eccentricity is:
+\begin{equation}
+f_{\mathrm{vert}}(\theta) = f_{m\theta}\cos\theta = \frac{2 B_g^2}{\mu_0}\,\varepsilon_{\mathrm{ecc}}\cos^2\theta.
+\end{equation}
+
+\subsection{Total Net UMP Force Formula: \texorpdfstring{$F_m = \frac{\pi D_g L_c}{4\mu_0} B_g^2 \varepsilon_{\mathrm{ecc}}$}{Fm = (pi Dg Lc / 4 mu0) Bg2 eps(ecc)}}
+Integrating the vertical force density over the rotor cylindrical surface for a machine with $p$ pole-pairs:
+\begin{equation}
+F_m = p A_g\left[\frac{1}{\pi}\int_0^\pi f_{m\theta}\cos\theta\,\mathrm{d}\theta\right]
+\end{equation}
+where $A_g = \frac{\pi D_g L_c}{2p}$ is the pole-face area per pole, $D_g$ is the air-gap diameter, and $L_c$ is the effective core length.
+Since $\frac{1}{\pi}\int_0^\pi \cos^2\theta\,\mathrm{d}\theta = \frac{1}{2}$:
+\begin{equation}
+\boxed{F_m = \frac{\pi D_g L_c}{4\mu_0} B_g^2\,\varepsilon_{\mathrm{ecc}} = \frac{\pi D_g L_c}{4\mu_0} B_g^2\left(\frac{e_0}{g}\right) \quad [\mathrm{N}]}
+\end{equation}
+\textbf{Parametric dependencies and fast rules:}
+\begin{itemize}
+  \item $F_m \propto D_g L_c$ (proportional to total air-gap cylindrical surface area).
+  \item $F_m \propto B_g^2$ (quadratic in air-gap flux density --- highly sensitive to magnetic saturation and over-excitation).
+  \item $F_m \propto \varepsilon_{\mathrm{ecc}} = e_0/g$ (linear in eccentricity; reducing air gap $g$ for fixed $e_0$ increases UMP proportionally).
+\end{itemize}
+
+\subsection{Tooth Harmonic Orders and Slot-Combination Rules to Avoid UMP (\texorpdfstring{$S_1 - S_2 \neq \pm 1, \pm 2p \pm 1$}{S1 - S2 != +/-1, +/-2p+/-1})}
+Stator and rotor slotting modulate the air-gap reluctance, producing tooth-harmonic space field orders:
+\begin{equation}
+n_{\mathrm{stator}} = \frac{S_1}{p}\pm 1, \qquad n_{\mathrm{rotor}} = \frac{S_2}{p}\pm 1.
+\end{equation}
+The corresponding pole-pair numbers and total pole counts are:
+\begin{align}
+p_{\mathrm{stator}} &= \left(\frac{S_1}{p}\pm 1\right)p = S_1 \pm p \implies 2p_{\mathrm{stator}} = 2S_1 \pm 2p, \\
+p_{\mathrm{rotor}} &= \left(\frac{S_2}{p}\pm 1\right)p = S_2 \pm p \implies 2p_{\mathrm{rotor}} = 2S_2 \pm 2p.
+\end{align}
+
+\textbf{Condition that produces destructive UMP:}
+Unbalanced magnetic pull arises whenever the pole counts of the stator and rotor harmonic fields differ by exactly 2 ($|2p_{\mathrm{stator}} - 2p_{\mathrm{rotor}}| = 2$):
+\begin{equation}
+(2S_1 \pm 2p) - (2S_2 \pm 2p) = \pm 2 \iff (S_1 \pm p) - (S_2 \pm p) = \pm 1.
+\end{equation}
+
+\textbf{Rules to avoid slot-harmonic UMP:}
+To eliminate destructive radial vibration, magnetic hum, and resonance during starting, slot numbers must satisfy:
+\begin{equation}
+\boxed{S_1 - S_2 \neq \pm 1 \qquad\text{and}\qquad S_1 - S_2 \neq \pm 2p \pm 1}
+\end{equation}
+where $p$ is the fundamental pole-pair number ($2p$ is the machine pole count).
+
+\subsection{Vibration Symptoms: Mechanical Static Eccentricity vs.\ Dynamic Slot-Harmonic UMP}
+\begin{center}
+\begin{tabular}{@{}p{0.18\textwidth}p{0.39\textwidth}p{0.39\textwidth}@{}}
+\toprule
+\textbf{Feature} & \textbf{Mechanical Static Eccentricity} & \textbf{Dynamic Slot Harmonic UMP} \\
+\midrule
+\textbf{Physical cause} & Rotor bore offset $e_0$ (bearing wear, misalignment) & Improper slot ratio ($S_1 - S_2 = \pm 1$ or $\pm 2p \pm 1$) \\
+\textbf{Force direction} & Stationary in space (toward min air gap) & Rotating vector (follows harmonic field alignment) \\
+\textbf{Vibration freq.} & Static shaft deflection + $1\times$ rotational speed ($f_r$) & Tooth-passing frequency ($f_{\mathrm{slot}} = S_2 n_r \pm f_1$) \\
+\textbf{Audible symptom} & Low-frequency whirling / rumble & High-pitched magnetic hum / scream during start \\
+\textbf{Remedy} & Align bearings, balance shaft, enlarge gap $g$ & Choose proper slot combination ($S_1, S_2$), skew slots \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Exam Recipe: Calculating Net UMP Force and Verifying Slot Combinations}
+\textbf{Use when:} Problem asks for the unbalanced magnetic pull force $F_m$ given machine dimensions, air gap $g$, flux density $B_g$, and displacement $e_0$; OR asks whether slot numbers $S_1, S_2$ cause UMP.
+
+\textbf{Steps:}
+\begin{enumerate}
+  \item \textbf{Calculate relative eccentricity:}
+  \[
+  \varepsilon_{\mathrm{ecc}} = \frac{e_0}{g}.
+  \]
+  Ensure $e_0$ and $g$ are in the same units (typically mm converted to m).
+  \item \textbf{Calculate net UMP force:}
+  \[
+  F_m = \frac{\pi D_g L_c}{4\mu_0} B_g^2 \varepsilon_{\mathrm{ecc}} = \frac{\pi D_g L_c}{4(4\pi\times 10^{-7})} B_g^2 \left(\frac{e_0}{g}\right) = \frac{10^7}{16} D_g L_c B_g^2 \left(\frac{e_0}{g}\right).
+  \]
+  \item \textbf{Check slot-combination criteria:}
+  \begin{itemize}
+    \item Compute difference $\Delta S = S_1 - S_2$.
+    \item Check $\Delta S \neq \pm 1$.
+    \item Check $\Delta S \neq \pm 2p \pm 1$ (test all 4 signs: $2p+1$, $2p-1$, $-2p+1$, $-2p-1$).
+    \item If any match occurs, state that severe UMP and noise will be produced.
+  \end{itemize}
+\end{enumerate}
+
+\textbf{Fast checks:}
+\begin{itemize}
+  \item $F_m$ is typically hundreds to thousands of Newtons in medium-sized machines.
+  \item Relative eccentricity $\varepsilon_{\mathrm{ecc}}$ must be $< 1$ (if $\varepsilon_{\mathrm{ecc}} \ge 1$, rotor rubs stator).
+\end{itemize}
+
+\textbf{Common traps:}
+\begin{itemize}
+  \item Confusing $p$ (pole-pairs) with $2p$ (number of poles) in $S_1 - S_2 \neq \pm 2p \pm 1$.
+  \item Using bore diameter $D_g$ in mm instead of meters in the force equation.
+  \item Forgetting that force is proportional to $B_g^2$, not $B_g$.
+\end{itemize}

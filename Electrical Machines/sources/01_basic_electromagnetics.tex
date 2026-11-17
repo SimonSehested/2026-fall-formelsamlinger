@@ -1,0 +1,231 @@
+\section{Basic Electromagnetics and Three-Phase Circuit Relations}
+
+\subsection{Magnetic Circuits, Ampere's Law and Flux Linkage ($\oint \mathbf{H}\cdot\mathrm{d}\mathbf{l}$, $N I$, $\Phi$, $\lambda$)}
+
+\subsubsection{Ampere's Circuital Law and Magnetic Circuit MMF Summation ($\sum H_i \ell_i = \sum N I$)}
+Ampere's circuital law states that the line integral of magnetic field strength $\mathbf{H}$ around any closed contour equals the total enclosed electric current:
+\[
+\oint \mathbf{H}\cdot\mathrm{d}\mathbf{l} = \sum I_{\mathrm{enclosed}}.
+\]
+For a lumped magnetic circuit with discrete segments of length $\ell_i$, cross-sectional area $A_i$, and magnetic field strength $H_i$:
+\[
+\sum_i H_i\ell_i = \sum F_{\mathrm{source}} = \sum (N I_c)_{\mathrm{source}}.
+\]
+Each segment presents a magnetic reluctance $\mathcal{R}_i = \frac{\ell_i}{\mu_0 \mu_{r,i} A_i}$, giving Hopkinson's law (magnetic Ohm's law):
+\[
+\mathcal{F} = \sum (N I_c)_{\mathrm{source}} = \Phi \sum_i \mathcal{R}_i.
+\]
+In high-permeability iron ($\mu_r \gg 1$), iron reluctance is often negligible compared to the air-gap reluctance $\mathcal{R}_g = \frac{g}{\mu_0 A_g}$.
+
+\subsubsection{Magnetic Flux Density $\mathbf{B}$, Core Area $A_{\mathrm{core}}$, and Total Flux ($\Phi = B_{\mathrm{core}} A_{\mathrm{core}}$)}
+Magnetic flux $\Phi$ is the surface integral of flux density $\mathbf{B}$ across cross-section $A_{\mathrm{core}}$:
+\[
+\Phi = \iint_{A_{\mathrm{core}}} \mathbf{B}\cdot\mathrm{d}\mathbf{A}.
+\]
+When $\mathbf{B}$ is uniform and perpendicular to the cross-sectional area $A_{\mathrm{core}}$:
+\[
+\Phi = B_{\mathrm{core}} A_{\mathrm{core}}.
+\]
+
+\subsubsection{Faraday's Law of Electromagnetic Induction and Induced EMF ($e = -\mathrm{d}\lambda/\mathrm{d}t$, $E_{\mathrm{RMS}} = 4.44 f N \Phi_m$)}
+The total flux linkage $\lambda$ of a coil having $N_{\mathrm{coil}}$ turns enclosing flux $\Phi$ is:
+\[
+\lambda = N_{\mathrm{coil}}\Phi.
+\]
+Faraday's law of induction gives the induced electromotive force (EMF):
+\[
+e = -\frac{\mathrm{d}\lambda}{\mathrm{d}t} = -N_{\mathrm{coil}}\frac{\mathrm{d}\Phi}{\mathrm{d}t}.
+\]
+The negative sign follows Lenz's law (induced EMF opposes the change in flux).
+For a sinusoidal flux $\Phi(t) = \Phi_m \sin(\omega_e t)$:
+\[
+e(t) = -N_{\mathrm{coil}}\omega_e \Phi_m \cos(\omega_e t)
+\implies
+E_{\mathrm{RMS}} = \frac{2\pi f N_{\mathrm{coil}}\Phi_m}{\sqrt{2}} \approx 4.44\,f N_{\mathrm{coil}}\Phi_m.
+\]
+
+\subsection{Conductor Current Density and Resistance ($J_{\mathrm{cond}}$, $\sigma_{\mathrm{Cu}}$, $R_{\mathrm{cond}}$, Thermal Limits)}
+
+\subsubsection{Conductor Current Density Calculation ($J_{\mathrm{cond}} = I_c / A_{\mathrm{cond}}$)}
+The current density $J_{\mathrm{cond}}$ in a single conductor carrying current $I_c$ with cross-sectional area $A_{\mathrm{cond}}$ is:
+\[
+J_{\mathrm{cond}} = \frac{I_c}{A_{\mathrm{cond}}}\quad[\mathrm{A/mm^2}\text{ or }\mathrm{A/m^2}].
+\]
+If the phase winding has $a$ parallel circuit paths, the single conductor current is $I_c = I_{\mathrm{ph}} / a$.
+Typical machine design limits:
+\begin{itemize}
+  \item Totally enclosed, naturally cooled: $J_{\mathrm{cond}} \approx 3.0\text{--}4.5\,\mathrm{A/mm^2}$.
+  \item Fan-ventilated / air-cooled: $J_{\mathrm{cond}} \approx 4.5\text{--}6.5\,\mathrm{A/mm^2}$.
+  \item Direct liquid/hydrogen cooled: $J_{\mathrm{cond}} > 8.0\,\mathrm{A/mm^2}$.
+\end{itemize}
+
+\subsubsection{Conductor Resistance and Temperature Dependence ($R_{\mathrm{cond}} = \ell_{\mathrm{cond}} / (\sigma_{\mathrm{Cu}} A_{\mathrm{cond}})$)}
+The DC resistance of a single conductor of length $\ell_{\mathrm{cond}}$ is:
+\[
+R_{\mathrm{cond}} = \frac{\ell_{\mathrm{cond}}}{\sigma_{\mathrm{Cu}} A_{\mathrm{cond}}} = \rho_{\mathrm{Cu}}\frac{\ell_{\mathrm{cond}}}{A_{\mathrm{cond}}},
+\]
+where $\sigma_{\mathrm{Cu}} \approx 5.8\times 10^7\,\mathrm{S/m}$ at \SI{20}{\degreeCelsius} ($\rho_{\mathrm{Cu}} \approx 1.72\times 10^{-8}\,\Omega\cdot\mathrm{m}$).
+At operating temperature $T$:
+\[
+R_T = R_{20}\left[1 + \alpha_{20}(T - 20^\circ\mathrm{C})\right],
+\qquad
+\alpha_{20} \approx 0.00393\,\mathrm{K^{-1}}.
+\]
+At standard hot operating temperature of \SI{75}{\degreeCelsius}, $\sigma_{\mathrm{Cu}} \approx 4.5\times 10^7\,\mathrm{S/m}$.
+
+\subsection{Coil Inductance and Air-Gap Magnetic Field ($L_{\mathrm{coil}}$, $B_g$, $\Phi_g$, $g$)}
+
+\subsubsection{Coil Self-Inductance Definition ($L_{\mathrm{coil}} = \lambda / I_c$)}
+The self-inductance $L_{\mathrm{coil}}$ of any coil relates flux linkage to exciting current:
+\[
+L_{\mathrm{coil}} = \frac{\lambda}{I_c} = \frac{N_{\mathrm{coil}}\Phi}{I_c}\quad[\mathrm{H}].
+\]
+
+\subsubsection{Ideal Two-Gap Core Inductance and Air-Gap Flux Density ($B_g = \mu_0 N_{\mathrm{coil}} I_c / (2g)$)}
+For a magnetic circuit with infinite core permeability ($\mu_{\mathrm{iron}}\to\infty$), negligible fringing, and two identical series air gaps of physical length $g$ and cross-sectional area $A_g$:
+\[
+\oint \mathbf{H}\cdot\mathrm{d}\mathbf{l} = 2 g H_g = N_{\mathrm{coil}} I_c
+\implies
+H_g = \frac{N_{\mathrm{coil}} I_c}{2g}.
+\]
+The air-gap magnetic flux density $B_g$ is:
+\[
+B_g = \mu_0 H_g = \frac{\mu_0 N_{\mathrm{coil}} I_c}{2g}.
+\]
+The total magnetic flux $\Phi_g$ crossing the gap is:
+\[
+\Phi_g = B_g A_g = \frac{\mu_0 N_{\mathrm{coil}} I_c A_g}{2g}.
+\]
+The self-inductance of the coil is therefore:
+\[
+L_{\mathrm{coil}} = \frac{N_{\mathrm{coil}}\Phi_g}{I_c} = \frac{\mu_0 N_{\mathrm{coil}}^2 A_g}{2g}.
+\]
+
+\subsection{Exam Recipe: Air-Gap Flux Density $B_g$, Core Flux $\Phi_g$, and Inductance $L_{\mathrm{coil}}$ from Coil MMF}
+\textbf{Use when:} Problem provides coil turns $N_{\mathrm{coil}}$, current $I_c$, air-gap length $g$, air-gap pole area $A_g$, and assumes infinite core permeability ($\mu\to\infty$).
+
+\textbf{Steps:}
+\begin{enumerate}
+  \item Identify the total number of series air gaps crossed by the closed flux line (typically 2 gaps of length $g$, so total gap length is $2g$).
+  \item Apply Ampere's law across the gaps: $2g H_g = N_{\mathrm{coil}} I_c \implies H_g = \frac{N_{\mathrm{coil}} I_c}{2g}$.
+  \item Compute air-gap flux density: $B_g = \mu_0 H_g = \frac{\mu_0 N_{\mathrm{coil}} I_c}{2g}$.
+  \item Calculate pole flux: $\Phi_g = B_g A_g$.
+  \item Calculate coil self-inductance: $L_{\mathrm{coil}} = \frac{N_{\mathrm{coil}}\Phi_g}{I_c} = \frac{\mu_0 N_{\mathrm{coil}}^2 A_g}{2g}$.
+\end{enumerate}
+
+\textbf{Fast checks:}
+\begin{itemize}
+  \item Ensure $g$ is converted from $\mathrm{mm}$ to $\mathrm{m}$ ($1\,\mathrm{mm} = 10^{-3}\,\mathrm{m}$).
+  \item Ensure $A_g$ is in $\mathrm{m^2}$ ($1\,\mathrm{cm^2} = 10^{-4}\,\mathrm{m^2}$, $1\,\mathrm{mm^2} = 10^{-6}\,\mathrm{m^2}$).
+  \item Air-gap flux density $B_g$ in un-saturated electrical machines typically lies in the range $0.5\text{--}1.2\,\mathrm{T}$.
+\end{itemize}
+
+\textbf{Common traps:} Forgetting that flux lines must cross the air gap twice to complete a closed loop (factor of 2 in $2g$); mixing area units.
+
+\subsection{Three-Phase AC Power, Star/Delta Configurations and Power Factor ($S_{3\phi}$, $V_{\mathrm{LL}}$, $V_{\mathrm{ph}}$, $I_{\mathrm{line}}$, $I_{\mathrm{ph}}$, $\cos\phi$, $\eta$)}
+
+\subsubsection{Three-Phase Apparent, Active and Reactive Power ($S_{3\phi} = \sqrt{3}V_{\mathrm{LL}}I_{\mathrm{line}}$, $P = S_{3\phi}\cos\phi$)}
+Total three-phase apparent power $S_{3\phi}$ in terms of phase and line quantities:
+\[
+S_{3\phi} = 3 V_{\mathrm{ph}} I_{\mathrm{ph}} = \sqrt{3} V_{\mathrm{LL}} I_{\mathrm{line}}\quad[\mathrm{VA}].
+\]
+Active power $P$ and reactive power $Q$:
+\[
+P = S_{3\phi} \cos\phi = 3 V_{\mathrm{ph}} I_{\mathrm{ph}} \cos\phi = \sqrt{3} V_{\mathrm{LL}} I_{\mathrm{line}} \cos\phi\quad[\mathrm{W}],
+\]
+\[
+Q = S_{3\phi} \sin\phi = 3 V_{\mathrm{ph}} I_{\mathrm{ph}} \sin\phi = \sqrt{3} V_{\mathrm{LL}} I_{\mathrm{line}} \sin\phi\quad[\mathrm{var}].
+\]
+
+\subsubsection{Motor vs Generator Power Flow and Efficiency ($\eta = P_{\mathrm{mech}} / P_{\mathrm{el}}$)}
+\textbf{Motor operation} (electrical power in, mechanical shaft power out):
+\[
+P_{\mathrm{el}} = \frac{P_{\mathrm{mech}}}{\eta}
+\implies
+S_{3\phi} = \frac{P_{\mathrm{mech}}}{\eta \cos\phi}.
+\]
+\textbf{Generator operation} (mechanical shaft power in, electrical power out):
+\[
+S_{3\phi} = \frac{P_{\mathrm{el}}}{\cos\phi},
+\qquad
+P_{\mathrm{mech}} = \frac{P_{\mathrm{el}}}{\eta}.
+\]
+
+\subsubsection{Star Connection (Y) vs Delta Connection ($\Delta$) Voltage and Current Relations}
+\textbf{Star (Y) Connection:}
+\[
+V_{\mathrm{ph}} = \frac{V_{\mathrm{LL}}}{\sqrt{3}},\qquad
+I_{\mathrm{ph}} = I_{\mathrm{line}} = \frac{S_{3\phi}}{\sqrt{3} V_{\mathrm{LL}}}.
+\]
+\textbf{Delta ($\Delta$) Connection:}
+\[
+V_{\mathrm{ph}} = V_{\mathrm{LL}},\qquad
+I_{\mathrm{ph}} = \frac{I_{\mathrm{line}}}{\sqrt{3}} = \frac{S_{3\phi}}{3 V_{\mathrm{LL}}}.
+\]
+
+\subsection{Rotational Speeds, Supply Frequency, Pole-Pairs and Slip ($f$, $p$, $2p$, $n_s$, $n_m$, $\omega_{ms}$, $\omega_m$, $s$, $T_e$)}
+
+\subsubsection{Synchronous Speed Formulas in r/min and r/s ($n_s = 60f/p = f/p$)}
+The synchronous speed of the rotating magnetic field depends strictly on electrical frequency $f$ and number of pole-pairs $p$:
+\[
+n_s = \frac{60 f}{p}\quad[\mathrm{r/min}],
+\qquad
+n_s = \frac{f}{p}\quad[\mathrm{r/s}].
+\]
+\begin{center}
+\begin{tabular}{@{}cccc@{}}
+\toprule
+Poles $2p$ & Pole-pairs $p$ & Synchronous speed $n_s$ at \SI{50}{\hertz} & Synchronous speed $n_s$ at \SI{60}{\hertz}\\
+\midrule
+2 & 1 & \SI{3000}{r/min} & \SI{3600}{r/min}\\
+4 & 2 & \SI{1500}{r/min} & \SI{1800}{r/min}\\
+6 & 3 & \SI{1000}{r/min} & \SI{1200}{r/min}\\
+8 & 4 & \SI{750}{r/min}  & \SI{900}{r/min}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsubsection{Mechanical Angular Speed ($\omega_m, \omega_{ms}$) vs Electrical Frequency ($\omega_e = 2\pi f$)}
+Electrical angular supply frequency:
+\[
+\omega_e = 2\pi f\quad[\mathrm{rad/s}].
+\]
+Synchronous mechanical angular speed of the stator air-gap rotating field:
+\[
+\omega_{ms} = \frac{\omega_e}{p} = \frac{2\pi n_s}{60}\quad[\mathrm{rad/s}].
+\]
+Actual rotor mechanical rotational angular speed:
+\[
+\omega_m = \frac{2\pi n_m}{60}\quad(n_m\text{ in r/min}),
+\qquad
+\omega_m = 2\pi n_m\quad(n_m\text{ in r/s}).
+\]
+
+\subsubsection{Induction Machine Slip ($s = (n_s - n_m)/n_s$) and Mechanical Shaft Torque ($T_e = P_{\mathrm{mech}}/\omega_m$)}
+Rotor slip $s$ measures the relative velocity between synchronous field and rotor:
+\[
+s = \frac{n_s - n_m}{n_s} = \frac{\omega_{ms} - \omega_m}{\omega_{ms}}
+\implies
+\omega_m = \omega_{ms}(1 - s).
+\]
+Rotor electrical slip frequency:
+\[
+f_2 = s f,
+\qquad
+\omega_2 = s \omega_e = p(\omega_{ms} - \omega_m).
+\]
+Electromagnetic shaft torque $T_e$ developed by the machine:
+\[
+T_e = \frac{P_{\mathrm{mech}}}{\omega_m} = \frac{P_{\mathrm{gap}}}{\omega_{ms}}\quad[\mathrm{N\cdot m}],
+\]
+where $P_{\mathrm{gap}}$ is the air-gap power transferred across the gap from stator to rotor.
+
+\subsection{Common Exam Traps and Fast Sanity Checks in Electromagnetics and Power}
+\begin{itemize}
+  \item \textbf{Poles vs Pole-Pairs:} The formula $n_s = 60f/p$ uses pole-pairs $p$. If problem states ``a 4-pole machine'', then $2p = 4 \implies p = 2$.
+  \item \textbf{Speed Units:} Check whether speed is given in $\mathrm{r/min}$ or $\mathrm{r/s}$. Omitting the factor of 60 causes an error of 6000\%.
+  \item \textbf{Line vs Phase Voltage in Star:} In star connection, $V_{\mathrm{ph}} = V_{\mathrm{LL}}/\sqrt{3}$. For $400\,\mathrm{V}$ line, $V_{\mathrm{ph}} = 230.9\,\mathrm{V}$.
+  \item \textbf{Line vs Phase Current in Delta:} In delta connection, $I_{\mathrm{line}} = \sqrt{3} I_{\mathrm{ph}}$. Do not mix up the $\sqrt{3}$ location!
+  \item \textbf{Electrical vs Mechanical Radian Speed:} $\omega_e = p \omega_{ms}$. Always divide $\omega_e$ by $p$ when calculating mechanical angular speed $\omega_{ms}$.
+  \item \textbf{Motor Efficiency Location:} For a motor, electrical input is greater than mechanical shaft output ($P_{\mathrm{el}} = P_{\mathrm{mech}}/\eta$). Dividing by $\eta$ increases required VA.
+\end{itemize}

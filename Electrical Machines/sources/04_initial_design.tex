@@ -1,0 +1,207 @@
+\section{Initial machine design procedure and magnetic circuit sizing}
+
+\subsection{Pole number ($2p$), synchronous speed ($n$), and stator slot count ($S_1, q_1$)}
+\subsubsection{Pole pairs $p$ and synchronous speed}
+Synchronous speed in r/min and r/s:
+\[
+n_s = \frac{60 f}{p}\quad[\mathrm{r/min}]
+\quad\iff\quad
+\boxed{p = \frac{60 f}{n_s}},
+\qquad
+\boxed{2p = \frac{120 f}{n_s}},
+\qquad
+\boxed{n = \frac{n_s}{60} = \frac{f}{p}\quad[\mathrm{r/s}]}.
+\]
+
+\subsubsection{Slots per pole per phase $q_1$ and total stator slots $S_1$}
+Slots per pole per phase:
+\[
+q_1 = \frac{S_1}{2p\,m}\quad(m=3\text{ for three-phase}).
+\]
+Total number of stator slots:
+\[
+\boxed{S_1 = q_1\cdot(2p)\cdot m = 6\,p\,q_1}.
+\]
+\begin{itemize}
+  \item Integer-slot winding: $q_1 \in \{1, 2, 3, 4, \dots\}$ (typically $q_1 = 2, 3, \text{ or } 4$).
+  \item Fractional-slot winding: $q_1 = a + b/c$ (reduces tooth harmonics and cogging torque).
+\end{itemize}
+Stator slot pitch at bore circumference:
+\[
+\boxed{\tau_s = \frac{\pi D_g}{S_1}}\quad[\mathrm{m}].
+\]
+
+\subsection{Magnetic circuit dimensions and flux density limits ($B_t, B_y, b_t, b_y$)}
+\subsubsection{Pole flux $\Phi_m$ and flux division in stator and rotor yokes}
+Pole flux:
+\[
+\boxed{\Phi_m = \bar{B}\,\tau\,L_c = \bar{B}\left(\frac{\pi D_g}{2p}\right)L_c}\quad[\mathrm{Wb}].
+\]
+\textbf{Flux division rule in yokes (core backs):}
+The magnetic flux entering the stator core from one pole divides equally into two halves ($\Phi_m/2$) travelling in opposite circumferential directions around the stator yoke.
+The same half-division occurs in the rotor yoke.
+\[
+\boxed{\Phi_{\mathrm{yoke}} = \frac{\Phi_m}{2}}.
+\]
+
+\subsubsection{Stator tooth width $b_t$ and slot width $b_s$}
+Number of teeth per pole is $\frac{S_1}{2p} = m q_1$.
+Assuming all flux per pole passes through the stator teeth under that pole:
+\[
+\Phi_m = \left(\frac{S_1}{2p}\right)\cdot (b_t L_c)\cdot B_t
+\quad\implies\quad
+\boxed{b_t = \frac{\Phi_m}{(S_1/2p)\,B_t\,L_c} = \frac{\Phi_m}{m\,q_1\,B_t\,L_c}}\quad[\mathrm{m}],
+\]
+where $B_t$ is maximum allowable tooth flux density (typically $B_t \approx 1.5\text{--}1.8\,\mathrm{T}$ at the narrowest tooth section).
+Slot width at bore:
+\[
+\boxed{b_s = \tau_s - b_t = \frac{\pi D_g}{S_1} - b_t}\quad[\mathrm{m}].
+\]
+
+\subsubsection{Stator yoke depth $b_y$ (core back)}
+Since the stator yoke carries $\Phi_m/2$:
+\[
+\frac{\Phi_m}{2} = B_y\cdot(b_y L_c)
+\quad\implies\quad
+\boxed{b_y = \frac{\Phi_m/2}{B_y\,L_c} = \frac{\Phi_m}{2 B_y L_c}}\quad[\mathrm{m}],
+\]
+where $B_y$ is stator yoke flux density (typically $B_y \approx 1.1\text{--}1.5\,\mathrm{T}$).
+Stator outer core diameter:
+\[
+\boxed{D_{\mathrm{out}} = D_g + 2 h_s + 2 b_y}\quad[\mathrm{m}].
+\]
+
+\subsubsection{Rotor pole body and pole shoe dimensions (salient-pole sync machine)}
+Cross-sectional widths for rotor pole body and pole head:
+\[
+\boxed{b_{\mathrm{pole\_body}} = \frac{\Phi_m}{B_{\mathrm{pole\_body}}\,L_c}},
+\qquad
+\boxed{b_{\mathrm{pole\_head}} = \frac{\Phi_m}{B_{\mathrm{pole\_head}}\,L_c}},
+\]
+where typically $B_{\mathrm{pole\_body}} \approx 1.4\text{--}1.6\,\mathrm{T}$.
+
+\subsection{Stator slot geometry, conductors per slot $z_s$, and slot depth $h_s$}
+\subsubsection{Conductors per slot $z_s$ and conductor area $A_{\mathrm{cond}}$}
+Turns per phase from phase EMF $E_{\mathrm{ph}} \approx V_{\mathrm{ph}}$:
+\[
+T_{\mathrm{ph}} = \frac{E_{\mathrm{ph}}}{4.44\,K_w\,\Phi_m\,f}.
+\]
+Conductors per slot:
+\[
+\boxed{z_s = \frac{2 T_{\mathrm{ph}}}{S_1/m} = \frac{2 m T_{\mathrm{ph}}}{S_1} = \frac{T_{\mathrm{ph}}}{p q_1}}.
+\]
+Conductor cross-sectional area with stator current density $J_s$ ($3\text{--}6\,\mathrm{A/mm^2}$):
+\[
+\boxed{A_{\mathrm{cond}} = \frac{I_c}{J_s} = \frac{I_{\mathrm{ph}}/a_p}{J_s}}\quad[\mathrm{mm^2}\text{ or }\mathrm{m^2}].
+\]
+
+\subsubsection{Slot gross area $A_{\mathrm{slot}}$ and slot depth $h_s$ with fill factor $k_{\mathrm{fill}}$}
+Total conductor copper area per slot:
+\[
+A_{\mathrm{slot,cond}} = z_s A_{\mathrm{cond}}.
+\]
+Gross slot area with slot space factor $k_{\mathrm{fill}}$ ($\sim 0.35\text{--}0.45$ for round wire):
+\[
+\boxed{A_{\mathrm{slot}} = \frac{A_{\mathrm{slot,cond}}}{k_{\mathrm{fill}}} = \frac{z_s A_{\mathrm{cond}}}{k_{\mathrm{fill}}}}.
+\]
+Slot depth $h_s$ (parallel-sided slot):
+\[
+\boxed{h_s = \frac{A_{\mathrm{slot}}}{b_s} = \frac{z_s A_{\mathrm{cond}}}{k_{\mathrm{fill}} b_s}}\quad[\mathrm{m}].
+\]
+Slot aspect ratio $h_s / b_s$ is typically between 3 and 6 (excessively deep slots increase slot leakage inductance).
+
+\subsection{Excitation MMF ($N_f I_f$) and rotor field winding sizing}
+\subsubsection{Total magnetic circuit excitation MMF sum ($\sum H_k \ell_k$)}
+Ampere's circuital law around one complete magnetic pole pair loop:
+Total required MMF per pole:
+\[
+\boxed{(N_f I_f) = H_g g' + H_t h_t + H_{y,s} \ell_{y,s} + H_{\mathrm{pole\_head}} h_{\mathrm{pole\_head}} + H_{\mathrm{pole\_body}} h_{\mathrm{pole\_body}} + H_{y,r} \ell_{y,r}}\quad[\mathrm{A\text{-}turns}].
+\]
+\begin{itemize}
+  \item Air gap represents the largest single MMF requirement: $F_g = H_g g' = \frac{B_g g'}{\mu_0} = \frac{B_g K_g g}{\mu_0}$.
+  \item Iron path MMF drops: $F_k = H_k \ell_k$, where $H_k$ is found from the core steel $B$-$H$ curve at the operating flux density $B_k$.
+\end{itemize}
+
+\subsubsection{Rotor slot area $A_{\mathrm{slot,r}}$ from field current density $J_f$}
+Field current density $J_f = \frac{I_f}{A_{\mathrm{cond,f}}}$ gives:
+\[
+A_{\mathrm{slot,r}} = N_f A_{\mathrm{cond,f}} = N_f \left(\frac{I_f}{J_f}\right) = \frac{N_f I_f}{J_f}
+\quad\implies\quad
+\boxed{A_{\mathrm{slot,r}} = \frac{(N_f I_f)}{J_f}}\quad[\mathrm{m^2}].
+\]
+
+\subsubsection{Field coil resistance $R_f$ and excitation voltage $U_f$}
+Mean turn length $\ell_{\mathrm{mt}} \approx 2 L_c$. Using core length $L_c$ as axial length proxy:
+\[
+\boxed{R_f = \frac{N_f^2 L_c}{\sigma_{\mathrm{Cu}} A_{\mathrm{slot,r}}}}\quad[\Omega].
+\]
+Excitation terminal DC voltage $U_f$:
+\[
+\boxed{U_f = R_f I_f = \frac{(N_f I_f)\,N_f L_c}{\sigma_{\mathrm{Cu}} A_{\mathrm{slot,r}}}}\quad[\mathrm{V}].
+\]
+Solving for number of turns $N_f$ given excitation voltage $U_f$:
+\[
+\boxed{N_f = \frac{U_f\,\sigma_{\mathrm{Cu}} A_{\mathrm{slot,r}}}{(N_f I_f)\,L_c}},
+\qquad
+\boxed{I_f = \frac{(N_f I_f)}{N_f}}.
+\]
+
+\subsubsection{Field copper loss $P_{\mathrm{Cu,f}}$ and inverse slot area scaling ($P_{\mathrm{Cu,f}} \propto 1/A_{\mathrm{slot,r}}$)}
+Field winding DC copper loss:
+\[
+\boxed{P_{\mathrm{Cu,f}} = R_f I_f^2 = \frac{N_f^2 L_c}{\sigma_{\mathrm{Cu}} A_{\mathrm{slot,r}}} I_f^2 = \frac{(N_f I_f)^2 L_c}{\sigma_{\mathrm{Cu}} A_{\mathrm{slot,r}}} \propto \frac{1}{A_{\mathrm{slot,r}}}}\quad[\mathrm{W}].
+\]
+\textbf{FUNDAMENTAL DESIGN THEOREM:}
+For a given required excitation MMF $(N_f I_f)$, field copper loss depends ONLY on available rotor slot area $A_{\mathrm{slot,r}}$ and core length $L_c$. It is \textbf{independent} of the choice of turn number $N_f$ and current $I_f$!
+To reduce field heating loss, one MUST increase rotor slot cross-sectional area $A_{\mathrm{slot,r}}$.
+
+\subsection{Exam recipe: Synchronous machine initial design checklist and procedure}
+\textbf{Use when:} given machine ratings ($S_{3\phi}, V_{\mathrm{ph}}, f, n, \bar{B}, ac$) and tasked with completing initial dimensions, slot counts, core sections, and rotor field winding.
+
+\textbf{Steps:}
+\begin{enumerate}
+  \item \textbf{Speed, poles and stator slots:}
+  Calculate $p = \frac{60 f}{n_s}$ [r/min] $\implies 2p = 2p$.
+  Choose slots/pole/phase $q_1$ (e.g.\ $q_1 = 2$ or 3) $\implies$ total slots $S_1 = q_1 (2p) m$.
+  Slot pitch $\tau_s = \frac{\pi D_g}{S_1}$.
+  \item \textbf{Main dimensions and air gap:}
+  Calculate output coefficient $G = 1.11 K_w \pi^2 \bar{B} ac$.
+  Find volume proxy $D_g^2 L_c = \frac{S_{3\phi}}{G n}$ ($n = n_s/60$ in r/s).
+  With square pole $\tau = L_c = \frac{\pi D_g}{2p}$, solve for $D_g$ and $L_c$. Choose air gap $g$.
+  \item \textbf{Pole flux $\Phi_m$:}
+  Compute $\Phi_m = \bar{B} \tau L_c = \bar{B}\left(\frac{\pi D_g}{2p}\right)L_c$.
+  \item \textbf{Stator tooth width and slot width:}
+  Choose tooth flux density $B_t \approx 1.5\text{--}1.8\,\mathrm{T}$.
+  Calculate tooth width $b_t = \frac{\Phi_m}{(S_1/2p) B_t L_c}$ and slot width $b_s = \tau_s - b_t$.
+  \item \textbf{Stator turns, conductors per slot, and slot depth:}
+  Calculate turns $T_{\mathrm{ph}} = \frac{E_{\mathrm{ph}}}{4.44 K_w \Phi_m f}$.
+  Conductors per slot $z_s = \frac{2 T_{\mathrm{ph}}}{S_1 / m}$ (round to even integer).
+  Conductor area $A_{\mathrm{cond}} = \frac{I_{\mathrm{ph}}}{J_s}$.
+  Slot depth $h_s = \frac{z_s A_{\mathrm{cond}}}{k_{\mathrm{fill}} b_s}$.
+  \item \textbf{Stator yoke depth:}
+  Choose yoke flux density $B_y \approx 1.2\text{--}1.5\,\mathrm{T}$.
+  Calculate yoke depth $b_y = \frac{\Phi_m / 2}{B_y L_c}$ (\textbf{remember half flux!}).
+  Outer diameter $D_{\mathrm{out}} = D_g + 2 h_s + 2 b_y$.
+  \item \textbf{Rotor pole body and shoe:}
+  Calculate widths $b_{\mathrm{pole\_body}} = \frac{\Phi_m}{B_{\mathrm{pole\_body}} L_c}$ and $b_{\mathrm{pole\_head}} = \frac{\Phi_m}{B_{\mathrm{pole\_head}} L_c}$.
+  \item \textbf{Excitation MMF sum:}
+  Sum MMFs: $(N_f I_f) = H_g g' + H_t h_t + H_{y,s} \ell_{y,s} + H_{\mathrm{pole}} h_{\mathrm{pole}} + H_{y,r} \ell_{y,r}$.
+  \item \textbf{Rotor field slot and winding:}
+  Given field current density $J_f$, find rotor slot area $A_{\mathrm{slot,r}} = \frac{N_f I_f}{J_f}$.
+  Given DC excitation voltage $U_f$, solve $N_f = \frac{U_f \sigma_{\mathrm{Cu}} A_{\mathrm{slot,r}}}{(N_f I_f) L_c}$ and $I_f = \frac{N_f I_f}{N_f}$.
+  Field loss $P_{\mathrm{Cu,f}} = \frac{(N_f I_f)^2 L_c}{\sigma_{\mathrm{Cu}} A_{\mathrm{slot,r}}}$.
+\end{enumerate}
+
+\textbf{Fast checks:}
+\begin{itemize}
+  \item $z_s$ must be an even integer for 2-layer stator windings.
+  \item Stator yoke carries $\Phi_m/2$, NOT full $\Phi_m$.
+  \item Rotor field copper loss is inversely proportional to rotor slot area: $P_{\mathrm{Cu,f}} \propto 1/A_{\mathrm{slot,r}}$.
+\end{itemize}
+
+\textbf{Common traps:}
+\begin{itemize}
+  \item Forgetting factor $1/2$ in yoke flux calculation ($b_y = \frac{\Phi_m/2}{B_y L_c}$).
+  \item Mixing up $p$ (pole-pairs) and $2p$ (poles) when computing slot count $S_1 = q_1 (2p) m$.
+  \item Using speed in r/min instead of r/s when calculating $G$ and volume proxy.
+\end{itemize}

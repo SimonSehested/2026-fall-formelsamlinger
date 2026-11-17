@@ -1,0 +1,252 @@
+\section{Main dimensions, loadings and output coefficient ($D_g, L_c, \bar{B}, ac, G$)}
+
+\subsection{Main dimensions ($D_g, L_c$) and machine volume proxy ($D_g^2 L_c$)}
+\[
+D_g:\text{ air-gap bore diameter (m, stator inner diameter)},
+\qquad
+L_c:\text{ core / axial active length (m)}.
+\]
+The machine volume proxy is:
+\[
+\boxed{\text{Volume proxy} = D_g^2 L_c}\quad[\mathrm{m^3}].
+\]
+Active cylindrical rotor/bore volume is $V_{\mathrm{bore}} = \frac{\pi}{4} D_g^2 L_c \propto D_g^2 L_c$.
+
+\textbf{Torque vs.\ power volume scaling:}
+Electromagnetic torque is $T_e = \frac{P_{\mathrm{em}}}{\omega_m} \propto D_g^2 L_c\,\bar{B}\,ac$.
+For specified magnetic and electric loadings ($\bar{B}, ac$), the machine core volume $D_g^2 L_c$ is determined by \textbf{rated torque}, not by rated power.
+At higher operating speed $n$, a smaller volume produces the same rated power $P = T_e \omega_m$.
+
+\subsection{Specific magnetic loading $\bar{B}$ and peak air-gap flux density}
+Specific magnetic loading (average air-gap flux density over the cylindrical bore surface):
+\[
+\boxed{\bar{B} = \frac{2p\,\Phi_m}{\pi D_g L_c} = \frac{\Phi_m}{\tau L_c}}\quad[\mathrm{T}],
+\]
+where $\Phi_m$ is maximum flux per pole [Wb], $p$ is pole-pairs, $2p$ is number of poles, and $\tau = \frac{\pi D_g}{2p}$ is pole pitch [m].
+
+\textbf{Peak fundamental flux density $\hat{B}_1$:}
+\begin{itemize}
+  \item Sinusoidal air-gap flux distribution: $\hat{B}_1 = \frac{\pi}{2}\bar{B} \approx 1.57\,\bar{B}$.
+  \item Flat-topped field with pole arc-to-pitch ratio $\alpha_p = b_p/\tau$: $\hat{B}_g \approx \frac{\bar{B}}{\alpha_p}$ ($\alpha_p \approx 0.65\text{--}0.75$).
+\end{itemize}
+Typical air-gap average: $\bar{B} \approx 0.30\text{--}0.65\,\mathrm{T}$.
+
+\textbf{Magnetic saturation limits:}
+If iron core flux density $B_{\mathrm{core}}$ is too high ($>1.5\text{--}1.8\,\mathrm{T}$):
+\begin{itemize}
+  \item Core loss increases: $P_{\mathrm{Fe}} \uparrow$ (hysteresis and eddy current heating).
+  \item Magnetizing current increases: $I_\mu \uparrow$ and reactive power demand increases.
+  \item Induction motor power factor drops: $\cos\phi \downarrow$.
+  \item Magnetic saturation sets the practical upper bound on permissible $\bar{B}$.
+\end{itemize}
+
+\subsection{Specific electric loading $ac$ and thermal/cooling limits}
+Specific electric loading (total ampere-conductors per unit circumference of air gap):
+\[
+\boxed{ac = \frac{m\,(2 T_{\mathrm{ph}} I_{\mathrm{ph}})}{\pi D_g} = \frac{I_{\mathrm{total,cond}}}{\pi D_g}}\quad[\mathrm{A\text{-}conductors/m}\text{ or }\mathrm{A/m}],
+\]
+where $T_{\mathrm{ph}}$ is series turns per phase, $I_{\mathrm{ph}}$ is rms phase current [A], and $m$ is number of phases ($m=3$).
+Total armature conductors: $Z = 2 m T_{\mathrm{ph}} = S_1 z_s$.
+
+\textbf{Thermal and cooling limits:}
+\begin{itemize}
+  \item Higher $ac \implies$ higher copper loss $P_{\mathrm{Cu}} \propto ac^2$, causing elevated temperature rise in stator windings.
+  \item Higher $ac \implies$ larger leakage reactance voltage drop and stronger armature reaction.
+  \item Cooling method sets the upper limit on permissible $ac$:
+  \begin{itemize}
+    \item Natural cooling / totally enclosed: $ac \sim 15\,000\text{--}25\,000\,\mathrm{A/m}$.
+    \item Forced-air ventilation: $ac \sim 25\,000\text{--}50\,000\,\mathrm{A/m}$.
+    \item Direct water or hydrogen cooling: $ac \sim 60\,000\text{--}100\,000\,\mathrm{A/m}$.
+  \end{itemize}
+\end{itemize}
+
+\subsection{AC machine induced EMF equation ($E_{\mathrm{ph}}$)}
+Induced phase EMF (rms):
+\[
+\boxed{E_{\mathrm{ph}} = 4.44\,K_w\,T_{\mathrm{ph}}\,\Phi_m\,f = \sqrt{2}\pi\,K_w\,T_{\mathrm{ph}}\,\Phi_m\,f}\quad[\mathrm{V}],
+\]
+where $K_w = K_p K_d$ is the fundamental winding factor, and $f$ is electrical supply frequency [Hz].
+Terminal voltage approximation: $E_{\mathrm{ph}} \approx V_{\mathrm{ph}}$ when full-load leakage impedance drop is neglected.
+
+\subsection{Output coefficient $G$ and machine volume scaling ($D_g^2 L_c$)}
+Three-phase apparent power rating: $S_{3\phi} = 3 V_{\mathrm{ph}} I_{\mathrm{ph}} = \sqrt{3} V_L I_L$ [VA].
+Derivation: with $E_{\mathrm{ph}} \approx V_{\mathrm{ph}}$, $S_{3\phi} = 3(4.44 K_w T_{\mathrm{ph}} \Phi_m f)I_{\mathrm{ph}}$.
+Substituting $\Phi_m = \bar{B}\frac{\pi D_g L_c}{2p}$, $f = p n$ (with speed $n$ in \textbf{r/s}), and $6 T_{\mathrm{ph}} I_{\mathrm{ph}} = \pi D_g ac$:
+\[
+\boxed{G = \frac{S_{3\phi}}{D_g^2 L_c n} = 1.11\,K_w\,\pi^2\,\bar{B}\cdot ac}\quad[\mathrm{VA\,s/m^3}\text{ or }\mathrm{J/m^3}].
+\]
+\textbf{CRITICAL SPEED CONVERSION:} Rotor speed $n$ MUST be in \textbf{revolutions per second (r/s)}:
+\[
+n = \frac{n_s}{60}\quad[\mathrm{r/s}].
+\]
+
+\textbf{Correction for stator leakage impedance drop fraction $\varepsilon_{\mathrm{drop}}$:}
+\begin{itemize}
+  \item Motor ($E_{\mathrm{ph}} = (1-\varepsilon_{\mathrm{drop}})V_{\mathrm{ph}}$):
+  \[
+  G = \frac{S_{3\phi}}{D_g^2 L_c n} = \frac{1}{1-\varepsilon_{\mathrm{drop}}}\,1.11\,K_w\,\pi^2\,\bar{B}\cdot ac.
+  \]
+  \item Generator ($V_{\mathrm{ph}} = (1-\varepsilon_{\mathrm{drop}})E_{\mathrm{ph}}$):
+  \[
+  G = \frac{S_{3\phi}}{D_g^2 L_c n} = (1-\varepsilon_{\mathrm{drop}})\,1.11\,K_w\,\pi^2\,\bar{B}\cdot ac.
+  \]
+\end{itemize}
+
+\textbf{Machine volume proxy formula:}
+\[
+\boxed{D_g^2 L_c = \frac{S_{3\phi}}{G\,n}}\quad[\mathrm{m^3}].
+\]
+\begin{itemize}
+  \item For fixed power $S_{3\phi}$, machine volume $D_g^2 L_c \propto 1/n$ (high-speed machines are compact).
+  \item For fixed torque $T_e$, machine volume $D_g^2 L_c$ is approximately constant regardless of speed.
+\end{itemize}
+
+\subsection{Square-pole design ($\tau = L_c$) and aspect ratio ($D_g/L_c$)}
+Pole pitch is $\tau = \frac{\pi D_g}{2p}$. A square-pole machine specifies $\tau = L_c$:
+\[
+\frac{\pi D_g}{2p} = L_c
+\quad\iff\quad
+\boxed{\frac{D_g}{L_c} = \frac{2p}{\pi}}
+\quad\text{or}\quad
+\boxed{L_c = \frac{\pi D_g}{2p}}.
+\]
+Substituting into volume proxy $D_g^2 L_c = D_g^3\left(\frac{\pi}{2p}\right) = \frac{S_{3\phi}}{G n}$:
+\[
+\boxed{D_g = \left(\frac{2p}{\pi}\cdot\frac{S_{3\phi}}{G n}\right)^{1/3}},
+\qquad
+\boxed{L_c = \frac{\pi D_g}{2p} = \tau}.
+\]
+
+\textbf{Aspect ratio design criteria ($L_c / D_g$):}
+\begin{itemize}
+  \item \textbf{High-speed machines (turbo-alternators, $2p=2$):} Large $L_c/D_g$ (long, slender rotor). Small diameter $D_g$ limits centrifugal mechanical stress and peripheral velocity $v_{\mathrm{periph}} = \pi D_g n$.
+  \item \textbf{Low-speed machines (hydro-generators, large $2p$):} Small $L_c/D_g$ (large diameter, short core). Large diameter $D_g$ provides sufficient circumference to accommodate many poles.
+\end{itemize}
+
+\subsection{Exam recipe: Sizing main dimensions $D_g$ and $L_c$ from machine ratings}
+\textbf{Use when:} given apparent power $S_{3\phi}$ (or $P_{\mathrm{mech}},\eta,\cos\phi$), $\bar{B}$, $ac$, frequency $f$, poles $2p$, and square-pole design criterion $\tau = L_c$.
+
+\textbf{Steps:}
+\begin{enumerate}
+  \item \textbf{Compute speed in r/s:} $n_s = \frac{60 f}{p}$ [r/min] $\implies n = \frac{n_s}{60} = \frac{f}{p}$ [r/s].
+  \item \textbf{Determine electrical input power $S_{3\phi}$:}
+  \begin{itemize}
+    \item Motor: $S_{3\phi} = \frac{P_{\mathrm{mech}}}{\eta\cos\phi}$ [VA].
+    \item Generator: $S_{3\phi} = \frac{P_{\mathrm{out}}}{\cos\phi}$ [VA].
+  \end{itemize}
+  If winding factor $K_w$ is not specified, use full-pitch distributed default $K_w \approx 0.955$.
+  \item \textbf{Calculate output coefficient $G$:}
+  \[
+  G = 1.11\,K_w\,\pi^2\,\bar{B}\cdot ac\quad[\mathrm{VA\,s/m^3}].
+  \]
+  (Multiply by $\frac{1}{1-\varepsilon_{\mathrm{drop}}}$ if stator leakage voltage drop is given).
+  \item \textbf{Compute required volume proxy:}
+  \[
+  D_g^2 L_c = \frac{S_{3\phi}}{G\,n}\quad[\mathrm{m^3}].
+  \]
+  \item \textbf{Separate $D_g$ and $L_c$ via square-pole relation $\tau = L_c$:}
+  \[
+  D_g = \left(\frac{2p}{\pi}\cdot\frac{S_{3\phi}}{G n}\right)^{1/3}\quad[\mathrm{m}],
+  \qquad
+  L_c = \frac{\pi D_g}{2p}\quad[\mathrm{m}].
+  \]
+\end{enumerate}
+
+\textbf{Fast checks:} $D_g$ and $L_c$ in metres (typically $0.1\text{--}2.0\,\mathrm{m}$); $G \approx 1.0\times 10^5\text{--}2.5\times 10^5\,\mathrm{VA\,s/m^3}$; verify $D_g^2 L_c$ product matches step 4.
+
+\textbf{Common traps:}
+\begin{itemize}
+  \item Using speed in r/min instead of r/s in $G$ and $D_g^2 L_c$ formulas (causes a factor of 60 error!).
+  \item Forgetting $\eta$ and $\cos\phi$ when converting motor mechanical shaft power $P_{\mathrm{mech}}$ to electrical $S_{3\phi}$.
+  \item Mixing number of poles $2p$ and pole-pairs $p$ in $\tau = \frac{\pi D_g}{2p}$.
+\end{itemize}
+
+\subsection{Stator winding design: turns per phase $T_{\mathrm{ph}}$ and conductors per slot $z_s$}
+\subsubsection{Turns per phase $T_{\mathrm{ph}}$ from electric loading or EMF}
+From specific electric loading $ac$ ($m=3$ phases):
+\[
+\boxed{T_{\mathrm{ph}} = \frac{ac\,\pi D_g}{2 m I_{\mathrm{ph}}} = \frac{ac\,\pi D_g}{6 I_{\mathrm{ph}}}}.
+\]
+From phase induced EMF:
+\[
+\boxed{T_{\mathrm{ph}} = \frac{E_{\mathrm{ph}}}{4.44\,K_w\,\Phi_m\,f}},
+\qquad\text{where }\Phi_m = \bar{B}\tau L_c = \bar{B}\left(\frac{\pi D_g}{2p}\right)L_c.
+\]
+The calculated $T_{\mathrm{ph}}$ must be rounded to an integer compatible with the stator slotting.
+
+\subsubsection{Conductors per slot $z_s$, conductor area $A_{\mathrm{cond}}$, and slot fill factor $k_{\mathrm{fill}}$}
+Slots per phase: $N_{\mathrm{ph}} = S_1 / m = S_1 / 3 = q_1 (2p)$.
+Total conductors per phase $= 2 T_{\mathrm{ph}}$ (each turn contains two conductors / coil sides).
+\[
+\boxed{z_s = \frac{2 T_{\mathrm{ph}}}{N_{\mathrm{ph}}} = \frac{2 m T_{\mathrm{ph}}}{S_1} = \frac{6 T_{\mathrm{ph}}}{S_1}}.
+\]
+\begin{itemize}
+  \item $z_s$ must be an integer (an \textbf{even} integer for standard two-layer windings, e.g.\ $z_s = 2, 4, 6, 8, \dots$).
+  \item Actual turns per phase after rounding $z_s$: $T_{\mathrm{ph,actual}} = \frac{z_s S_1}{2 m}$.
+\end{itemize}
+
+\textbf{Conductor cross-sectional area $A_{\mathrm{cond}}$:}
+\[
+\boxed{A_{\mathrm{cond}} = \frac{I_c}{J_{\mathrm{cond}}} = \frac{I_{\mathrm{ph}}/a_p}{J_{\mathrm{cond}}}}\quad[\mathrm{mm^2}\text{ or }\mathrm{m^2}],
+\]
+where $a_p$ is number of parallel paths ($a_p=1$ for series connection) and $J_{\mathrm{cond}}$ is current density (typically $3\text{--}6\,\mathrm{A/mm^2}$).
+
+\textbf{Gross slot area $A_{\mathrm{slot}}$ and slot dimensions ($b_s, h_s$):}
+Total copper area per slot: $A_{\mathrm{slot,cond}} = z_s A_{\mathrm{cond}}$.
+With slot fill factor $k_{\mathrm{fill}}$ (space factor, typically $0.35\text{--}0.45$ for random round wire, $0.50\text{--}0.65$ for rectangular conductors):
+\[
+\boxed{A_{\mathrm{slot}} = \frac{A_{\mathrm{slot,cond}}}{k_{\mathrm{fill}}} = \frac{z_s A_{\mathrm{cond}}}{k_{\mathrm{fill}}} = b_s h_s},
+\]
+where $b_s$ is average slot width and $h_s$ is slot depth.
+
+\subsection{Air-gap length sizing and empirical rules ($g$)}
+\begin{itemize}
+  \item \textbf{Induction machines:} Air gap $g$ should be as small as mechanically possible to minimize magnetizing current $I_\mu$, maximize magnetizing reactance $X_m$, and maintain a high power factor $\cos\phi$.
+  Empirical formula for induction motor air gap ($D_g, L_c$ in m, $g$ in mm):
+  \[
+  \boxed{g = 0.2 + 2\sqrt{D_g L_c}\quad[\mathrm{mm}]}.
+  \]
+  \item \textbf{Synchronous machines:} Air gap $g$ is designed substantially larger to lower armature reaction, decrease synchronous reactance $X_s$, increase short-circuit ratio (SCR), and improve voltage regulation.
+  \item Mechanical constraints: Bearing clearance, shaft deflection under unbalanced magnetic pull (UMP), and rotor manufacturing tolerances impose physical lower limits on $g$.
+\end{itemize}
+
+\subsection{Carter coefficients ($K_s, K_d, K_g$) and effective air gap $g'$}
+Slotting and radial cooling ducts widen the air gap locally, increasing reluctance.
+\begin{itemize}
+  \item \textbf{Stator slotting Carter coefficient $K_s$:}
+  \[
+  \boxed{K_s = \frac{\tau_s}{\tau_s - k_s b_s} > 1},
+  \]
+  where $\tau_s = \frac{\pi D_g}{S_1}$ is stator slot pitch, $b_s$ is slot opening width, and $k_s$ is Carter coefficient from Carter's curves ($k_s \approx \frac{b_s/g}{5 + b_s/g}$).
+  \item \textbf{Cooling duct Carter coefficient $K_d$:}
+  \[
+  \boxed{K_d = \frac{L_c}{L_c - n_d k_d w_d} > 1},
+  \]
+  where $n_d$ is number of radial cooling ducts, $w_d$ is duct axial width, and $k_d$ is duct Carter coefficient.
+  \item \textbf{Total Carter coefficient $K_g$ and effective air gap $g'$:}
+  \[
+  \boxed{K_g = K_s K_d} \quad(\text{or } K_g = K_{s1} K_{s2} K_d\text{ if both stator and rotor are slotted}),
+  \]
+  \[
+  \boxed{g' = K_g\,g > g}.
+  \]
+  \item \textbf{Air-gap MMF calculation:}
+  \[
+  \boxed{F_g = H_g g' = \frac{1}{\mu_0} B_g g' = \frac{B_g K_g g}{\mu_0}}\quad[\mathrm{A\text{-}turns}],
+  \]
+  where $B_g$ is peak air-gap flux density calculated assuming unslotted smooth surfaces.
+  Slotting \emph{increases} air-gap magnetic reluctance.
+\end{itemize}
+
+\subsection{Fringing at core ends and pole edges}
+Magnetic flux fringes into air at axial core ends and circumferential pole shoe boundaries:
+\[
+\boxed{L_c' = L_c + k_1 g},
+\qquad
+\boxed{\beta' = \beta + k_2 g},
+\]
+where typically $k_1 = k_2 = 2$ for small air gaps, $L_c'$ is effective axial core length, and $\beta'$ is effective pole arc.
+\begin{itemize}
+  \item Fringing \textbf{widens} the effective cross-sectional magnetic area $\implies$ it \textbf{reduces} air-gap magnetic reluctance.
+  \item Contrast: Slotting reduces effective area $\implies$ increases reluctance ($g' > g$).
+\end{itemize}

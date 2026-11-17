@@ -1,0 +1,36 @@
+# LaTeX build
+*.aux
+*.log
+*.toc
+*.out
+*.idx
+*.ind
+*.ilg
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+build.log
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Editor / agent tooling
+.vscode/
+.cursor/
+.antigravity/
+.DS_Store
+
+# Typst
+.typstcache/
+*.typst-pdf-cache
+
+# Superpowers
+.superpowers/
+
+# Git worktrees
+.worktrees/
+
+
+templates/formula-sheet/smoke.pdf
+

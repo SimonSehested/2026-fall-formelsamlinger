@@ -1,0 +1,150 @@
+\section{PWM inverters and AC drive fundamentals}
+
+\subsection{Equal-area (volt-second) theorem and modulation principle}
+PWM pulses with identical volt-second areas produce essentially identical fundamental stator current responses when applied to inductive machine windings:
+\[
+\int v_{\mathrm{PWM}}(t)\,\mathrm{d}t = \int v_{\mathrm{target}}(t)\,\mathrm{d}t.
+\]
+\textbf{Theoretical foundation:}
+AC electrical machines are highly inductive loads that naturally act as low-pass filters (\(i = \frac{1}{L}\int v\,\mathrm{d}t\)). Consequently, high-frequency chopped voltage pulses with equal volt-second integrals synthesize the same low-frequency flux and fundamental stator current as a smooth continuous sinusoidal reference waveform.
+
+\textbf{Primary control parameters:}
+\begin{itemize}
+  \item \textbf{Output fundamental voltage amplitude:} Controlled by the peak amplitude of reference control voltage \(v_{\mathrm{control}}\) (or modulation index \(M\)).
+  \item \textbf{Harmonic suppression:} Current ripple and low-frequency harmonic torques are suppressed by increasing the carrier frequency ratio \(m_f\) (or \(p\)).
+\end{itemize}
+
+\subsection{Modulation index \texorpdfstring{$M = V_m / (V_d/2)$}{M = V_m / (V_d/2)} and carrier frequency ratio \texorpdfstring{$m_f = f_{\mathrm{tri}} / f_{\mathrm{fund}}$}{m_f = f_tri / f_fund} (\texorpdfstring{$p$}{p})}
+For a sine--triangle voltage-source inverter (VSI) with total DC-link voltage \(V_d\):
+\[
+M = \frac{V_m}{V_d/2}.
+\]
+Here \(V_m = \sqrt{2} V_{\mathrm{ph}}\) is the peak fundamental phase voltage, and \(V_d/2\) is the maximum pole voltage without overmodulation:
+\begin{itemize}
+  \item \(0 \le M \le 1.0\): Linear modulation range for standard sinusoidal PWM (SPWM).
+  \item \(M > 1.0\): Overmodulation occurs, resulting in non-linear voltage gain and low-order harmonic generation unless harmonic injection is utilized.
+\end{itemize}
+
+\textbf{Carrier frequency modulation ratio \(m_f\) (often denoted \(p\) or \(p_{\mathrm{pwm}}\) in course exams):}
+\[
+m_f = p = \frac{f_{\mathrm{tri}}}{f_{\mathrm{fund}}},
+\qquad
+\Delta = \frac{2\pi}{m_f} = \frac{2\pi}{p} \quad [\mathrm{rad}].
+\]
+Here \(\Delta\) is the angular width of one carrier period in electrical radians of the fundamental cycle.
+Higher carrier ratios \(p\) shift switching harmonic sidebands to higher frequencies (\(\approx p f_{\mathrm{fund}}\)), reducing machine current ripple, copper losses, and acoustic noise while simplifying output filtering.
+
+\subsection{Third-harmonic injection for extended linear modulation (\texorpdfstring{$M/6$}{M/6}, linear limit up to \texorpdfstring{$M = 2/\sqrt{3} \approx 1.155$}{M = 2/sqrt(3) approx 1.155})}
+When \(M > 1.0\), standard sinusoidal modulation clips against the DC rail \(V_d/2\). Adding a third-harmonic component of amplitude \(M/6\) to the fundamental phase reference modifies the modulation reference:
+\[
+v^*(t) = M \sin(\omega t) + \frac{M}{6}\sin(3\omega t).
+\]
+\textbf{Key benefits:}
+\begin{itemize}
+  \item The third-harmonic component flattens the reference peaks by \(\approx 15.5\%\), preventing premature clipping against the DC rail \(V_d/2\).
+  \item Triplen harmonics are zero-sequence components in a balanced three-phase system and cancel out completely in line-to-line output voltages:
+  \[
+  v_{\mathrm{RY}}(t) = v_{\mathrm{RN}}(t) - v_{\mathrm{YN}}(t).
+  \]
+  \item The maximum linear modulation index extends to:
+  \[
+  M_{\max} = \frac{2}{\sqrt{3}} \approx 1.1547 \approx 1.155.
+  \]
+  This achieves a \(15.5\%\) increase in DC-bus voltage utilization, mathematically equivalent to Space Vector PWM (SVPWM).
+\end{itemize}
+
+\subsection{DC-link voltage estimates (three-phase diode bridge rectifier \texorpdfstring{$V_d = 1.35 V_{\mathrm{LL}}$}{V_d = 1.35 V_LL})}
+For an uncontrolled three-phase diode bridge rectifier supplied by line-to-line RMS AC voltage \(V_{\mathrm{LL,in}}\):
+\[
+V_{d,\mathrm{peak}} = \sqrt{2}\,V_{\mathrm{LL,in}},
+\qquad
+V_{d,\mathrm{avg}} = \frac{3\sqrt{2}}{\pi}V_{\mathrm{LL,in}} \approx 1.350\,V_{\mathrm{LL,in}}.
+\]
+In course exam problems:
+\begin{itemize}
+  \item When an ideal smoothed capacitor filter is assumed, the DC link voltage is taken as the peak line voltage \(V_d = \sqrt{2} V_{\mathrm{LL,in}}\) (e.g.\ for \(V_{\mathrm{LL}}=380\,\mathrm{V}\), \(V_d = \sqrt{2}\times 380 \approx 537.4\,\mathrm{V}\), or specified nominal \(560\,\mathrm{V}\)).
+  \item For an unfiltered / choke-fed bridge, the average value \(V_d = 1.35 V_{\mathrm{LL,in}}\) is used.
+\end{itemize}
+
+\subsection{Inverter line-to-line voltage Fourier harmonics (\texorpdfstring{$A_{n,\mathrm{RY}}$}{A_n,RY}) and notch angle harmonic elimination (\texorpdfstring{$\gamma_{\mathrm{notch}} = \pi/n$}{gamma_notch = pi/n})}
+For a stepped or notch-modulated inverter voltage waveform with notch angle \(\gamma_{\mathrm{notch}}\), odd harmonics of the line-to-line voltage \(V_{\mathrm{RY}}\) have Fourier peak amplitude:
+\[
+A_{n,\mathrm{RY}} = \frac{2 V_d}{n\pi}\cos\left(\frac{n\gamma_{\mathrm{notch}}}{2}\right) \qquad (n\text{ odd}).
+\]
+Expressed in terms of pole peak voltage \(V_m = V_d/2\) (\(V_d = 2 V_m\)):
+\[
+A_{n,\mathrm{RY}} = \frac{4 V_m}{n\pi}\cos\left(\frac{n\gamma_{\mathrm{notch}}}{2}\right).
+\]
+
+\textbf{Selective harmonic elimination (SHE):}
+To completely eliminate harmonic order \(n\) (setting \(A_{n,\mathrm{RY}} = 0\)):
+\[
+\cos\left(\frac{n\gamma_{\mathrm{notch}}}{2}\right) = 0
+\quad\implies\quad
+\frac{n\gamma_{\mathrm{notch}}}{2} = \frac{\pi}{2}
+\quad\implies\quad
+\gamma_{\mathrm{notch}} = \frac{\pi}{n} \quad [\mathrm{rad}].
+\]
+\textbf{Worked example (eliminating 7th harmonic, \(n=7\)):}
+\[
+\gamma_{\mathrm{notch}} = \frac{\pi}{7} \approx 0.4488\,\mathrm{rad} \approx 25.71^\circ
+\quad\implies\quad
+A_{7,\mathrm{RY}} = 0.
+\]
+The fundamental peak amplitude (\(n=1\)) with this notch angle is:
+\[
+A_{1,\mathrm{RY}} = \frac{2 V_d}{\pi}\cos\left(\frac{\pi}{2n}\right) = \frac{4 V_m}{\pi}\cos\left(\frac{\pi}{14}\right) \approx 1.241\,V_m \approx 0.995\left(\frac{4}{\pi}V_m\right).
+\]
+
+\subsection{Exam recipe: asymmetrical double-edge PWM switching angles \texorpdfstring{$\delta_{1k}, \delta_{2k}$}{delta_1k, delta_2k} with 3rd harmonic}
+\textbf{Use when:} asked to compute switching angles / gate pulse widths \(\delta_{1k}, \delta_{2k}\) for pulse \(k\) of a phase (Red, Yellow, or Blue) under asymmetrical double-edge PWM.
+
+\textbf{Steps:}
+\begin{enumerate}
+  \item Compute modulation index:
+  \[
+  M = \frac{V_m}{V_d/2} = \frac{\sqrt{2} V_{\mathrm{ph}}}{V_d/2}.
+  \]
+  If \(M > 1.0\), add the third-harmonic component with amplitude \(M/6\).
+  \item Compute carrier frequency ratio and carrier period angle:
+  \[
+  p = m_f = \frac{f_{\mathrm{tri}}}{f_{\mathrm{fund}}},
+  \qquad
+  \Delta = \frac{2\pi}{p} \quad [\mathrm{rad}].
+  \]
+  \item Quarter-carrier reference step:
+  \[
+  \delta_0 = \frac{\Delta}{4} = \frac{\pi}{2 p} \quad [\mathrm{rad}].
+  \]
+  \item Center sample angle for pulse \(k\):
+  \[
+  \alpha_k = \left(k - \frac{1}{2}\right)\Delta = (2k - 1)\frac{\pi}{p} \quad [\mathrm{rad}].
+  \]
+  \item Red phase pulse widths (in radians):
+  \[
+  \begin{aligned}
+  \delta_{1k} &= \delta_0\left[1 + M\sin(\alpha_k - \delta_0) + \frac{M}{6}\sin\bigl(3(\alpha_k - \delta_0)\bigr)\right],\\
+  \delta_{2k} &= \delta_0\left[1 + M\sin(\alpha_k + \delta_0) + \frac{M}{6}\sin\bigl(3(\alpha_k + \delta_0)\bigr)\right].
+  \end{aligned}
+  \]
+  \item Yellow and Blue phase pulse widths: shift sampling angle \(\alpha_k\) by phase displacement:
+  \[
+  \text{Yellow phase: } \alpha_{k,\mathrm{Yellow}} = \alpha_k - \frac{2\pi}{3},
+  \qquad
+  \text{Blue phase: } \alpha_{k,\mathrm{Blue}} = \alpha_k - \frac{4\pi}{3}.
+  \]
+  \item Convert pulse width from electrical radians to time duration (seconds):
+  \[
+  t_{\mathrm{pulse}} = \frac{\delta}{\omega_e} = \frac{\delta}{2\pi f_{\mathrm{fund}}}.
+  \]
+\end{enumerate}
+
+\textbf{Fast checks:} \(\delta_{1k}, \delta_{2k}\) are positive angles close to \(\delta_0\); pulse durations \(t_{\mathrm{pulse}}\) are in the millisecond or sub-millisecond range (\(\mathrm{ms}\)).
+
+\textbf{Common traps:}
+\begin{itemize}
+  \item Using total \(V_d\) instead of half \(V_d/2\) in the denominator of \(M\).
+  \item Forgetting the \(M/6\) third-harmonic term when \(M > 1.0\).
+  \item Evaluating \(\sin(\cdot)\) with calculator in degree mode instead of radian mode (angles \(\alpha_k, \delta_0\) are in radians!).
+  \item Forgetting to convert angular width \(\delta\) (rad) to time \(t_{\mathrm{pulse}}\) (s).
+\end{itemize}
