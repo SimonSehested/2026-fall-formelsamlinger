@@ -1,5 +1,3 @@
-#pagebreak(weak: true)
-
 = Weeks 1–4 appendix, CCM, DCM, QRC
 
 $K = 2 L / (R T_s) = 2 L f_s / R$. Volt-second balance gives CCM $M(D)$. Charge balance gives the current ratios. DCM when $K < K_"crit"$. $R_"crit" = 2 L f_s / K_"crit"$, and a larger $R$ is DCM.
@@ -77,13 +75,13 @@ $K > 4 / 27$ keeps a boost in CCM at every $D$. Boost DCM voltage runs away as $
 
 $
   Z_0 = sqrt(L_r / C_r), quad
-  omega_0 = 1 / sqrt(L_r C_r), quad
-  f_0 = omega_0 / (2 pi)
+  omega_r = 1 / sqrt(L_r C_r), quad
+  f_0 = omega_r / (2 pi)
 $
 
 $
-  alpha = arcsin(- Phi), quad
-  g = (f_s / (2 pi f_0)) (Phi / 2 + alpha + (1 - cos alpha) / Phi)
+  alpha_r = arcsin(- Phi), quad
+  g = (f_s / (2 pi f_0)) (Phi / 2 + alpha_r + (1 - cos alpha_r) / Phi)
 $
 
 Full-wave ZCS: $g approx f_s / f_0$ for $0 < Phi < 1$. Half-wave keeps a load-dependent $g$. Control is by $f_s$, not by a PWM duty.
@@ -113,6 +111,6 @@ Full-wave ZCS: $g approx f_s / f_0$ for $0 < Phi < 1$. Half-wave keeps a load-de
 
 ZCS needs the resonant current swing to clear the DC current (light enough load, $Z_0 <= V / I$). ZVS needs the opposite (heavy enough load, $Z_0 >= V / I$). ZCS still dumps $1/2 C_j V_"sw"^2 f_s$ at turn-on. ZVS absorbs $C_j$ into the resonant capacitor: $C_(r, "ext") = C_r - C_j$. Full-wave ZVS is not used. Half-wave ZVS clamps $v_"sw"$ at zero with the anti-parallel diode.
 
-Boundary design, full-wave approximation. ZCS buck: $Z_0 = V_"in" / I_o$, $f_0 = f_s / M$, $L_r = Z_0 / omega_0$, $C_r = 1 / (omega_0 Z_0)$. ZVS buck: $Z_0 = V_"in" / I_o$, $f_0 = f_s / (1 - M)$, then subtract $C_j$.
+Boundary design, full-wave approximation. ZCS buck: $Z_0 = V_"in" / I_o$, $f_0 = f_s / M$, $L_r = Z_0 / omega_r$, $C_r = 1 / (omega_r Z_0)$. ZVS buck: $Z_0 = V_"in" / I_o$, $f_0 = f_s / (1 - M)$, then subtract $C_j$.
 
-State lengths in units of $1 / omega_0$: linear or charging $Phi$, resonant $alpha$, recovery $(1 - cos alpha) / Phi$, then the rest of $T_s$.
+State lengths in units of $1 / omega_r$: linear or charging $Phi$, resonant $alpha_r$, recovery $(1 - cos alpha_r) / Phi$, then the rest of $T_s$.

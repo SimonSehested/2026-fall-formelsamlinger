@@ -97,18 +97,25 @@ Longer content is for lookup tables, symbol tables, decision matrices, and appen
 
 Use tables for symbol overview, conversion ratios, mode summaries, sign conventions, traps at a glance.
 
-**Spacing:** row and paragraph spacing must stay **positive** and readable. Do not cram tables with negative vertical glue or ultra-tight leading; illegible tables fail print sanity.
+**Spacing:** row and paragraph spacing must stay **positive** and readable for topic lookup tables. Symboloversigt uses the compact `symbol-table` helper (dense but still legible). Do not use negative vertical glue.
 
-Symboloversigt example (three columns):
+### Unique symbols (per course)
+
+Same letter must not mean two things in one course sheet. Prefer subscripts (`$f_"co"$`, `$L_(k,s)$`, `$Q_f$`) or a different letter. Uniqueness does **not** apply across courses.
+
+### Page flow and chrome
+
+- No `#pagebreak()` between chapters/modules (continuous flow).
+- Header and footer both show current `=` chapter title and page number (template default).
+
+Symboloversigt example:
 
 ```typ
 = Symboloversigt
 
-#table(
-  columns: (auto, 1fr, auto),
-  table.header([Symbol], [Meaning], [Unit]),
+#symbol-table(
   [$B$], [Air-gap flux density], [$"T"$],
-  [$T$], [Torque], [$"N*m"$],
+  [$T$], [Torque], [$"N"dot.op"m"$],
 )
 ```
 
@@ -117,10 +124,10 @@ Rules:
 - Every important symbol in topic modules appears in Symboloversigt
 - Meaning states what the quantity is—not a repeat of the symbol name
 - Units explicit; use “dimensionless” when needed
-- Split thematic tables if one table grows too long
-- Note overloaded symbols with context
+- Thematic `#==` headings between compact tables are fine; avoid long prose between them
+- No “overloaded letters” essay—fix collisions with unique notation instead
 
-Constants table when relevant: symbol, value, unit, short note.
+Constants: include value in the Meaning column or a short constants block.
 
 ## Typst formula habits
 

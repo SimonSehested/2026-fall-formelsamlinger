@@ -111,17 +111,17 @@ Both transistors switch together. Reset diodes clamp the magnetizing energy back
 
 == Commutation overlap, $t_"ov"$, $Delta D$
 
-Leakage $L_k$ on the secondary keeps both rectifier diodes in conduction while $i$ in $L_k$ ramps from 0 to $I_o$. During that overlap the LC-filter input is 0 V, so those volt-seconds never reach the output.
+Leakage $L_(k,s)$ on the secondary keeps both rectifier diodes in conduction while $i$ in $L_(k,s)$ ramps from 0 to $I_o$. During that overlap the LC-filter input is 0 V, so those volt-seconds never reach the output.
 
 $
-  t_"ov" = (I_o L_k) / ((N_2 / N_1) V_"in"), quad
+  t_"ov" = (I_o L_(k,s)) / ((N_2 / N_1) V_"in"), quad
   Delta D = t_"ov" / T_s
 $
 
 $
-  Delta V_o = f_s L_k I_o
+  Delta V_(o,"ov") = f_s L_(k,s) I_o
   quad "single-ended", quad
-  Delta V_o = 2 f_s L_k I_o
+  Delta V_(o,"ov") = 2 f_s L_(k,s) I_o
   quad "full-bridge or center-tap"
 $
 
@@ -129,18 +129,18 @@ $
   V_o = (N_2 / N_1) V_"in" (D - t_"ov" / T_s) = (N_2 / N_1) D_"eff" V_"in"
 $
 
-The drop grows with $f_s$ and $I_o$. The same effect is an equivalent output resistance $f_s L_k$ on a single-ended forward. If leakage is given on the primary, $L_k = (N_2 / N_1)^2 L_(k, 1)$.
+The drop grows with $f_s$ and $I_o$. The same effect is an equivalent output resistance $f_s L_(k,s)$ on a single-ended forward. If leakage is given on the primary, $L_(k,s) = (N_2 / N_1)^2 L_(k, 1)$.
 
 #recipe(
   title: "Overlap time and voltage drop",
   use-when: [forward or bridge rectifier with a stated leakage and a flat $I_o$],
   steps: (
-    [Refer $L_k$ to the secondary if the datum is primary: multiply by $(N_2 / N_1)^2$.],
-    [$t_"ov" = I_o L_k / (n V_"in")$ with $n = N_2 / N_1$.],
-    [Single-ended: $Delta V_o = f_s L_k I_o$. Two commutations per cycle: double that drop.],
+    [Refer $L_(k,s)$ to the secondary if the datum is primary: multiply by $(N_2 / N_1)^2$.],
+    [$t_"ov" = I_o L_(k,s) / (n V_"in")$ with $n = N_2 / N_1$.],
+    [Single-ended: $Delta V_(o,"ov") = f_s L_(k,s) I_o$. Two commutations per cycle: double that drop.],
     [$V_o = n V_"in" (D - t_"ov" / T_s)$.],
   ),
-  fast-checks: [$t_"ov"$ scales with $I_o$ and $L_k$, and it shrinks if $V_"in"$ or $n$ rises.],
+  fast-checks: [$t_"ov"$ scales with $I_o$ and $L_(k,s)$, and it shrinks if $V_"in"$ or $n$ rises.],
 )
 
 == Phase-shifted full bridge, PSFB, $theta$
@@ -193,7 +193,7 @@ $
   i_L (0) = ((2 D_phi - 1) V_1 - n V_2) / (4 f_s L_k)
 $
 
-Voltage ratio $d = n V_2 / V_1$. For $phi > 0$, bridge $H_1$ has ZVS for every $D_phi > 0$ when $d <= 1$, and needs $D_phi >= (d - 1) / (2 d)$ when $d > 1$. Bridge $H_2$ has ZVS for every $D_phi > 0$ when $d >= 1$, and needs $D_phi >= (1 - d) / 2$ when $d < 1$. Matched ports ($d = 1$) keep ZVS on both bridges over the whole SPS range. A mismatch loses ZVS at small $abs(phi)$.
+Voltage ratio $d_v = n V_2 / V_1$. For $phi > 0$, bridge $H_1$ has ZVS for every $D_phi > 0$ when $d_v <= 1$, and needs $D_phi >= (d_v - 1) / (2 d_v)$ when $d_v > 1$. Bridge $H_2$ has ZVS for every $D_phi > 0$ when $d_v >= 1$, and needs $D_phi >= (1 - d_v) / 2$ when $d_v < 1$. Matched ports ($d_v = 1$) keep ZVS on both bridges over the whole SPS range. A mismatch loses ZVS at small $abs(phi)$.
 
 #recipe(
   title: "DAB phase shift from power",
@@ -202,7 +202,7 @@ Voltage ratio $d = n V_2 / V_1$. For $phi > 0$, bridge $H_1$ has ZVS for every $
     [Set $k = n V_1 V_2 / (2 f_s L_k)$, so $P = k D_phi (1 - D_phi)$.],
     [Solve $D_phi = (1 - sqrt(1 - 4 P / k)) / 2$. This is the root in $[0, 0.5]$.],
     [$phi = pi D_phi$. Use the negative sign to reverse power.],
-    [Check $d = n V_2 / V_1$ against the ZVS bounds above if soft switching is required.],
+    [Check $d_v = n V_2 / V_1$ against the ZVS bounds above if soft switching is required.],
   ),
   fast-checks: [$P_"max"$ makes the discriminant zero and $D_phi = 0.5$. $P = 0$ gives $D_phi = 0$.],
 )

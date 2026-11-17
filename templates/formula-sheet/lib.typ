@@ -1,27 +1,54 @@
-// Shared formula-sheet theme (spec §3): A4, ~1.35 cm margins, ~10 pt body, positive spacing.
+// Shared formula-sheet theme: A4, continuous chapters, header+footer chrome.
 
-#let sheet-margin = 1.35cm
+#let sheet-margin = (x: 1.35cm, top: 1.55cm, bottom: 1.55cm)
 #let sheet-body-size = 10pt
 #let table-inset = (x: 6pt, y: 5pt)
 #let table-gutter = 4pt
 
+#let current-chapter() = context {
+  let heads = query(heading.where(level: 1).before(here()))
+  if heads.len() == 0 {
+    []
+  } else {
+    heads.last().body
+  }
+}
+
+#let sheet-chrome() = context {
+  set text(size: 8pt, fill: luma(40))
+  grid(
+    columns: (1fr, auto),
+    column-gutter: 8pt,
+    align: (left + horizon, right + horizon),
+    [#current-chapter()],
+    [#counter(page).display()],
+  )
+}
+
 #let formula-sheet(doc) = {
-  set page(paper: "a4", margin: sheet-margin)
+  set page(
+    paper: "a4",
+    margin: sheet-margin,
+    header: sheet-chrome(),
+    footer: sheet-chrome(),
+    header-ascent: 35%,
+    footer-descent: 35%,
+  )
   set text(size: sheet-body-size, fill: black)
   set par(leading: 0.7em, spacing: 0.65em, justify: false)
 
-  show heading: set text(fill: black)
+  // Continuous flow: never force a page break before level-1 headings.
   show heading.where(level: 1): it => {
     set text(size: 1.35em, weight: "bold")
-    block(above: 1.1em, below: 0.55em)[#it]
+    block(breakable: false, above: 0.95em, below: 0.45em)[#it]
   }
   show heading.where(level: 2): it => {
     set text(size: 1.15em, weight: "bold")
-    block(above: 0.95em, below: 0.45em)[#it]
+    block(above: 0.85em, below: 0.4em)[#it]
   }
   show heading.where(level: 3): it => {
     set text(size: 1.05em, weight: "bold")
-    block(above: 0.8em, below: 0.35em)[#it]
+    block(above: 0.7em, below: 0.3em)[#it]
   }
 
   show math.equation: set block(above: 0.55em, below: 0.55em)
@@ -36,19 +63,27 @@
   doc
 }
 
-/// Three-column Symbol | Meaning | Unit (positive inset/gutter).
-#let symbol-table(..cells) = table(
-  columns: (auto, 1fr, auto),
-  align: (center + horizon, left + horizon, center + horizon),
-  table.header(
-    table.cell(fill: luma(228))[*Symbol*],
-    table.cell(fill: luma(228))[*Meaning*],
-    table.cell(fill: luma(228))[*Unit*],
-  ),
-  ..cells,
-)
+/// Dense Symbol | Meaning | Unit for Symboloversigt (still legible in print).
+#let symbol-table(..cells) = {
+  set text(size: 8pt)
+  set par(leading: 0.42em)
+  table(
+    columns: (auto, 1fr, auto),
+    align: (left + horizon, left + horizon, left + horizon),
+    inset: (x: 3.5pt, y: 2.2pt),
+    gutter: 0pt,
+    stroke: (x: none, y: 0.35pt + luma(185)),
+    fill: (_, y) => if calc.rem(y, 2) == 0 { luma(248) } else { none },
+    table.header(
+      table.cell(fill: luma(220))[*Symbol*],
+      table.cell(fill: luma(220))[*Meaning*],
+      table.cell(fill: luma(220))[*Unit*],
+    ),
+    ..cells,
+  )
+}
 
-/// Boxed exam recipe: title, use-when, numbered steps, optional fast-checks.
+/// Topic lookup tables keep the roomier default `table` settings from `formula-sheet`.
 #let recipe(
   title: "",
   use-when: none,
@@ -85,7 +120,6 @@
   ]
 ]
 
-/// Left-bar trap block for common mistakes.
 #let traps(..items) = block(
   fill: luma(250),
   stroke: (left: 2.5pt + black),

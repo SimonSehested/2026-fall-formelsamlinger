@@ -145,7 +145,7 @@ $
 
 $alpha = 0$ gives the full supply. $alpha = pi / 2$ gives $V_s / sqrt(2)$. $alpha = pi$ gives zero. $"PF"$ falls as soon as $alpha > 0$ because the current is chopped, even on a pure resistor.
 
-On $R$-$L$, $phi = arctan(omega L / R)$. Control exists only for $alpha > phi$. If $alpha <= phi$ the current is still flowing at the next gate pulse, both devices stay in continuous conduction, and $V_(o, "rms") = V_s$.
+On $R$-$L$, $phi_L = arctan(omega L / R)$. Control exists only for $alpha > phi_L$. If $alpha <= phi_L$ the current is still flowing at the next gate pulse, both devices stay in continuous conduction, and $V_(o, "rms") = V_s$.
 
 #recipe(
   title: "DC link from SPWM line voltage",
@@ -177,8 +177,8 @@ On $R$-$L$, $phi = arctan(omega L / R)$. Control exists only for $alpha > phi$. 
   steps: (
     [Resistive: $V_(o, "rms") = V_s sqrt(1 - alpha / pi + sin(2 alpha) / (2 pi))$, then $P = V_(o, "rms")^2 / R$.],
     [$"PF" = V_(o, "rms") / V_s$ on that resistor.],
-    [If the load is $R$-$L$, compute $phi = arctan(omega L / R)$.],
-    [If $alpha <= phi$, report full voltage and no phase control.],
+    [If the load is $R$-$L$, compute $phi_L = arctan(omega L / R)$.],
+    [If $alpha <= phi_L$, report full voltage and no phase control.],
   ),
   fast-checks: [$alpha = 0$ returns $V_s$. $alpha = pi / 2$ on a resistor returns $V_s / sqrt(2)$.],
 )

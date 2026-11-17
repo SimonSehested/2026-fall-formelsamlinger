@@ -74,9 +74,12 @@ Do not solve full exam papers unless needed to discover missing formulas.
 
 Open the PDF at 100% scale (print or on-screen at A4):
 
-- Symboloversigt and lookup tables: readable rows, no clipped text
+- Symboloversigt and lookup tables: readable rows, no clipped text; Symboloversigt may be dense but must stay legible
 - Display math not cut off at margins
-- Tables not illegibly cramped (positive spacing; no negative cram)
+- Topic tables not illegibly cramped (positive spacing; no negative cram)
+- **No wasted blank pages** from chapter `#pagebreak()` (continuous flow)
+- **Header and footer** both show chapter title + page number on content pages
+- **Symbol uniqueness:** spot-check that the same printed symbol is not defined two ways in Symboloversigt or used with conflicting meanings in that course sheet
 - Heading hierarchy scannable for flip/search during the exam format described in course `AGENTS.md`
 
 ## Symboloversigt check (within coverage / print)

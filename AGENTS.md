@@ -90,9 +90,19 @@ The sheet **must** start with a complete symbol glossary (DTU-style Symboloversi
 - File: typically `sources/00_symbols_and_notation.typ`
 - First `#include` in the main entry, before topic modules
 
-For each symbol: symbol (math), meaning (course terminology), SI or course-standard unit. Compact three-column tables: Symbol | Meaning | Unit.
+For each symbol: symbol (math), meaning (course terminology), SI or course-standard unit. Compact three-column tables: Symbol | Meaning | Unit (use the shared `symbol-table` helper).
 
-Group by theme when helpful. Include overloaded symbols, common subscripts/aliases, and physical constants (value + unit).
+Group by theme when helpful. Include common subscripts/aliases and physical constants (value + unit).
+
+### Unique symbols (mandatory, per course)
+
+Within **one course sheet**, every printed symbol has **exactly one meaning**.
+
+- Do not overload the same glyph (e.g. bare $n$, $Q$, $phi$, $alpha$, $f_c$) for two exam quantities in that course.
+- Disambiguate with subscripts, superscripts, or distinct letters (`$n$` turns vs `$h$` harmonic order; `$Q_f$` quality factor vs `$Q$` reactive power; `$f_c$` filter cutoff vs `$f_"co"$` loop crossover).
+- Uniqueness is **per course**, not across courses. APE and Electrical Machines may reuse letters independently.
+- Local loop indices ($i$, $k$ in a sum) may stay generic when obvious and unused as named quantities elsewhere in that sheet.
+- If course slides overload a letter, pick one exam-usable form, document it in Symboloversigt, and use it consistently in every chapter of that sheet.
 
 Rules:
 
@@ -100,6 +110,7 @@ Rules:
 - Every symbol in a display formula in `sources/*.typ` should appear here (except obvious local indices)
 - Prefer course language; Danish/English aliases in Meaning when both appear
 - Units explicit (`T`, `A/m`, `V`, `r/min`, dimensionless, …)
+- Keep Symboloversigt **dense**: small type via the template helper, tight row padding, no essay paragraphs under the tables
 
 A sheet without Symboloversigt is incomplete.
 
@@ -113,6 +124,13 @@ Document order:
 Follow lecture order only when it helps; prefer exam-task organization when problems cut across weeks.
 
 Use headings and optional blocks for: keywords, core formulas, exam recipes, recognition rules, traps, one-line checks—only when they improve lookup speed.
+
+## Page layout (print / flip)
+
+Universal Typst layout rules (enforced by `templates/formula-sheet/lib.typ`):
+
+- **No chapter page breaks:** do not insert `#pagebreak()` (or weak page breaks) between Symboloversigt, topics, or appendix modules. Content flows continuously. A single break after a title page is allowed only if the course override requires a separate cover; prefer a compact title block with no break.
+- **Running chapter + page number:** every content page shows the current level-1 chapter title **and** the page number in **both** the header and the footer (helps physical flipping in open-book exams).
 
 ## Searchability
 

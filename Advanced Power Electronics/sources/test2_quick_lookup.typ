@@ -1,5 +1,3 @@
-#pagebreak(weak: true)
-
 = Test 2 quick lookup
 
 Read the gain column first. The limit column is the condition for that gain.
@@ -28,7 +26,7 @@ Read the gain column first. The limit column is the condition for that gain.
   [$D < 0.5$. Each switch blocks $V_"in"$ only.],
   [Forward with overlap],
   [$V_o = (N_2 / N_1) (D - t_"ov" / T_s) V_"in"$],
-  [$t_"ov" = I_o L_k / (n V_"in")$. Single-ended drop $f_s L_k I_o$.],
+  [$t_"ov" = I_o L_(k,s) / (n V_"in")$. Single-ended drop $f_s L_(k,s) I_o$.],
   [PSFB],
   [$V_o = n (theta / pi - Delta D) V_"in"$],
   [$Delta D = 4 f_s L_"lk" I_o / (n V_"in")$. Devices near 50% duty.],
@@ -37,7 +35,7 @@ Read the gain column first. The limit column is the condition for that gain.
   [$P_"max" = n V_1 V_2 / (8 f_s L_k)$ at $phi = pi / 2$. $phi > 0$ is port 1 to port 2.],
 )
 
-$n = N_2 / N_1$. Set $n = 1$ in the DAB formula when $V_2$ is already referred to the primary. Full-bridge or center-tap forward overlap drops $2 f_s L_k I_o$.
+$n = N_2 / N_1$. Set $n = 1$ in the DAB formula when $V_2$ is already referred to the primary. Full-bridge or center-tap forward overlap drops $2 f_s L_(k,s) I_o$.
 
 == AC-DC rectifiers, ensretter
 
@@ -103,7 +101,7 @@ AC controller, resistive load: $V_(o, "rms") = V_s sqrt(1 - alpha / pi + sin(2 a
 
 Canonical shape, $omega_z$ absent on the buck:
 
-$ G_(v d)(s) = G_(v d 0) (1 - s / omega_z) / (1 + s / (Q omega_0) + (s / omega_0)^2) $
+$ G_(v d)(s) = G_(v d 0) (1 - s / omega_z) / (1 + s / (Q_f omega_0) + (s / omega_0)^2) $
 
 #table(
   columns: (2.6cm, 1fr, 1fr, 1fr),
@@ -111,7 +109,7 @@ $ G_(v d)(s) = G_(v d 0) (1 - s / omega_z) / (1 + s / (Q omega_0) + (s / omega_0
   table.header(
     table.cell(fill: luma(228))[*Converter*],
     table.cell(fill: luma(228))[*$G_(v d 0)$*],
-    table.cell(fill: luma(228))[*$omega_0$, $Q$*],
+    table.cell(fill: luma(228))[*$omega_0$, $Q_f$*],
     table.cell(fill: luma(228))[*Zero*],
   ),
   [Buck],
