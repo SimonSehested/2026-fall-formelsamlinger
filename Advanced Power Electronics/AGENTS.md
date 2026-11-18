@@ -17,6 +17,26 @@
 
 **Quick lookup:** four appendix-style tables (isolated, rectifiers, inverters, modeling) — keep scannable on paper.
 
+**Converter atlas (mandatory appendix):** one clear schematic per Test 2 topology in `sources/appendix_converter_atlas.typ`. Exam has asked students to *draw* a converter — the atlas is the flip target.
+
+| Must draw (atlas) | Notes |
+|-------------------|--------|
+| Buck, boost, buck-boost, Cuk | Weeks 1–4 |
+| Flyback; forward tertiary; two-transistor forward; PSFB; DAB | Weeks 5/7 |
+| 1φ diode bridge; 3φ 6-pulse; boost PFC | Week 8 |
+| 1φ half/full-bridge VSI; 3φ VSI; AC voltage controller | Week 9 |
+
+**Image override (this course only):** topology schematics in the converter atlas are allowed. Root “no images” still applies elsewhere.
+
+**How to get schematics (do this — do not invent drawings):**
+
+1. Prefer **Wikimedia Commons** (or another clearly open-licensed source). Search the topology name + `schematic` / `Schaltbild`.
+2. Download into `Advanced Power Electronics/assets/commons/` (SVG preferred, PNG ok).
+3. Keep a short attribution list in `assets/commons/SOURCES.md` (file → Commons title → license → author).
+4. Embed with Typst `#image(...)` in the atlas — compact cards, readable on A4 print.
+5. **Do not** hand-draw converter schematics in CeTZ/TikZ/path spaghetti. They come out messy and wrong for exam copy-from-sheet use.
+6. If Commons has no usable figure for a topology (often PSFB/DAB), mark `// TODO: find Commons schematic` and leave a labeled empty slot — do not fake it with a bad sketch.
+
 ## Exam format
 
 - **Paper-only** open book (≈60 min Test 2)
