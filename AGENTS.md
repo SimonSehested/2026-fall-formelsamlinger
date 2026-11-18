@@ -90,9 +90,22 @@ The sheet **must** start with a complete symbol glossary (DTU-style Symboloversi
 - File: typically `sources/00_symbols_and_notation.typ`
 - First `#include` in the main entry, before topic modules
 
-For each symbol: symbol (math), meaning (course terminology), SI or course-standard unit. Compact three-column tables: Symbol | Meaning | Unit (use the shared `symbol-table` helper).
+For each symbol: symbol (math), meaning (course terminology), SI or course-standard unit, and **Sider** (every page where that symbol is used). Compact four-column tables: Symbol | Meaning | Unit | Sider (shared `symbol-table` helper).
 
 Group by theme when helpful. Include common subscripts/aliases and physical constants (value + unit).
+
+### Symbol page index (mandatory)
+
+Symboloversigt must answer: “I have symbol $P$ — which pages use it?”
+
+Rules:
+
+- Page numbers are **machine-built** from `#sym-here("id", …)` markers via template `sym-pages` — never hand-typed page lists (they rot).
+- `#symbol-table` rows are `id, symbol, meaning, unit` (repeat). The Sider column is filled automatically from those ids.
+- Place `#sym-here(...)` at every section / display-formula block that uses the symbol. Coverage must be **exhaustive** for required symbols: every formula occurrence page must be marked, or the index is wrong and fails verification.
+- A required symbol with zero marks prints a bold red `?` in Sider — treat as a hard fail.
+- Glossary-only constants that never appear in topic formulas may use a trailing `!` on the id (e.g. `"mu_0!"`) → Sider shows `—` instead of `?`.
+- Do not mark inside Symboloversigt itself (looking up $P$ should list formula pages, not the glossary page).
 
 ### Unique symbols (mandatory, per course)
 
@@ -118,12 +131,29 @@ A sheet without Symboloversigt is incomplete.
 
 Document order:
 
-1. Symboloversigt
-2. Topic / recipe modules (and quick-lookup tables when useful)
+1. Compact title block (no separate cover unless course override requires it)
+2. **Indholdsfortegnelse** — dense eye-scan TOC with page numbers (template `sheet-outline`)
+3. Symboloversigt
+4. Topic / recipe modules (and quick-lookup tables when useful)
 
 Follow lecture order only when it helps; prefer exam-task organization when problems cut across weeks.
 
 Use headings and optional blocks for: keywords, core formulas, exam recipes, recognition rules, traps, one-line checks—only when they improve lookup speed.
+
+## Mandatory: Indholdsfortegnelse (paper scan)
+
+Every sheet must open with a **compact table of contents** right after the title and before Symboloversigt.
+
+Purpose: under exam stress, scan for a keyword with the eyes, read the page number, flip there. Not a decorative contents page.
+
+Rules:
+
+- Use `#sheet-outline(...)` from `templates/formula-sheet/lib.typ` (or equivalent dense Typst `#outline`)
+- Depth **2** by default: level-1 chapters + level-2 sections. Do **not** list every `===` concept (too slow to scan)
+- Small type, tight leading, page numbers visible; bold level-1 entries
+- Heading text already carries exam keywords — the TOC inherits that searchability
+- No intro prose under the TOC; no full blank page reserved for it
+- Paper-only / open-book courses (see course `AGENTS.md`): treat a missing TOC as a hard fail
 
 ## Page layout (print / flip)
 
@@ -131,6 +161,7 @@ Universal Typst layout rules (enforced by `templates/formula-sheet/lib.typ`):
 
 - **No chapter page breaks:** do not insert `#pagebreak()` (or weak page breaks) between Symboloversigt, topics, or appendix modules. Content flows continuously. A single break after a title page is allowed only if the course override requires a separate cover; prefer a compact title block with no break.
 - **Running chapter + page number:** every content page shows the current level-1 chapter title **and** the page number in **both** the header and the footer (helps physical flipping in open-book exams).
+- **TOC + page chrome together:** Indholdsfortegnelse gives the target page; header/footer chapter title confirms you landed in the right chapter while flipping.
 
 ## Searchability
 

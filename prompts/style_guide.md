@@ -107,6 +107,7 @@ Same letter must not mean two things in one course sheet. Prefer subscripts (`$f
 
 - No `#pagebreak()` between chapters/modules (continuous flow).
 - Header and footer both show current `=` chapter title and page number (template default).
+- **Indholdsfortegnelse first content block after the title:** use `#sheet-outline` (depth 2). Dense, scannable, page numbers — for paper flip, not a contents essay. Level-1 bold; no dump of every `===` heading.
 
 Symboloversigt example:
 
@@ -114,9 +115,13 @@ Symboloversigt example:
 = Symboloversigt
 
 #symbol-table(
-  [$B$], [Air-gap flux density], [$"T"$],
-  [$T$], [Torque], [$"N"dot.op"m"$],
+  "B", [$B$], [Air-gap flux density], [$"T"$],
+  "T", [$T$], [Torque], [$"N"dot.op"m"$],
+  "mu_0!", [$mu_0$], [Vacuum permeability], [$"H/m"$], // optional: no formula pages
 )
+
+// In each topic section that uses the symbols:
+#sym-here("B", "T")
 ```
 
 Rules:
@@ -124,6 +129,8 @@ Rules:
 - Every important symbol in topic modules appears in Symboloversigt
 - Meaning states what the quantity is—not a repeat of the symbol name
 - Units explicit; use “dimensionless” when needed
+- **Sider** column is mandatory: auto from `#sym-here` / `sym-pages`, never hand-written
+- Mark every use-page; a required id with no marks → red `?` (fail)
 - Thematic `#==` headings between compact tables are fine; avoid long prose between them
 - No “overloaded letters” essay—fix collisions with unique notation instead
 

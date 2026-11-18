@@ -1,8 +1,12 @@
+#import "../../templates/formula-sheet/lib.typ": sym-here
+
 = Weeks 1–4 appendix, CCM, DCM, QRC
 
 $K = 2 L / (R T_s) = 2 L f_s / R$. Volt-second balance gives CCM $M(D)$. Charge balance gives the current ratios. DCM when $K < K_"crit"$. $R_"crit" = 2 L f_s / K_"crit"$, and a larger $R$ is DCM.
 
 == CCM conversion, ripple, device voltage
+
+#sym-here("V_o", "V_in", "D", "L", "T_s", "I_o", "I_in", "f_s", "f_c", "K")
 
 #table(
   columns: (2.5cm, 2.4cm, 1fr, 1fr, 2.6cm),
@@ -42,6 +46,8 @@ Lossless power: $V_"in" I_"in" = V_o I_o$ using voltage magnitudes. $D = 1$ is n
 
 == DCM boundary and gain
 
+#sym-here("K", "K_crit", "D", "V_o", "V_in", "delta", "L")
+
 #table(
   columns: (2.5cm, 1fr, 1fr, 3.2cm),
   align: (left + horizon, left + horizon, left + horizon, left + horizon),
@@ -72,6 +78,8 @@ Lossless power: $V_"in" I_"in" = V_o I_o$ using voltage magnitudes. $D = 1$ is n
 $K > 4 / 27$ keeps a boost in CCM at every $D$. Boost DCM voltage runs away as $R arrow.r oo$. Triangle RMS: $Delta i_L sqrt(d_"cond" / 3)$. DCM output ripple uses $Delta V_o = delta T_s (Delta i_L - I_o)^2 / (2 C Delta i_L)$. Blocking voltages match the CCM column.
 
 == ZCS and ZVS quasi-resonant
+
+#sym-here("Z_0", "L_r", "omega_r", "f_0", "alpha_r", "Phi", "g", "f_s", "C_j", "V_in", "I_o", "V_o", "I_in")
 
 $
   Z_0 = sqrt(L_r / C_r), quad

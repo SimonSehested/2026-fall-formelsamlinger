@@ -1,8 +1,16 @@
+#import "../../templates/formula-sheet/lib.typ": sym-here
+
 = Test 2 quick lookup
 
 Read the gain column first. The limit column is the condition for that gain.
 
 == Isolated DC/DC
+
+#sym-here(
+  "V_in", "V_o", "n", "D", "K", "K_crit", "L_m", "L", "T_s", "I_in", "P",
+  "N_1", "D_max", "t_ov", "L_(k,s)", "I_o", "f_s", "theta", "Delta D", "L_lk",
+  "V_1", "L_k", "phi",
+)
 
 #table(
   columns: (2.7cm, 1fr, 5.4cm),
@@ -39,6 +47,12 @@ $n = N_2 / N_1$. Set $n = 1$ in the DAB formula when $V_2$ is already referred t
 
 == AC-DC rectifiers, ensretter
 
+#sym-here(
+  "V_m", "V_dc", "alpha", "PF", "DF", "DPF", "phi_1", "THD", "I_s1", "I_s",
+  "FF", "RF", "V_rms", "L_pfc", "V_in", "V_o", "f_s", "C_o", "P", "f_line",
+  "Delta V_o,pp",
+)
+
 #table(
   columns: (3.2cm, 1fr, 1fr, 2.6cm),
   align: (left + horizon, left + horizon, left + horizon, left + horizon),
@@ -74,6 +88,11 @@ Boost PFC, $V_"in"$ as line RMS: $L_"pfc" >= sqrt(2) V_"in" (V_o - sqrt(2) V_"in
 
 == DC-AC inverters, vekselretter
 
+#sym-here(
+  "V_DC", "m_a", "m_f", "f_s", "f_1", "V_control", "V_tri", "f_c", "L_f",
+  "V_o,rms", "V_s", "alpha",
+)
+
 #table(
   columns: (3.4cm, 1fr, 1fr),
   align: (left + horizon, left + horizon, left + horizon),
@@ -98,6 +117,11 @@ $m_a = hat(V)_"control" / hat(V)_"tri"$, $m_f = f_s / f_1$. Filter: $10 f_1 < f_
 AC controller, resistive load: $V_(o, "rms") = V_s sqrt(1 - alpha / pi + sin(2 alpha) / (2 pi))$.
 
 == Small-signal $G_(v d)$
+
+#sym-here(
+  "G_vd", "G_vd0", "omega_0", "Q_f", "omega_z,RHP", "V_in", "V_o", "D", "L",
+  "r_C", "A", "A_1", "A_2", "F", "X",
+)
 
 Canonical shape, $omega_z$ absent on the buck:
 

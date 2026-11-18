@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Test 2 check: root compact gate, then a keyword smoke on the PDF.
+"""Test 2 check: compact gate, symbol page index, then keyword smoke on the PDF.
 
 No page-count, bookmark, or layout expectations. A course page cap, when
 set, belongs on scripts/check_compact.py --max-pages. Week 11 compensator
@@ -15,6 +15,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[2]
 COURSE = REPO / "Advanced Power Electronics"
 CHECK = REPO / "scripts" / "check_compact.py"
+SYM_PAGES = COURSE / "scripts" / "check_symbol_pages.py"
 PDF = COURSE / "main_test2.pdf"
 
 SOURCES = [
@@ -30,6 +31,8 @@ SOURCES = [
 # Substrings that the Test 2 sheet should contain. Presence only.
 KEYWORDS = (
     "Symboloversigt",
+    "Indholdsfortegnelse",
+    "Sider",
     "Flyback",
     "Forward",
     "PSFB",
@@ -40,6 +43,10 @@ KEYWORDS = (
     "RHP",
     "CCM",
     "ZVS",
+    "Converter atlas",
+    "Buck-boost",
+    "Boost PFC",
+    "topologi",
 )
 
 
@@ -85,11 +92,22 @@ def keyword_smoke(pdf_path: Path) -> int:
     return 0
 
 
+def run_symbol_pages() -> int:
+    if not SYM_PAGES.is_file():
+        print(f"error: missing {SYM_PAGES}", file=sys.stderr)
+        return 2
+    print("symbol pages:", SYM_PAGES)
+    return subprocess.call([sys.executable, str(SYM_PAGES)])
+
+
 def main() -> int:
     pdf_path = PDF if len(sys.argv) < 2 else Path(sys.argv[1])
     compact_code = run_compact()
     if compact_code != 0:
         return compact_code
+    sym_code = run_symbol_pages()
+    if sym_code != 0:
+        return sym_code
     return keyword_smoke(pdf_path)
 
 

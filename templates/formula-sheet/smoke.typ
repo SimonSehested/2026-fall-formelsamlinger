@@ -1,17 +1,21 @@
-#import "lib.typ": formula-sheet, symbol-table, recipe, traps
+#import "lib.typ": formula-sheet, sheet-outline, symbol-table, recipe, traps, sym-here
 #show: formula-sheet
+
+#sheet-outline(title: [Indholdsfortegnelse])
 
 = Smoke test — formula sheet template
 
 == Symboloversigt (sample)
 
 #symbol-table(
-  [$U_"in"$], [Input voltage], [$"V"$],
-  [$U_"out"$], [Output voltage], [$"V"$],
-  [$D$], [Duty cycle], [—],
+  "U_in", [$U_"in"$], [Input voltage], [$"V"$],
+  "U_out", [$U_"out"$], [Output voltage], [$"V"$],
+  "D", [$D$], [Duty cycle], [—],
 )
 
 === Buck CCM, duty cycle, $D$
+
+#sym-here("U_in", "U_out", "D")
 
 $
   D = U_"out" / U_"in"

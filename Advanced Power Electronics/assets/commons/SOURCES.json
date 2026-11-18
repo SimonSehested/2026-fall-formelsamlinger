@@ -1,0 +1,56 @@
+[
+  {
+    "local": "buck.svg",
+    "commons": "Buck converter.svg",
+    "bytes": 19494,
+    "fetched": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f1/Buck_converter.svg/1280px-Buck_converter.svg.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail"
+  },
+  {
+    "local": "boost.svg",
+    "commons": "Boost converter.svg",
+    "bytes": 19830,
+    "fetched": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e9/Boost_converter.svg/1280px-Boost_converter.svg.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail"
+  },
+  {
+    "local": "buckboost.svg",
+    "commons": "Buckboost converter.svg",
+    "bytes": 20010,
+    "fetched": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c3/Buckboost_converter.svg/1280px-Buckboost_converter.svg.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail"
+  },
+  {
+    "local": "flyback.svg",
+    "commons": "Flyback converter.svg",
+    "bytes": 27314,
+    "fetched": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fb/Flyback_converter.svg/1280px-Flyback_converter.svg.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail"
+  },
+  {
+    "local": "forward.svg",
+    "commons": "Forward converter.svg",
+    "bytes": 21204,
+    "fetched": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a3/Forward_converter.svg/1280px-Forward_converter.svg.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail"
+  },
+  {
+    "local": "diode_bridge.svg",
+    "commons": "Diode bridge alt 2 V2.svg",
+    "bytes": 27332,
+    "fetched": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/64/Diode_bridge_alt_2_V2.svg/1280px-Diode_bridge_alt_2_V2.svg.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail"
+  },
+  {
+    "local": "diode_bridge2.svg",
+    "commons": "Four diode bridge rectifier.svg",
+    "bytes": 14979,
+    "fetched": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fb/Four_diode_bridge_rectifier.svg/1280px-Four_diode_bridge_rectifier.svg.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail"
+  },
+  {
+    "local": "rect_3ph.svg",
+    "commons": "3 phase bridge rectifier.svg",
+    "bytes": 36597,
+    "fetched": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/76/3_phase_bridge_rectifier.svg/1280px-3_phase_bridge_rectifier.svg.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail"
+  },
+  {
+    "local": "rect_3ph_de.svg",
+    "commons": "Gleichrichter Drehstrom.svg",
+    "bytes": 47991,
+    "fetched": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f5/Gleichrichter_Drehstrom.svg/1280px-Gleichrichter_Drehstrom.svg.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail"
+  }
+]

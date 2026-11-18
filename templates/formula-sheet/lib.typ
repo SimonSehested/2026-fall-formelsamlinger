@@ -63,13 +63,96 @@
   doc
 }
 
-/// Dense Symbol | Meaning | Unit for Symboloversigt (still legible in print).
+/// Compact paper-scan TOC: eye-scan keywords → page number → flip.
+/// Place after the title block and before Symboloversigt. Depth 2 keeps it
+/// fast (chapters + sections); do not dump every `===` concept here.
+#let sheet-outline(
+  title: [Indholdsfortegnelse],
+  depth: 2,
+) = {
+  set text(size: 8.5pt)
+  set par(leading: 0.42em, spacing: 0.15em)
+  show outline.entry.where(level: 1): set text(weight: "bold")
+  block(above: 0.35em, below: 0.55em)[
+    #outline(
+      title: {
+        set text(size: 11pt, weight: "bold")
+        title
+      },
+      depth: depth,
+      indent: n => n * 0.9em,
+    )
+  ]
+}
+
+/// Invisible occurrence marker. Place at every formula/section that uses the id.
+/// Page lists in Symboloversigt are built only from these markers — keep them
+/// exhaustive or the Sider column is wrong.
+#let sym-here(..ids) = {
+  for id in ids.pos() {
+    [#metadata((kind: "sym-ref", id: id))<sym-ref>]
+  }
+}
+
+#let _unique-sorted-pages(pages) = {
+  let out = ()
+  for p in pages.sorted() {
+    if out.len() == 0 or out.last() != p {
+      out.push(p)
+    }
+  }
+  out
+}
+
+/// Page list for one symbol id. Shows bold red "?" when required and unmarked.
+#let sym-pages(id, required: true) = context {
+  let pages = _unique-sorted-pages(
+    query(<sym-ref>)
+      .filter(m => {
+        let v = m.value
+        type(v) == dictionary and v.at("kind", default: none) == "sym-ref" and v.at("id") == id
+      })
+      .map(m => m.location().page()),
+  )
+  if pages.len() == 0 {
+    if required {
+      text(fill: rgb("#b00000"), weight: "bold")[?]
+    } else {
+      [—]
+    }
+  } else {
+    pages.map(str).join(", ")
+  }
+}
+
+/// Dense Symbol | Meaning | Unit | Sider.
+/// Pass rows as: `id, symbol, meaning, unit` repeated.
+/// Trailing `!` on id (e.g. `"mu_0!"`) = glossary-only → "—" if unmarked, not "?".
 #let symbol-table(..cells) = {
+  let raw = cells.pos()
+  assert(
+    calc.rem(raw.len(), 4) == 0,
+    message: "symbol-table expects groups of 4: id, symbol, meaning, unit",
+  )
   set text(size: 8pt)
   set par(leading: 0.42em)
+  let out = ()
+  for i in range(0, raw.len(), step: 4) {
+    let id-raw = raw.at(i)
+    assert(type(id-raw) == str, message: "symbol id must be a string")
+    let optional = id-raw.ends-with("!")
+    let id = if optional { id-raw.slice(0, id-raw.len() - 1) } else { id-raw }
+    let symbol = raw.at(i + 1)
+    let meaning = raw.at(i + 2)
+    let unit = raw.at(i + 3)
+    out.push([#metadata((kind: "sym-decl", id: id, required: not optional))<sym-decl>#symbol])
+    out.push(meaning)
+    out.push(unit)
+    out.push([#sym-pages(id, required: not optional)])
+  }
   table(
-    columns: (auto, 1fr, auto),
-    align: (left + horizon, left + horizon, left + horizon),
+    columns: (auto, 1fr, auto, auto),
+    align: (left + horizon, left + horizon, left + horizon, left + horizon),
     inset: (x: 3.5pt, y: 2.2pt),
     gutter: 0pt,
     stroke: (x: none, y: 0.35pt + luma(185)),
@@ -78,8 +161,9 @@
       table.cell(fill: luma(220))[*Symbol*],
       table.cell(fill: luma(220))[*Meaning*],
       table.cell(fill: luma(220))[*Unit*],
+      table.cell(fill: luma(220))[*Sider*],
     ),
-    ..cells,
+    ..out,
   )
 }
 

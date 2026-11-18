@@ -1,10 +1,12 @@
-#import "../../templates/formula-sheet/lib.typ": recipe, traps
+#import "../../templates/formula-sheet/lib.typ": recipe, traps, sym-here
 
 = Small-signal model, state-space averaging, SSA, RHP zero
 
 States are $x = [i_L, v_C]^T$ and the input is $u = v_g$. Capital letters are the DC point. Hats are small perturbations. $d(t) = D + hat(d)$.
 
 == Averaged matrices
+
+#sym-here("x", "X", "hat(x)", "d(t)", "D", "D'", "A_1", "A_2", "A", "F", "s", "I", "G_vd", "G_vg", "G_id", "G_vd0", "omega_0", "Q_f", "zeta")
 
 On interval: $dot(x) = A_1 x + B_1 u$. Off interval: $dot(x) = A_2 x + B_2 u$.
 
@@ -45,6 +47,8 @@ $zeta = 1 / (2 Q_f)$. The buck has no finite $omega_z$ in the ideal model.
 
 == Buck $G_(v d)$
 
+#sym-here("A_1", "A_2", "F", "V_in", "L", "G_vd", "G_vd0", "omega_0", "Q_f", "omega_z,ESR", "r_C")
+
 $
   A_1 = A_2 = mat(0, -1 / L; 1 / C, -1 / (R C)), quad
   B_1 = mat(1 / L; 0), quad
@@ -65,6 +69,8 @@ $
 No right-half-plane zero. Capacitor ESR adds a left-half-plane zero $omega_(z, "ESR") = 1 / (r_C C)$. Phase starts at 0° and tends to $-180 degree$ from the complex poles.
 
 == Boost $G_(v d)$ and the RHP zero
+
+#sym-here("A_1", "A_2", "F", "V_o", "L", "D", "G_vd", "omega_0", "Q_f", "omega_z,RHP", "f_z,RHP", "f_co")
 
 $
   A_1 = mat(0, 0; 0, -1 / (R C)), quad
@@ -91,6 +97,8 @@ The zero lies in the right half-plane. Above it the magnitude slope still rises 
 The zero moves down as $D$ increases or as $L$ increases, and it moves up as $R$ increases (lighter load).
 
 == Buck-boost $G_(v d)$
+
+#sym-here("A_1", "A_2", "F", "V_in", "V_o", "L", "D", "G_vd", "omega_0", "Q_f", "omega_z,RHP", "f_co")
 
 $V_o$ in this model is the signed output of the inverting converter.
 

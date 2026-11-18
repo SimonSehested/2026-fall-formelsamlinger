@@ -1,4 +1,4 @@
-#import "../../templates/formula-sheet/lib.typ": recipe, traps
+#import "../../templates/formula-sheet/lib.typ": recipe, traps, sym-here
 
 = Isolated DC/DC, flyback, forward, PSFB, DAB
 
@@ -7,6 +7,8 @@ $n = N_2 / N_1$ in every gain below. Lossless volt-second balance fixes CCM rati
 == Flyback, CCM and DCM, $K$
 
 === Flyback CCM, continuous magnetizing current
+
+#sym-here("V_in", "V_o", "n", "D", "D'", "T_s", "L_m", "I_in", "I_o", "L")
 
 $
   V_"in" D T_s = (V_o / n) (1 - D) T_s
@@ -32,6 +34,8 @@ $ Delta V_o / V_o = (D T_s) / (R C) $
 Output ripple follows the buck-boost pattern: it depends on $D$, $R$, and $C$, not on an $8 L C$ term.
 
 === Flyback DCM, $K$, boundary
+
+#sym-here("K", "K_crit", "L_m", "L", "T_s", "D", "n", "V_o", "V_in", "P", "I_in")
 
 $
   K = (2 L_m) / (R T_s), quad
@@ -69,6 +73,8 @@ This DCM gain has no extra factor $n$, because $K$ is built from primary $L_m$ a
 
 === Three-winding forward, $N_3$, $D_"max"$
 
+#sym-here("N_1", "V_in", "V_o", "D", "D_R", "D_max", "K", "L", "T_s")
+
 The output stage is a buck fed by $(N_2 / N_1) V_"in"$ during the on interval. Magnetizing current returns through $N_3$ and $D_3$ after turn-off.
 
 $
@@ -95,6 +101,8 @@ $K$ uses the output inductor. This is the course DCM gain from the Week 5 notes.
 
 === Two-transistor forward
 
+#sym-here("N_1", "V_in", "V_o", "D")
+
 Both transistors switch together. Reset diodes clamp the magnetizing energy back to $V_"in"$. Each transistor blocks $V_"in"$, and $D < 0.5$. The CCM gain is still $(N_2 / N_1) D$. There is no tertiary winding.
 
 #recipe(
@@ -110,6 +118,8 @@ Both transistors switch together. Reset diodes clamp the magnetizing energy back
 )
 
 == Commutation overlap, $t_"ov"$, $Delta D$
+
+#sym-here("t_ov", "Delta D", "L_(k,s)", "I_o", "N_1", "V_in", "T_s", "Delta V_o,ov", "f_s", "D", "D_eff", "V_o", "n")
 
 Leakage $L_(k,s)$ on the secondary keeps both rectifier diodes in conduction while $i$ in $L_(k,s)$ ramps from 0 to $I_o$. During that overlap the LC-filter input is 0 V, so those volt-seconds never reach the output.
 
@@ -145,6 +155,8 @@ The drop grows with $f_s$ and $I_o$. The same effect is an equivalent output res
 
 == Phase-shifted full bridge, PSFB, $theta$
 
+#sym-here("theta", "D", "n", "V_in", "V_o", "Delta D", "f_s", "L_lk", "I_o", "D_eff", "C_oss", "L")
+
 All four primary devices run near 50% duty with dead time. The shift $theta$ between the legs sets the pulse width of $v_"AB"$.
 
 $
@@ -173,6 +185,8 @@ $ Delta i_(L, "max") = (n V_"in") / (8 L f_s) $
 CCM requires $I_o >= Delta i_L / 2$. Switch voltage is $V_"in"$. A center-tap secondary diode sees $2 n V_"in"$.
 
 == Dual active bridge, DAB, phase shift $phi$
+
+#sym-here("phi", "P", "n", "V_1", "f_s", "L_k", "D_phi", "d_v")
 
 Two full bridges and a series $L_k$ (primary-referred). Both bridges run at 50%. Power is set by $phi$ between the two square waves. $phi > 0$ sends power from $V_1$ to $V_2$. $phi < 0$ reverses it. $phi = 0$ transfers no average power.
 

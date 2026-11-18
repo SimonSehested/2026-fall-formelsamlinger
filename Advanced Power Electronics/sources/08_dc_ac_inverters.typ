@@ -1,8 +1,10 @@
-#import "../../templates/formula-sheet/lib.typ": recipe, traps
+#import "../../templates/formula-sheet/lib.typ": recipe, traps, sym-here
 
 = DC-AC inverters, vekselretter, SPWM, AC-AC
 
 == Single-phase voltage-source inverters
+
+#sym-here("V_DC", "V_o1", "f_1", "THD")
 
 Half-bridge: split DC bus, pole taken from the leg to the capacitor midpoint. Leg voltage is $plus.minus V_"DC" / 2$. Local average with upper-switch duty $d$ is $(2 d - 1) V_"DC" / 2$. Dead time keeps the two devices from shorting the bus.
 
@@ -26,6 +28,8 @@ Both two-level square waves have $"THD"_v = sqrt(pi^2 / 8 - 1) approx 0.483$. Ea
 
 == Three-phase VSI, six-step, 180°
 
+#sym-here("V_DC", "v_no", "V_LL1", "V_o1", "THD")
+
 Each device conducts 180°. Transitions are 60° apart, and three devices are on at once. Pole voltages versus the DC midpoint are $plus.minus V_"DC" / 2$.
 
 $ v_"no" = (v_(a o) + v_(b o) + v_(c o)) / 3, quad v_("an") = v_(a o) - v_"no" $
@@ -45,6 +49,8 @@ $
 Phase voltage in six-step takes the steps $plus.minus V_"DC" / 3$ and $plus.minus 2 V_"DC" / 3$.
 
 == Sinusoidal PWM, $m_a$, $m_f$
+
+#sym-here("m_a", "m_f", "V_control", "V_tri", "f_s", "f_1", "V_DC", "V_LL1")
 
 Compare a sine reference with a triangular carrier.
 
@@ -89,6 +95,8 @@ A one-sixth third-harmonic addition on the references raises the linear line-to-
 
 == Common-mode voltage and leakage
 
+#sym-here("v_CM", "V_DC", "i_leak", "C_parasitic")
+
 $ v_"CM" = (v_(a o) + v_(b o) + v_(c o)) / 3 $
 
 Active states sit at $plus.minus V_"DC" / 6$. The two zero states sit at $plus.minus V_"DC" / 2$. That step drives
@@ -98,6 +106,8 @@ $ i_"leak" approx C_"parasitic" (d v_"CM") / (d t) $
 through PV-to-frame or winding-to-frame capacitance.
 
 == Output LC filter, $f_c$
+
+#sym-here("f_c", "L_f", "f_1", "f_s", "V_DC", "r", "S")
 
 $
   f_c = 1 / (2 pi sqrt(L_f C_f)), quad
@@ -123,6 +133,8 @@ Check the pair against the $f_c$ window after both limits.
 
 == Single-phase $2 omega$ bus capacitor
 
+#sym-here("C_bus", "P", "f_1")
+
 Unity-power-factor AC power is $P_"dc" (1 - cos(2 omega_1 t))$. The DC source is constant, so $C_"bus"$ takes the double-frequency term.
 
 $
@@ -131,6 +143,8 @@ $
 $
 
 == AC-AC voltage controller, RMS
+
+#sym-here("V_o,rms", "V_s", "alpha", "P", "PF", "phi_L", "omega", "L")
 
 Anti-parallel thyristors, supply $sqrt(2) V_s sin(omega t)$, delay $alpha$ and $pi + alpha$. Resistive load:
 

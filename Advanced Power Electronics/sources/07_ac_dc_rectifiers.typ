@@ -1,8 +1,10 @@
-#import "../../templates/formula-sheet/lib.typ": recipe, traps
+#import "../../templates/formula-sheet/lib.typ": recipe, traps, sym-here
 
 = AC-DC rectifiers, ensretter, power factor, PFC
 
 == Power definitions, DPF, DF, THD, effektfaktor
+
+#sym-here("P", "Q", "S", "V_s", "I_s", "phi_1", "I_s1", "I_s,h", "DF", "DPF", "THD", "PF", "omega", "h")
 
 Sinusoidal $v$ and $i$ displaced by $phi_1$:
 
@@ -33,6 +35,8 @@ A capacitor in parallel with a lagging load draws $Q_C = - V_s^2 omega C$ and do
 
 === Form factor and ripple factor
 
+#sym-here("FF", "RF", "V_rms", "V_dc", "I_d", "I_s", "I_s1", "I_s,h", "DF", "THD", "PF", "alpha", "h")
+
 $
   "FF" = V_"rms" / V_"dc", quad
   "RF" = sqrt("FF"^2 - 1)
@@ -43,6 +47,8 @@ $"FF" = 1$ is flat DC. For a resistive load the rectification ratio is $1 / "FF"
 A single-phase bridge with a large DC inductor draws a $plus.minus I_d$ square current. Then $I_s = I_d$, $I_(s 1) = (2 sqrt(2) / pi) I_d$, $"DF" = 2 sqrt(2) / pi approx 0.900$, and $"THD" = sqrt(pi^2 / 8 - 1) approx 0.483$. Odd-harmonic RMS values are $I_(s,h) = (2 sqrt(2) / (h pi)) I_d$ for odd $h$, and even harmonics are absent. With $alpha = 0$, $"PF" = "DF"$.
 
 == Single-phase rectifiers, half-wave, full-wave, $alpha$
+
+#sym-here("V_m", "V_s", "omega", "t_alpha", "alpha", "V_dc", "V_rms", "FF", "RF", "phi_1", "DF", "PF", "I_d", "beta", "phi_L", "L")
 
 Supply $v_s = V_m sin(omega t)$, $V_m = sqrt(2) V_s$. Firing delay from the zero crossing is $t_alpha = alpha / omega$.
 
@@ -81,6 +87,8 @@ The negative voltage between $pi$ and $beta$ reduces $V_"dc"$. $Z = sqrt(R^2 + (
 
 === Line-commutated inversion, $alpha > 90 degree$
 
+#sym-here("alpha", "V_dc", "V_m", "I_d", "gamma", "mu")
+
 For continuous-current full-wave control, $V_"dc" = (2 V_m / pi) cos alpha$. The sign of $cos alpha$ sets the power direction. Current $I_d$ stays positive.
 
 $0 <= alpha < 90 degree$ is rectifier operation. $alpha = 90 degree$ gives $V_"dc" = 0$. $90 degree < alpha < 180 degree$ makes $V_"dc"$ negative, so average power leaves the DC source and enters the AC line.
@@ -92,6 +100,8 @@ $ alpha_"max" = 180 degree - gamma - mu $
 Firing later than $alpha_"max"$ misses the turn-off window. The thyristor then stays in conduction and the DC side is shorted at the next half-cycle.
 
 == Three-phase rectifiers, 3-pulse, 6-pulse
+
+#sym-here("alpha", "V_dc", "V_m", "FF", "RF", "f_line", "I_d", "I_s", "I_s1", "DF", "THD", "gamma", "mu")
 
 $alpha$ is measured from the natural diode commutation instant, not from the phase zero crossing. Each device in these bridges conducts $120 degree$.
 
@@ -112,6 +122,8 @@ about $1.35 V_("LL", "rms") cos alpha$ for the 6-pulse bridge. PIV is $V_(m, "LL
 With flat $I_d$, each 6-pulse device carries average $I_d / 3$ and RMS $I_d / sqrt(3)$. Line current RMS is $sqrt(2 / 3) I_d$, fundamental RMS is $(sqrt(6) / pi) I_d$, so $"DF" = 3 / pi approx 0.955$ and $"THD" approx 0.311$. Inversion is the same $cos alpha$ sign change as in single phase, with the same margin $alpha_"max" = 180 degree - gamma - mu$.
 
 == Boost PFC, $L_"pfc"$, $C_o$
+
+#sym-here("L_pfc", "C_o", "V_o", "V_in", "f_s", "r", "P", "eta", "Delta V_o,pp", "f_line", "t_hold", "phi_1", "THD", "PF")
 
 A diode bridge plus a boost makes the line current track $v_"ac"$. Then $phi_1 approx 0$, THD is small, and PF is near 1. The current loop is fast. The voltage loop stays below $2 f_"line"$ so it does not try to remove the double-line ripple.
 

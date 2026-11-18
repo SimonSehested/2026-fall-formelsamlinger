@@ -15,7 +15,7 @@ typst compile <main>.typ <output>.pdf
 ```
 
 - Build succeeds with no errors
-- Main file includes all `sources/*.typ` in the intended order (Symboloversigt first)
+- Main file order: title → **Indholdsfortegnelse** (`sheet-outline` / dense `#outline`) → Symboloversigt → topic modules
 - No missing includes or broken math
 
 Use course `scripts/build.ps1` (or equivalent) when present.
@@ -79,15 +79,21 @@ Open the PDF at 100% scale (print or on-screen at A4):
 - Topic tables not illegibly cramped (positive spacing; no negative cram)
 - **No wasted blank pages** from chapter `#pagebreak()` (continuous flow)
 - **Header and footer** both show chapter title + page number on content pages
+- **Indholdsfortegnelse present** after the title: compact (depth ≤ 2), page numbers readable, eye-scannable keywords — fail if missing on a paper/open-book sheet
+- **Symboloversigt Sider:** fourth column present; no red `?`; spot-check that listed pages match real uses
 - **Symbol uniqueness:** spot-check that the same printed symbol is not defined two ways in Symboloversigt or used with conflicting meanings in that course sheet
 - Heading hierarchy scannable for flip/search during the exam format described in course `AGENTS.md`
+- If the course `AGENTS.md` requires a **converter atlas** (or other allowed figures), that appendix exists and lists every required topology
 
 ## Symboloversigt check (within coverage / print)
 
-1. `sources/00_symbols_and_notation.typ` (or equivalent) exists and is **first** include in the main file.
+1. `sources/00_symbols_and_notation.typ` (or equivalent) exists and is **first** content include after title + Indholdsfortegnelse.
 2. Spot-check: non-trivial symbols in display math appear with meaning and unit.
 3. Overloaded symbols have context notes; constants have value and unit.
 4. Add missing symbols before passing gate 4.
+5. **Sider column:** four-column Symboloversigt; page lists from `#sym-here` only.
+6. Run symbol-page audit (course script or `typst eval` query on `<sym-decl>` / `<sym-ref>`): every **required** declared id has ≥1 ref; no orphan refs; PDF Sider has no `?`.
+7. Spot-check 3–5 exam-critical symbols (e.g. $P$, $D$, $G_(v d)$): every page with a display use is listed. If a page is missing, add `#sym-here` there — do not type the number by hand.
 
 ## When to run `avoid-ai-writing`
 
