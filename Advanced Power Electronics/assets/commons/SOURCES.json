@@ -1,0 +1,16 @@
+[
+  {"local": "buck.svg", "commons": "Buck converter.svg", "license": "CC BY-SA 3.0", "author": "Wdwd", "atlas": "Buck"},
+  {"local": "boost.svg", "commons": "Boost converter.svg", "license": "CC BY-SA 3.0", "author": "Wdwd", "atlas": "Boost"},
+  {"local": "buckboost.svg", "commons": "Buckboost converter.svg", "license": "CC BY-SA 3.0", "author": "Wdwd", "atlas": "Buck-boost"},
+  {"local": "cuk.svg", "commons": "Cuk conventions.svg", "license": "CC BY-SA 3.0 and GFDL", "author": "Cyril Buttay (CyrilB)", "atlas": "Cuk"},
+  {"local": "flyback.svg", "commons": "Fly-back converter.svg", "license": "Public domain (PD-OpenClipart)", "author": "Velocitus", "atlas": "Flyback"},
+  {"local": "forward.svg", "commons": "Eintaktdurchflusswandler.svg", "license": "Public domain", "author": "Mik81", "atlas": "Forward, tertiary reset"},
+  {"local": "two_transistor_forward.pdf", "commons": "Forward-dwutranzystorowy.pdf", "license": "CC BY-SA 4.0", "author": "Ololuki", "atlas": "Two-transistor forward"},
+  {"local": "diode_bridge.svg", "commons": "Diode bridge alt 2 V2.svg", "license": "Public domain", "author": "Wykis, adapted by Martinvl", "atlas": "1ph diode bridge"},
+  {"local": "rect_3ph.svg", "commons": "3 phase bridge rectifier.svg", "license": "CC BY-SA 3.0 and GFDL", "author": "Sonarpulse", "atlas": "3ph 6-pulse"},
+  {"local": "boost_pfc.png", "commons": "Pont de diode avec PFC.png", "license": "CC BY-SA 4.0", "author": "Chouca alpin", "atlas": "Boost PFC"},
+  {"local": "half_bridge_vsi.jpg", "commons": "Single Phase Half Bridge Inverter.JPG", "license": "CC0", "author": "Roonie.02", "atlas": "1ph half-bridge VSI"},
+  {"local": "full_bridge_vsi.png", "commons": "H-bridge inverter cjc.png", "license": "CC BY-SA 3.0 and GFDL", "author": "C J Cowie", "atlas": "1ph full-bridge VSI"},
+  {"local": "vsi_3ph.png", "commons": "Pulswechselrichter schaltung.PNG", "license": "CC BY 3.0 and GFDL", "author": "Wdwd", "atlas": "3ph VSI"},
+  {"local": "ac_voltage_controller.png", "commons": "Circ reg monofasico.png", "license": "CC BY-SA 4.0", "author": "Hemangad", "atlas": "AC voltage controller"}
+]

@@ -16,3 +16,4 @@
 #include "sources/08_dc_ac_inverters.typ"
 #include "sources/09_modeling_and_small_signal.typ"
 #include "sources/appendix_weeks1_4.typ"
+#include "sources/appendix_converter_atlas.typ"
