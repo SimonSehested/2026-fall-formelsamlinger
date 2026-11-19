@@ -1,56 +1,16 @@
 [
-  {
-    "local": "buck.svg",
-    "commons": "Buck converter.svg",
-    "bytes": 19494,
-    "fetched": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f1/Buck_converter.svg/1280px-Buck_converter.svg.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail"
-  },
-  {
-    "local": "boost.svg",
-    "commons": "Boost converter.svg",
-    "bytes": 19830,
-    "fetched": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e9/Boost_converter.svg/1280px-Boost_converter.svg.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail"
-  },
-  {
-    "local": "buckboost.svg",
-    "commons": "Buckboost converter.svg",
-    "bytes": 20010,
-    "fetched": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c3/Buckboost_converter.svg/1280px-Buckboost_converter.svg.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail"
-  },
-  {
-    "local": "flyback.svg",
-    "commons": "Flyback converter.svg",
-    "bytes": 27314,
-    "fetched": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fb/Flyback_converter.svg/1280px-Flyback_converter.svg.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail"
-  },
-  {
-    "local": "forward.svg",
-    "commons": "Forward converter.svg",
-    "bytes": 21204,
-    "fetched": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a3/Forward_converter.svg/1280px-Forward_converter.svg.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail"
-  },
-  {
-    "local": "diode_bridge.svg",
-    "commons": "Diode bridge alt 2 V2.svg",
-    "bytes": 27332,
-    "fetched": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/64/Diode_bridge_alt_2_V2.svg/1280px-Diode_bridge_alt_2_V2.svg.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail"
-  },
-  {
-    "local": "diode_bridge2.svg",
-    "commons": "Four diode bridge rectifier.svg",
-    "bytes": 14979,
-    "fetched": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fb/Four_diode_bridge_rectifier.svg/1280px-Four_diode_bridge_rectifier.svg.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail"
-  },
-  {
-    "local": "rect_3ph.svg",
-    "commons": "3 phase bridge rectifier.svg",
-    "bytes": 36597,
-    "fetched": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/76/3_phase_bridge_rectifier.svg/1280px-3_phase_bridge_rectifier.svg.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail"
-  },
-  {
-    "local": "rect_3ph_de.svg",
-    "commons": "Gleichrichter Drehstrom.svg",
-    "bytes": 47991,
-    "fetched": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f5/Gleichrichter_Drehstrom.svg/1280px-Gleichrichter_Drehstrom.svg.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail"
-  }
+  {"local": "buck.svg", "commons": "Buck converter.svg", "license": "CC BY-SA 3.0", "author": "Wdwd", "atlas": "Buck"},
+  {"local": "boost.svg", "commons": "Boost converter.svg", "license": "CC BY-SA 3.0", "author": "Wdwd", "atlas": "Boost"},
+  {"local": "buckboost.svg", "commons": "Buckboost converter.svg", "license": "CC BY-SA 3.0", "author": "Wdwd", "atlas": "Buck-boost"},
+  {"local": "cuk.svg", "commons": "Cuk conventions.svg", "license": "CC BY-SA 3.0 and GFDL", "author": "Cyril Buttay (CyrilB)", "atlas": "Cuk"},
+  {"local": "flyback.svg", "commons": "Fly-back converter.svg", "license": "Public domain (PD-OpenClipart)", "author": "Velocitus", "atlas": "Flyback"},
+  {"local": "forward.svg", "commons": "Eintaktdurchflusswandler.svg", "license": "Public domain", "author": "Mik81", "atlas": "Forward, tertiary reset"},
+  {"local": "two_transistor_forward.pdf", "commons": "Forward-dwutranzystorowy.pdf", "license": "CC BY-SA 4.0", "author": "Ololuki", "atlas": "Two-transistor forward"},
+  {"local": "diode_bridge.svg", "commons": "Diode bridge alt 2 V2.svg", "license": "Public domain", "author": "Wykis, adapted by Martinvl", "atlas": "1ph diode bridge"},
+  {"local": "rect_3ph.svg", "commons": "3 phase bridge rectifier.svg", "license": "CC BY-SA 3.0 and GFDL", "author": "Sonarpulse", "atlas": "3ph 6-pulse"},
+  {"local": "boost_pfc.png", "commons": "Pont de diode avec PFC.png", "license": "CC BY-SA 4.0", "author": "Chouca alpin", "atlas": "Boost PFC"},
+  {"local": "half_bridge_vsi.jpg", "commons": "Single Phase Half Bridge Inverter.JPG", "license": "CC0", "author": "Roonie.02", "atlas": "1ph half-bridge VSI"},
+  {"local": "full_bridge_vsi.png", "commons": "H-bridge inverter cjc.png", "license": "CC BY-SA 3.0 and GFDL", "author": "C J Cowie", "atlas": "1ph full-bridge VSI"},
+  {"local": "vsi_3ph.png", "commons": "Pulswechselrichter schaltung.PNG", "license": "CC BY 3.0 and GFDL", "author": "Wdwd", "atlas": "3ph VSI"},
+  {"local": "ac_voltage_controller.png", "commons": "Circ reg monofasico.png", "license": "CC BY-SA 4.0", "author": "Hemangad", "atlas": "AC voltage controller"}
 ]
